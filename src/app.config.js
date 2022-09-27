@@ -10,9 +10,9 @@ let appConfig = {
     // app's favicon
     favicon: 'public/favicon.png',
     // app code
-    code: process.env.VUE_APP_FANTOM_MODULE || 'artion',
+    code: process.env.VUE_APP_GTON_MODULE || 'artion',
     // app routes
-    module: process.env.VUE_APP_FANTOM_MODULE || 'artion',
+    module: process.env.VUE_APP_GTON_MODULE || 'artion',
     // apollo client settings
     apollo: {
         // Artion api
