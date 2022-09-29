@@ -102,10 +102,16 @@ let appConfig = {
     underMaintenance: false,
     // use hash in address
     routerHashMode: false,
-    // Opera chain id
+    // GTON mainnet chain id
     chainId: '0xfa',
     // JSON-RPC endpointAdd
     // rpc: 'https://rpcapi.fantom.network/',
+    // GTON mainnet chain id
+    // chainId: '0x3E8',
+    // GTON mainnnet rpc
+    // rpc: 'https://rpc.gton.network/',
+    // GTON Explorer url
+    // explorerUrl: 'https://explorer.gton.network/',
     rpc: 'https://rpc.ftm.tools/',
     // used in links pointing to fantom explorer
     explorerUrl: 'https://ftmscan.com/',
