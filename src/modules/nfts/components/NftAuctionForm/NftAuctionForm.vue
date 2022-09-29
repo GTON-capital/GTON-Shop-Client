@@ -71,7 +71,7 @@
 </template>
 <script>
 import Web3 from 'web3';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import { bFromTokenValue, bToTokenValue, toBigNumber, toHex } from '@/utils/big-number.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import { PAY_TOKENS_WITH_PRICES } from '@/common/constants/pay-tokens.js';
@@ -82,7 +82,7 @@ import { objectEquals } from 'fantom-vue-components/src/utils';
 import { getAuction } from '@/modules/nfts/queries/auction.js';
 import { wallet } from '@/plugins/wallet/Wallet';
 import { isApprovedForAll } from '@/modules/nfts/queries/is-approved';
-import { getContractAddress } from '@/utils/artion-contract-addresses.js';
+import { getContractAddress } from '@/utils/gton-shop-contract-addresses.js';
 
 /** Auction duration in seconds */
 const MAX_AUCTION_DURATION = 2592000;

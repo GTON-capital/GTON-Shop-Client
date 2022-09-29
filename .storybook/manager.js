@@ -1,6 +1,6 @@
 import { addons } from '@storybook/addons';
-import fantomTheme from './artion-theme.js';
+import gtonTheme from './gton-theme.js';
 
 addons.setConfig({
-    theme: fantomTheme,
+    theme: gtonTheme,
 });

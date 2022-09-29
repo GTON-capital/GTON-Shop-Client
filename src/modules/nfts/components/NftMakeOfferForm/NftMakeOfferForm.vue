@@ -54,7 +54,7 @@
 </template>
 <script>
 import Web3 from 'web3';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import { bFromTokenValue, bToTokenValue, toBigNumber, toHex } from '@/utils/big-number.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import { getErc20TokenBalance } from '@/modules/wallet/queries/erc20-token-balance.js';
@@ -64,7 +64,7 @@ import { datetimeInFormatterTimestamp, dateOutFormatterTimestamp } from '@/utils
 import AButton from '@/common/components/AButton/AButton.vue';
 import { getUserAllowanceTx } from '@/plugins/wallet/utils.js';
 import { getPayToken } from '@/utils/pay-tokens.js';
-import { getContractAddress } from '@/utils/artion-contract-addresses.js';
+import { getContractAddress } from '@/utils/gton-shop-contract-addresses.js';
 import ATokenValue from '@/common/components/ATokenValue/ATokenValue.vue';
 import FErrorMessages from 'fantom-vue-components/src/components/FErrorMessages/FErrorMessages.vue';
 import FInfoText from 'fantom-vue-components/src/components/FInfoText/FInfoText.vue';

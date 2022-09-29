@@ -2,8 +2,8 @@ export function collectionsData() {
     return [
         {
             img: 'https://cloudflare-ipfs.com/ipfs/QmP8idjiQxFZ1Wpe61fSmi6jPTT48apPEx4QVKDhhWNWya',
-            label: 'Default Artion Collection',
-            value: 'default-artion-collection',
+            label: 'Default GTON Shop Collection',
+            value: 'default-gton-shop-collection',
         },
         /*{
             img: 'https://cloudflare-ipfs.com/ipfs/QmTTvJNrWky6AikiPx6LsFBazRaX47z7XKiiyZVS7x4hHE',

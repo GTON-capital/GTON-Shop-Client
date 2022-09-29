@@ -37,7 +37,7 @@ let routes = [];
 
 if (appConfig.underMaintenance) {
     routes = getMaintenanceRoutes();
-} else if (appConfig.module === 'artion') {
+} else if (appConfig.module === 'gton-shop') {
     routes = getRoutes();
 } else if (appConfig.module === 'pg') {
     routes = getPGModuleRoutes();

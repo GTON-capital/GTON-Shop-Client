@@ -8,8 +8,8 @@ function getCollections() {
     return [
         {
             img: 'https://cloudflare-ipfs.com/ipfs/QmP8idjiQxFZ1Wpe61fSmi6jPTT48apPEx4QVKDhhWNWya',
-            label: 'Default Artion Collection',
-            value: 'default-artion-collection',
+            label: 'Default GTON Shop Collection',
+            value: 'default-gton-shop-collection',
         },
         {
             img: 'https://cloudflare-ipfs.com/ipfs/QmTTvJNrWky6AikiPx6LsFBazRaX47z7XKiiyZVS7x4hHE',
@@ -128,7 +128,7 @@ describe('CollectionsFilter', () => {
         const li = collectionsFilter.find('li');
         await li.trigger('click');
 
-        expect(wrapper.vm.dValue).toEqual(['rarity-crafting', 'default-artion-collection']);
+        expect(wrapper.vm.dValue).toEqual(['rarity-crafting', 'default-gton-shop-collection']);
     });
 });
 

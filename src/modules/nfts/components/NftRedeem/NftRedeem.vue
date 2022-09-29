@@ -53,7 +53,7 @@
 import AButton from '@/common/components/AButton/AButton.vue';
 import AccountShippingAddressForm from '@/modules/account/components/AccountShippingAddressForm/AccountShippingAddressForm.vue';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import Web3 from 'web3';
 
 export default {

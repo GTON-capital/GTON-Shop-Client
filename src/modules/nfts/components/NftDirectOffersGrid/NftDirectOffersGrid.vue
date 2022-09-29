@@ -64,7 +64,7 @@ import AButton from '@/common/components/AButton/AButton.vue';
 import { compareAddresses } from '@/utils/address.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import Web3 from 'web3';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import erc721utils from '@/utils/erc721-utils.js';
 import { isExpired } from '@/utils/date.js';
 import { i18n } from '@/plugins/vue-i18n.js';

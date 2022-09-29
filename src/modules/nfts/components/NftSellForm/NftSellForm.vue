@@ -44,7 +44,7 @@
     </f-form>
 </template>
 <script>
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import { bToTokenValue, toHex } from '@/utils/big-number.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import { PAY_TOKENS_WITH_PRICES } from '@/common/constants/pay-tokens.js';
@@ -54,7 +54,7 @@ import AButton from '@/common/components/AButton/AButton.vue';
 import { wallet } from '@/plugins/wallet/Wallet.js';
 import { isApprovedForAll } from '@/modules/nfts/queries/is-approved';
 import Web3 from 'web3';
-import { getContractAddress } from '@/utils/artion-contract-addresses.js';
+import { getContractAddress } from '@/utils/gton-shop-contract-addresses.js';
 
 export default {
     name: 'NftSellForm',

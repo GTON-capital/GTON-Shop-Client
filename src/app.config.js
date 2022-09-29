@@ -1,22 +1,22 @@
 let appConfig = {
     // app name - used in titles
-    name: 'Artion',
+    name: 'GTON Shop',
     // app main title
-    title: 'Artion, NFT marketplace',
+    title: 'GTON Shop, NFT marketplace',
     // app description
-    description: 'Artion, NFT marketplace',
+    description: 'GTON Shop, NFT marketplace',
     // app keywords
-    keywords: 'Artion, NFT, NFTs, Fantom',
+    keywords: 'GTON Shop, GTON, NFT, NFTs',
     // app's favicon
     favicon: 'public/favicon.png',
     // app code
-    code: process.env.VUE_APP_GTON_MODULE || 'artion',
+    code: process.env.VUE_APP_GTON_MODULE || 'gton-shop',
     // app routes
-    module: process.env.VUE_APP_GTON_MODULE || 'artion',
+    module: process.env.VUE_APP_GTON_MODULE || 'gton-shop',
     // apollo client settings
     apollo: {
-        // Artion api
-        artion: {
+        // GTON Shop api
+        gtonShop: {
             // list of providers. if one of them is unavailable, another is randomly picked
             providers: [
                 {
@@ -38,8 +38,8 @@ let appConfig = {
             // index into providers array of default provider or 'random' - takes index randomly
             defaultProviderIndex: 'random',
         },
-        // Fantom api
-        fantom: {
+        // GTON api
+        gton: {
             // list of providers. if one of them is unavailable, another is randomly picked
             providers: [
                 {
@@ -93,7 +93,7 @@ let appConfig = {
     // pwa settings
     pwa: {
         // name used in pwa manifest
-        name: 'Artion',
+        name: 'GTON Shop',
         categories: ['finance'],
         mainColor: '#ffffff',
         assetsVersion: '1',
@@ -132,9 +132,9 @@ if (appConfig.module === 'pg') {
         title: 'Pierre Gasly NFT drop',
         // app description
         description:
-            'Pierre Gasly launches his NFTs on Fantom, as the first NFT drop of an F1™ driver. The NFTs will be redeemable for VIP experiences, meet and greet, signed original helmets and merchandise',
+            'Pierre Gasly launches his NFTs on GTON, as the first NFT drop of an F1™ driver. The NFTs will be redeemable for VIP experiences, meet and greet, signed original helmets and merchandise',
         // app keywords
-        keywords: 'Pierre Gasly, F1™ driver, Fantom, NFT, NFTs',
+        keywords: 'Pierre Gasly, F1™ driver, GTON, NFT, NFTs',
         // meta image
         imageUrl: '/img/PierreGaslyNFTdrop.png',
         // app's favicon

@@ -145,7 +145,7 @@ import AButton from '@/common/components/AButton/AButton.vue';
 import { pollingMixin } from '@/common/mixins/polling.js';
 import PGPayTokensList from '@/modules/pg/components/PGPayTokensList/PGPayTokensList.vue';
 import { getRandomTradeTokensAmount } from '@/modules/pg/queries/random-trade.js';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import Web3 from 'web3';
 
 const RANDOM_TRADE_CONTRACT = process.env.VUE_APP_GTON_RANDOM_PURCHASE_CONTRACT_ADDRESS;

@@ -139,7 +139,7 @@ import AUploadArea from '@/common/components/AUploadArea/AUploadArea.vue';
 import { getCollections } from '@/modules/collections/queries/collections.js';
 import { uploadTokenData } from '@/utils/upload';
 import Web3 from 'web3';
-import contracts from '@/utils/artion-contracts-utils';
+import contracts from '@/utils/gton-shop-contracts-utils';
 import { notifications } from 'fantom-vue-components/src/plugins/notifications';
 import AButton from '@/common/components/AButton/AButton';
 import { checkSignIn } from '@/modules/account/auth';

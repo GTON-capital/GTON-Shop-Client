@@ -43,7 +43,7 @@ import { isExpired } from '@/utils/date.js';
 import { PAY_TOKENS_WITH_PRICES } from '@/common/constants/pay-tokens.js';
 import AButton from '@/common/components/AButton/AButton.vue';
 import Web3 from 'web3';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import ATxWindow from '@/common/components/ATxWindow/ATxWindow.vue';
 import NftMakeOfferForm from '@/modules/nfts/components/NftMakeOfferForm/NftMakeOfferForm.vue';

@@ -81,7 +81,7 @@ import { formatNumberByLocale, formatTokenValue } from '@/utils/formatters.js';
 import { mapState } from 'vuex';
 import AButton from '@/common/components/AButton/AButton.vue';
 import Web3 from 'web3';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import erc20Utils from '@/utils/erc20-utils.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import { getErc20TokenAllowance } from '@/modules/wallet/queries/erc20-token-allowance.js';

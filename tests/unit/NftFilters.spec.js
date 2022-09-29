@@ -134,7 +134,7 @@ describe('NftFilters', () => {
         const emitted = wrapper.emitted('change');
 
         expect(emitted).toBeTruthy();
-        expect(emitted[0]).toEqual([{ collections: ['default-artion-collection'] }]);
+        expect(emitted[0]).toEqual([{ collections: ['default-gton-shop-collection'] }]);
     });
 
     it('should open section "Status" when `filters` contains "status" prop', async () => {
@@ -206,7 +206,7 @@ describe('NftFilters', () => {
 
         expect(wrapper.vm.dValue).toEqual({
             category: 0,
-            collections: ['default-artion-collection'],
+            collections: ['default-gton-shop-collection'],
             status: ['buy_now'],
         });
     });

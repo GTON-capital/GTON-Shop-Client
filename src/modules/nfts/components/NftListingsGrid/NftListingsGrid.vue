@@ -63,7 +63,7 @@ import { mapState } from 'vuex';
 import AButton from '@/common/components/AButton/AButton.vue';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import Web3 from 'web3';
-import contracts from '@/utils/artion-contracts-utils.js';
+import contracts from '@/utils/gton-shop-contracts-utils.js';
 import { getTokenListings } from '@/modules/nfts/queries/token-listings.js';
 import { checkUserBalance, getUserAllowanceTx } from '@/plugins/wallet/utils.js';
 import { i18n } from '@/plugins/vue-i18n.js';

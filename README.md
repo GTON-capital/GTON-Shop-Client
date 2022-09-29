@@ -1,4 +1,4 @@
-# Artion-Client-V2
+# GTON-Shop-Client
 
 ## Project setup
 ```
