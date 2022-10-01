@@ -20,20 +20,24 @@ let appConfig = {
             // list of providers. if one of them is unavailable, another is randomly picked
             providers: [
                 {
-                    http: 'https://artion-api-a.fantom.network/graphql',
-                    // for subscriptions
+                    http: 'http://164.90.205.116:7373/graphql',
                     ws: '',
                 },
-                {
-                    http: 'https://artion-api-b.fantom.network/graphql',
-                    // for subscriptions
-                    ws: '',
-                },
-                {
-                    http: 'https://artion-api-c.fantom.network/graphql',
-                    // for subscriptions
-                    ws: '',
-                },
+                // {
+                //     http: 'https://artion-api-a.fantom.network/graphql',
+                //     // for subscriptions
+                //     ws: '',
+                // },
+                // {
+                //     http: 'https://artion-api-b.fantom.network/graphql',
+                //     // for subscriptions
+                //     ws: '',
+                // },
+                // {
+                //     http: 'https://artion-api-c.fantom.network/graphql',
+                //     // for subscriptions
+                //     ws: '',
+                // },
             ],
             // index into providers array of default provider or 'random' - takes index randomly
             defaultProviderIndex: 'random',
@@ -103,20 +107,15 @@ let appConfig = {
     // use hash in address
     routerHashMode: false,
     // GTON mainnet chain id
-    chainId: '0xfa',
+    chainId: '0x3E8',
     // JSON-RPC endpointAdd
     // rpc: 'https://rpcapi.fantom.network/',
-    // GTON mainnet chain id
-    // chainId: '0x3E8',
     // GTON mainnnet rpc
-    // rpc: 'https://rpc.gton.network/',
-    // GTON Explorer url
-    // explorerUrl: 'https://explorer.gton.network/',
-    rpc: 'https://rpc.ftm.tools/',
+    rpc: 'https://rpc.gton.network/',
     // used in links pointing to fantom explorer
     explorerUrl: 'https://ftmscan.com/',
     // used in links pointing to validators
-    explorerUrl2: 'https://explorer.fantom.network/',
+    explorerUrl2: 'https://explorer.gton.network/',
     // default options for production build
     build: {
         // output dir for production build
