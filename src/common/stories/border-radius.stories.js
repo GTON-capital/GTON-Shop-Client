@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System/BorderRadius',
+  title: 'Design System/BorderRadius',
 };
 
 export const BorderRadius = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <div class="br-row">
                 <span class="br bor-1"></span> <code><b>.bor-1</b> (--f-border-radius-1)</code>
@@ -42,7 +42,7 @@ export const BorderRadius = () => ({
             </div>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

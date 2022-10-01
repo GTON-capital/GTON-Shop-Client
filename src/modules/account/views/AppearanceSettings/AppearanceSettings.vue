@@ -1,32 +1,37 @@
 <template>
-    <section class="appearancesettings" :aria-labelledby="id">
-        <h1 :id="id" class="mat-0" data-focus>{{ $t('appearancesettings.title') }}</h1>
+  <section class="appearancesettings" :aria-labelledby="id">
+    <h1 :id="id" class="mat-0" data-focus>
+      {{ $t('appearancesettings.title') }}
+    </h1>
 
-        <p>
-            <f-dark-theme-switch
-                :disabled="autoDarkThemeOn"
-                :label="$t('appearancesettings.darkMode')"
-                :model-value="darkTheme"
-                @change="onDarkThemeSwitchChange"
-            />
-            <f-toggle-button
-                v-model="autoDarkThemeOn"
-                :label="$t('appearancesettings.autoDarkMode')"
-                :data-tooltip="$t('appearancesettings.autoDarkModeInfo')"
-                :aria-label="$t('appearancesettings.autoDarkModeInfo')"
-            />
-        </p>
+    <p>
+      <f-dark-theme-switch
+        :disabled="autoDarkThemeOn"
+        :label="$t('appearancesettings.darkMode')"
+        :model-value="darkTheme"
+        @change="onDarkThemeSwitchChange"
+      />
+      <f-toggle-button
+        v-model="autoDarkThemeOn"
+        :label="$t('appearancesettings.autoDarkMode')"
+        :data-tooltip="$t('appearancesettings.autoDarkModeInfo')"
+        :aria-label="$t('appearancesettings.autoDarkModeInfo')"
+      />
+    </p>
 
-        <p>
-            <a-text-direction-switch />
-        </p>
-    </section>
+    <p>
+      <a-text-direction-switch />
+    </p>
+  </section>
 </template>
 
 <script>
 import FDarkThemeSwitch from 'fantom-vue-components/src/components/FDarkThemeSwitch/FDarkThemeSwitch.vue';
 import { mapState } from 'vuex';
-import { SET_AUTO_DARK_MODE, SET_THEME } from '@/modules/app/store/mutations.js';
+import {
+  SET_AUTO_DARK_MODE,
+  SET_THEME,
+} from '@/modules/app/store/mutations.js';
 import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 import { getUniqueId } from 'fantom-vue-components/src/utils';
 import ATextDirectionSwitch from '@/common/components/ATextDirectionSwitch/ATextDirectionSwitch.vue';
@@ -34,48 +39,51 @@ import ATextDirectionSwitch from '@/common/components/ATextDirectionSwitch/AText
 const THEME_DARK = 'theme-dark';
 
 export default {
-    name: 'AppearanceSettings',
+  name: 'AppearanceSettings',
 
-    components: { ATextDirectionSwitch, FDarkThemeSwitch },
+  components: { ATextDirectionSwitch, FDarkThemeSwitch },
 
-    data() {
-        return {
-            id: getUniqueId(),
-            darkTheme: false,
-            autoDarkThemeOn: false,
-        };
+  data() {
+    return {
+      id: getUniqueId(),
+      darkTheme: false,
+      autoDarkThemeOn: false,
+    };
+  },
+
+  computed: {
+    ...mapState('app', {
+      autoDarkTheme: 'autoDarkTheme',
+      theme: 'theme',
+    }),
+  },
+
+  watch: {
+    autoDarkThemeOn(value) {
+      this.$store.commit(`app/${SET_AUTO_DARK_MODE}`, value);
     },
 
-    computed: {
-        ...mapState('app', {
-            autoDarkTheme: 'autoDarkTheme',
-            theme: 'theme',
-        }),
+    theme(value) {
+      this.darkTheme = value === THEME_DARK;
     },
+  },
 
-    watch: {
-        autoDarkThemeOn(value) {
-            this.$store.commit(`app/${SET_AUTO_DARK_MODE}`, value);
-        },
+  created() {
+    this.darkTheme = this.theme === THEME_DARK;
+    this.autoDarkThemeOn = this.autoDarkTheme;
+  },
 
-        theme(value) {
-            this.darkTheme = value === THEME_DARK;
-        },
+  mounted() {
+    focusElem(this.$el);
+  },
+
+  methods: {
+    onDarkThemeSwitchChange(value) {
+      this.$store.commit(
+        `app/${SET_THEME}`,
+        value ? THEME_DARK : 'theme-default'
+      );
     },
-
-    created() {
-        this.darkTheme = this.theme === THEME_DARK;
-        this.autoDarkThemeOn = this.autoDarkTheme;
-    },
-
-    mounted() {
-        focusElem(this.$el);
-    },
-
-    methods: {
-        onDarkThemeSwitchChange(value) {
-            this.$store.commit(`app/${SET_THEME}`, value ? THEME_DARK : 'theme-default');
-        },
-    },
+  },
 };
 </script>

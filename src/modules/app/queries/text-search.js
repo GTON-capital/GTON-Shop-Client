@@ -7,35 +7,35 @@ import { gqlQuery } from '@/utils/gql.js';
  * @return {Promise<number|string|*|undefined|null>}
  */
 export async function textSearch(phrase = '', maxLength = 15) {
-    const query = {
-        query: gql`
-            query TextSearch($phrase: String!, $maxLength: Int = 15) {
-                textSearch(phrase: $phrase, maxLength: $maxLength) {
-                    collection {
-                        contract
-                        name
-                        image
-                    }
-                    token {
-                        contract
-                        tokenId
-                        name
-                        imageThumb
-                    }
-                    user {
-                        address
-                        username
-                        avatarThumb
-                    }
-                }
-            }
-        `,
-        variables: {
-            phrase,
-            maxLength,
-        },
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query TextSearch($phrase: String!, $maxLength: Int = 15) {
+        textSearch(phrase: $phrase, maxLength: $maxLength) {
+          collection {
+            contract
+            name
+            image
+          }
+          token {
+            contract
+            tokenId
+            name
+            imageThumb
+          }
+          user {
+            address
+            username
+            avatarThumb
+          }
+        }
+      }
+    `,
+    variables: {
+      phrase,
+      maxLength,
+    },
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'textSearch');
+  return gqlQuery(query, 'textSearch');
 }

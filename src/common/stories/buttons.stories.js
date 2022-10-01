@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System',
+  title: 'Design System',
 };
 
 export const Buttons = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
         <h3>Primary (default)</h3>
         <f-button size="large" label="Large" />
@@ -96,7 +96,7 @@ export const Buttons = () => ({
         <br /><br />
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

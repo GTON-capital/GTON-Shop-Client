@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System/TextSizes',
+  title: 'Design System/TextSizes',
 };
 
 export const TextSizes = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <code>.tes-1</code>
             <p class="tes-1">
@@ -170,7 +170,7 @@ export const TextSizes = () => ({
             </p>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

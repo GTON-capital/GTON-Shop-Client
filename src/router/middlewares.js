@@ -15,7 +15,7 @@ let prevTheme = '';
 let popStateDetected = false;
 
 window.addEventListener('popstate', () => {
-    popStateDetected = true;
+  popStateDetected = true;
 });
 
 /**
@@ -24,12 +24,12 @@ window.addEventListener('popstate', () => {
  * @param {function} next
  */
 export function setRouteMetaInfo(to, from, next) {
-    next();
+  next();
 
-    documentMeta.setMetaInfo({
-        title: to?.meta?.title || APP_TITLE,
-        description: to?.meta?.description || APP_TITLE,
-    });
+  documentMeta.setMetaInfo({
+    title: to?.meta?.title || APP_TITLE,
+    description: to?.meta?.description || APP_TITLE,
+  });
 }
 
 /**
@@ -38,17 +38,17 @@ export function setRouteMetaInfo(to, from, next) {
  * @param {function} next
  */
 export function setRouteTheme(to, from, next) {
-    next();
+  next();
 
-    if (to.meta.theme) {
-        defer(() => {
-            prevTheme = FAppTheme.getTheme();
-            FAppTheme.setTheme(to.meta.theme);
-        });
-    } else if (prevTheme) {
-        FAppTheme.setTheme(prevTheme);
-        prevTheme = '';
-    }
+  if (to.meta.theme) {
+    defer(() => {
+      prevTheme = FAppTheme.getTheme();
+      FAppTheme.setTheme(to.meta.theme);
+    });
+  } else if (prevTheme) {
+    FAppTheme.setTheme(prevTheme);
+    prevTheme = '';
+  }
 }
 
 /**
@@ -57,19 +57,19 @@ export function setRouteTheme(to, from, next) {
  * @param {function} next
  */
 export async function authRoute(to, from, next) {
-    if (to.meta.auth) {
-        if ((wallet.user && wallet.user.logged) || !from.name) {
-            next();
-        } else {
-            await signIn();
-
-            if (wallet.user && wallet.user.logged) {
-                next();
-            }
-        }
+  if (to.meta.auth) {
+    if ((wallet.user && wallet.user.logged) || !from.name) {
+      next();
     } else {
+      await signIn();
+
+      if (wallet.user && wallet.user.logged) {
         next();
+      }
     }
+  } else {
+    next();
+  }
 }
 
 /**
@@ -78,11 +78,11 @@ export async function authRoute(to, from, next) {
  * @param {function} next
  */
 export async function setBackButton(to, from, next) {
-    to.meta.backButton = popStateDetected;
-    to.meta.prevRoute = { name: from.name };
+  to.meta.backButton = popStateDetected;
+  to.meta.prevRoute = { name: from.name };
 
-    next();
-    popStateDetected = false;
+  next();
+  popStateDetected = false;
 }
 
 /*export function checkComponentsChange(_next) {

@@ -1,9 +1,11 @@
 <template>
-    <div class="accountfavorited">
-        <h2 class="not-visible" data-focus>{{ $t('page.accountFavorited.title') }}</h2>
+  <div class="accountfavorited">
+    <h2 class="not-visible" data-focus>
+      {{ $t('page.accountFavorited.title') }}
+    </h2>
 
-        <user-favorited-nft-list :user-address="userAddress" v-on="$listeners" />
-    </div>
+    <user-favorited-nft-list :user-address="userAddress" v-on="$listeners" />
+  </div>
 </template>
 
 <script>
@@ -11,20 +13,20 @@ import UserFavoritedNftList from '@/modules/account/components/UserFavoritedNftL
 import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 
 export default {
-    name: 'AccountFavorited',
+  name: 'AccountFavorited',
 
-    components: { UserFavoritedNftList },
+  components: { UserFavoritedNftList },
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
-        },
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
     },
+  },
 
-    mounted() {
-        focusElem(this.$el);
-    },
+  mounted() {
+    focusElem(this.$el);
+  },
 };
 </script>

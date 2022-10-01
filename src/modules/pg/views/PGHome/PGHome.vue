@@ -1,10 +1,10 @@
 <template>
-    <div class="pghome">
-        <p-g-hero></p-g-hero>
-        <p-g-drop></p-g-drop>
-        <p-g-nfts-list></p-g-nfts-list>
-        <p-g-faq-list></p-g-faq-list>
-    </div>
+  <div class="pghome">
+    <p-g-hero></p-g-hero>
+    <p-g-drop></p-g-drop>
+    <p-g-nfts-list></p-g-nfts-list>
+    <p-g-faq-list></p-g-faq-list>
+  </div>
 </template>
 
 <script>
@@ -14,8 +14,8 @@ import PGNftsList from '@/modules/pg/components/PGNftsList/PGNftsList.vue';
 import PGFaqList from '@/modules/pg/components/PGFaqList/PGFaqList.vue';
 
 export default {
-    name: 'PGHome',
+  name: 'PGHome',
 
-    components: { PGFaqList, PGNftsList, PGDrop, PGHero },
+  components: { PGFaqList, PGNftsList, PGDrop, PGHero },
 };
 </script>

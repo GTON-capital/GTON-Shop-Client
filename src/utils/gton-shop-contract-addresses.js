@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 import { gqlQuery } from '@/utils/gql.js';
 
 let CONTRACTS = {
-    marketplace: '',
-    auctionHall: '',
+  marketplace: '',
+  auctionHall: '',
 };
 
 let contractsLoaded = false;
@@ -19,34 +19,34 @@ async function fetchContracts() {
 */
 
 async function fetchContracts() {
-    const query = {
-        query: gql`
-            query GetContracts {
-                contracts {
-                    marketplace
-                    auctionHall
-                }
-            }
-        `,
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query GetContracts {
+        contracts {
+          marketplace
+          auctionHall
+        }
+      }
+    `,
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'contracts');
+  return gqlQuery(query, 'contracts');
 }
 
 export async function getContractAddress(code) {
-    if (!contractsLoaded) {
-        try {
-            CONTRACTS = await fetchContracts();
-            contractsLoaded = true;
-        } catch (error) {
-            console.error(error);
-        }
+  if (!contractsLoaded) {
+    try {
+      CONTRACTS = await fetchContracts();
+      contractsLoaded = true;
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    if (!CONTRACTS[code]) {
-        throw new Error(`Can't find contract '${code}'`);
-    }
+  if (!CONTRACTS[code]) {
+    throw new Error(`Can't find contract '${code}'`);
+  }
 
-    return CONTRACTS[code];
+  return CONTRACTS[code];
 }

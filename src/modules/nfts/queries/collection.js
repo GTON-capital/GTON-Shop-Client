@@ -6,20 +6,20 @@ import { gqlQuery } from '@/utils/gql.js';
  * @return {Promise<number|string|*|undefined|null>}
  */
 export async function getCollection(contract = '') {
-    const query = {
-        query: gql`
-            query GetCollection($contract: Address!) {
-                collection(contract: $contract) {
-                    contract
-                    name
-                }
-            }
-        `,
-        variables: { contract },
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query GetCollection($contract: Address!) {
+        collection(contract: $contract) {
+          contract
+          name
+        }
+      }
+    `,
+    variables: { contract },
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'collection');
+  return gqlQuery(query, 'collection');
 }
 
 /**

@@ -11,19 +11,26 @@ const ZERO_AMOUNT = '0x0';
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function createNFTCollection(nftName, nftSymbol, amount, web3Client, contract = process.env.VUE_APP_GTON_NFT_FACTORY_CONTRACT_ADDRESS) {
+function createNFTCollection(
+  nftName,
+  nftSymbol,
+  amount,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_NFT_FACTORY_CONTRACT_ADDRESS
+) {
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(
+    createNFTContractAbi,
+    [nftName, nftSymbol]
+  );
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(createNFTContractAbi,[nftName, nftSymbol])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: web3Client.utils.numberToHex(amount),
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: web3Client.utils.numberToHex(amount),
+    data: encodedAbi,
+  };
 }
-
 
 /**
  * createNFT Mints a new token on given NFT collection contract
@@ -35,36 +42,38 @@ const ZERO_AMOUNT = '0x0';
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @return {{to: address, data: string, value string}}
  */
- function createNFT(toAddress, tokenUri, amount, collectionAddress, web3Client) {
+function createNFT(toAddress, tokenUri, amount, collectionAddress, web3Client) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_to',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: '_tokenUri',
+        type: 'string',
+      },
+    ],
+    name: 'mint',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-            "internalType": "address",
-            "name": "_to",
-            "type": "address"
-            },
-            {
-            "internalType": "string",
-            "name": "_tokenUri",
-            "type": "string"
-            }
-        ],
-        "name": "mint",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    toAddress,
+    tokenUri,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[toAddress, tokenUri])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: collectionAddress,
-        value: web3Client.utils.numberToHex(amount),
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: collectionAddress,
+    value: web3Client.utils.numberToHex(amount),
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -79,54 +88,65 @@ const ZERO_AMOUNT = '0x0';
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @return {{to: address, data: string, value string}}
  */
-function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, royaltyRecipient, royaltyValue, web3Client) {
+function createNFTWithRoyalty(
+  toAddress,
+  tokenUri,
+  amount,
+  collectionAddress,
+  royaltyRecipient,
+  royaltyValue,
+  web3Client
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_beneficiary',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: '_tokenUri',
+        type: 'string',
+      },
+      {
+        internalType: 'address',
+        name: '_royaltyRecipient',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_royaltyValue',
+        type: 'uint256',
+      },
+    ],
+    name: 'mint',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_beneficiary",
-                "type": "address"
-            },
-            {
-                "internalType": "string",
-                "name": "_tokenUri",
-                "type": "string"
-            },
-            {
-                "internalType": "address",
-                "name": "_royaltyRecipient",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_royaltyValue",
-                "type": "uint256"
-            }
-        ],
-        "name": "mint",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "payable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    toAddress,
+    tokenUri,
+    royaltyRecipient,
+    royaltyValue,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[toAddress, tokenUri, royaltyRecipient, royaltyValue])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: collectionAddress,
-        value: web3Client.utils.numberToHex(amount),
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: collectionAddress,
+    value: web3Client.utils.numberToHex(amount),
+    data: encodedAbi,
+  };
 }
-
 
 /**
  * createArtCollection Creates a new ERC1155 collection contract thru factory
@@ -138,20 +158,27 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function createArtCollection(nftName, nftSymbol, amount, web3Client, contract = process.env.VUE_APP_GTON_ART_FACTORY_CONTRACT_ADDRESS) {
+function createArtCollection(
+  nftName,
+  nftSymbol,
+  amount,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_ART_FACTORY_CONTRACT_ADDRESS
+) {
+  // encode contract ABI with parameters
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(
+    createNFTContractAbi,
+    [nftName, nftSymbol]
+  );
 
-    // encode contract ABI with parameters
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(createNFTContractAbi,[nftName, nftSymbol])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: web3Client.utils.numberToHex(amount),
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: web3Client.utils.numberToHex(amount),
+    data: encodedAbi,
+  };
 }
-
 
 /**
  * createArt Mints a new token on given ERC1155 collection contract
@@ -165,41 +192,51 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @return {{to: address, data: string, value string}}
  */
- function createArt(toAddress, tokenUri, supply, amount, collectionAddress, web3Client) {
+function createArt(
+  toAddress,
+  tokenUri,
+  supply,
+  amount,
+  collectionAddress,
+  web3Client
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_supply',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: '_uri',
+        type: 'string',
+      },
+    ],
+    name: 'mint',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-            "internalType": "address",
-            "name": "_to",
-            "type": "address"
-            },
-            {
-            "internalType": "uint256",
-            "name": "_supply",
-            "type": "uint256"
-            },
-            {
-            "internalType": "string",
-            "name": "_uri",
-            "type": "string"
-            }
-        ],
-        "name": "mint",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    toAddress,
+    supply,
+    tokenUri,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[toAddress, supply, tokenUri])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: collectionAddress,
-        value: web3Client.utils.numberToHex(amount),
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: collectionAddress,
+    value: web3Client.utils.numberToHex(amount),
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -212,41 +249,50 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function registerTokenRoyalty(nftAddress, tokenID, royalty, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function registerTokenRoyalty(
+  nftAddress,
+  tokenID,
+  royalty,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint16',
+        name: '_royalty',
+        type: 'uint16',
+      },
+    ],
+    name: 'registerRoyalty',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-            "internalType": "address",
-            "name": "_nftAddress",
-            "type": "address"
-            },
-            {
-            "internalType": "uint256",
-            "name": "_tokenId",
-            "type": "uint256"
-            },
-            {
-            "internalType": "uint16",
-            "name": "_royalty",
-            "type": "uint16"
-            }
-        ],
-        "name": "registerRoyalty",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    royalty,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, royalty])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -262,56 +308,71 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function createOffer(nftAddress, tokenID, payToken, quantity, pricePerItem, deadline, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function createOffer(
+  nftAddress,
+  tokenID,
+  payToken,
+  quantity,
+  pricePerItem,
+  deadline,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'contract IERC20',
+        name: '_payToken',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_quantity',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_pricePerItem',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_deadline',
+        type: 'uint256',
+      },
+    ],
+    name: 'createOffer',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "contract IERC20",
-                "name": "_payToken",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_quantity",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_pricePerItem",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_deadline",
-                "type": "uint256"
-            }
-        ],
-        "name": "createOffer",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    payToken,
+    quantity,
+    pricePerItem,
+    deadline,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, payToken, quantity, pricePerItem, deadline])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -323,36 +384,43 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function cancelOffer(nftAddress, tokenID, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function cancelOffer(
+  nftAddress,
+  tokenID,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'cancelOffer',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "cancelOffer",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -365,41 +433,50 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function acceptOffer(nftAddress, tokenID, creator, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function acceptOffer(
+  nftAddress,
+  tokenID,
+  creator,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_creator',
+        type: 'address',
+      },
+    ],
+    name: 'acceptOffer',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_creator",
-                "type": "address"
-            }
-        ],
-        "name": "acceptOffer",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    creator,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, creator])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -415,56 +492,71 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function listItem(nftAddress, tokenID, quantity, payToken, pricePerItem, startingTime, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function listItem(
+  nftAddress,
+  tokenID,
+  quantity,
+  payToken,
+  pricePerItem,
+  startingTime,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_quantity',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_payToken',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_pricePerItem',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_startingTime',
+        type: 'uint256',
+      },
+    ],
+    name: 'listItem',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_quantity",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_payToken",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_pricePerItem",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_startingTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "listItem",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    quantity,
+    payToken,
+    pricePerItem,
+    startingTime,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, quantity, payToken, pricePerItem, startingTime])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -476,36 +568,43 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function cancelListing(nftAddress, tokenID, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function cancelListing(
+  nftAddress,
+  tokenID,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'cancelListing',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "cancelListing",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -519,46 +618,57 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function updateListing(nftAddress, tokenID, payToken, newPricePerItem, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function updateListing(
+  nftAddress,
+  tokenID,
+  payToken,
+  newPricePerItem,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_payToken',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_newPrice',
+        type: 'uint256',
+      },
+    ],
+    name: 'updateListing',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_payToken",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_newPrice",
-                "type": "uint256"
-            }
-        ],
-        "name": "updateListing",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    payToken,
+    newPricePerItem,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, payToken, newPricePerItem])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -572,46 +682,57 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function buyListedItemWithPayToken(nftAddress, tokenID, ownerAddress, payToken, web3Client, contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS) {
+function buyListedItemWithPayToken(
+  nftAddress,
+  tokenID,
+  ownerAddress,
+  payToken,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_MARKETPLACE_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_payToken',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_owner',
+        type: 'address',
+      },
+    ],
+    name: 'buyItem',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_payToken",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "_owner",
-                "type": "address"
-            }
-        ],
-        "name": "buyItem",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    payToken,
+    ownerAddress,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, payToken, ownerAddress])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -632,61 +753,78 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {string} [contract] Contract address
  * @return {{to: address, data: string, value string}}
  */
- function createAuction(nftAddress, tokenID, payToken, reservePrice, startTimestamp, endTimestamp, minBidReserve, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function createAuction(
+  nftAddress,
+  tokenID,
+  payToken,
+  reservePrice,
+  startTimestamp,
+  endTimestamp,
+  minBidReserve,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_payToken',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_reservePrice',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_startTimestamp',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bool',
+        name: 'minBidReserve',
+        type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: '_endTimestamp',
+        type: 'uint256',
+      },
+    ],
+    name: 'createAuction',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_payToken",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_reservePrice",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_startTimestamp",
-                "type": "uint256"
-            },
-            {
-                "internalType": "bool",
-                "name": "minBidReserve",
-                "type": "bool"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_endTimestamp",
-                "type": "uint256"
-            }
-        ],
-        "name": "createAuction",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    payToken,
+    reservePrice,
+    startTimestamp,
+    minBidReserve,
+    endTimestamp,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, payToken, reservePrice, startTimestamp, minBidReserve, endTimestamp])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -701,41 +839,50 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
- function placeAuctionBid(nftAddress, tokenID, amount, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function placeAuctionBid(
+  nftAddress,
+  tokenID,
+  amount,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_bidAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'placeBid',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_bidAmount",
-                "type": "uint256"
-            }
-        ],
-        "name": "placeBid",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    amount,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, amount])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -748,36 +895,43 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
- function withdrawAuctionBid(nftAddress, tokenID, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function withdrawAuctionBid(
+  nftAddress,
+  tokenID,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'withdrawBid',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "withdrawBid",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -792,36 +946,43 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
- function resultAuction(nftAddress, tokenID, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function resultAuction(
+  nftAddress,
+  tokenID,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'resultAuction',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "resultAuction",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -838,36 +999,43 @@ function createNFTWithRoyalty(toAddress, tokenUri, amount, collectionAddress, ro
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
-function resultFailedAuction(nftAddress, tokenID, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function resultFailedAuction(
+  nftAddress,
+  tokenID,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'resultFailedAuction',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "resultFailedAuction",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -880,36 +1048,43 @@ function resultFailedAuction(nftAddress, tokenID, web3Client, contract = process
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
- function cancelAuction(nftAddress, tokenID, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function cancelAuction(
+  nftAddress,
+  tokenID,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'cancelAuction',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "cancelAuction",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -921,41 +1096,50 @@ function resultFailedAuction(nftAddress, tokenID, web3Client, contract = process
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
- function updateAuctionReservePrice(nftAddress, tokenID, reservePrice, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function updateAuctionReservePrice(
+  nftAddress,
+  tokenID,
+  reservePrice,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_reservePrice',
+        type: 'uint256',
+      },
+    ],
+    name: 'updateAuctionReservePrice',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_reservePrice",
-                "type": "uint256"
-            }
-        ],
-        "name": "updateAuctionReservePrice",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    reservePrice,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, reservePrice])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -967,41 +1151,50 @@ function resultFailedAuction(nftAddress, tokenID, web3Client, contract = process
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
- function updateAuctionStartTime(nftAddress, tokenID, startTime, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function updateAuctionStartTime(
+  nftAddress,
+  tokenID,
+  startTime,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_startTime',
+        type: 'uint256',
+      },
+    ],
+    name: 'updateAuctionStartTime',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_startTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "updateAuctionStartTime",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    startTime,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, startTime])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -1013,41 +1206,50 @@ function resultFailedAuction(nftAddress, tokenID, web3Client, contract = process
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  * @param {string} [contract] Contract address
  */
- function updateAuctionEndTime(nftAddress, tokenID, endTime, web3Client, contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS) {
+function updateAuctionEndTime(
+  nftAddress,
+  tokenID,
+  endTime,
+  web3Client,
+  contract = process.env.VUE_APP_GTON_AUCTION_CONTRACT_ADDRESS
+) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_endTimestamp',
+        type: 'uint256',
+      },
+    ],
+    name: 'updateAuctionEndTime',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_endTimestamp",
-                "type": "uint256"
-            }
-        ],
-        "name": "updateAuctionEndTime",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    nftAddress,
+    tokenID,
+    endTime,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[nftAddress, tokenID, endTime])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: contract,
-        value: ZERO_AMOUNT,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: contract,
+    value: ZERO_AMOUNT,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -1059,28 +1261,28 @@ function resultFailedAuction(nftAddress, tokenID, web3Client, contract = process
  * @return {{to: address, data: string}}
  */
 function randomPurchase(tradeAddress, payToken, web3Client) {
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_token",
-                "type": "address"
-            }
-        ],
-        "name": "purchase",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    };
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_token',
+        type: 'address',
+      },
+    ],
+    name: 'purchase',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[payToken]);
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [payToken]);
 
-    // return tx object
-    return {
-        from: undefined,
-        to: tradeAddress,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: tradeAddress,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -1092,29 +1294,28 @@ function randomPurchase(tradeAddress, payToken, web3Client) {
  * @return {{to: address, data: string}}
  */
 function artionERC721Burn(nftContract, tokenID, web3Client) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'burn',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "burn",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    };
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [tokenID]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[tokenID]);
-
-    // return tx object
-    return {
-        from: undefined,
-        to: nftContract,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: nftContract,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -1127,34 +1328,36 @@ function artionERC721Burn(nftContract, tokenID, web3Client) {
  * @param {Web3} web3Client Instance of an initialized Web3 client.
  */
 function setApprovalForAll(nftAddress, operator, approved, web3Client) {
+  const abi = {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_operator',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: '_approved',
+        type: 'bool',
+      },
+    ],
+    name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  };
 
-    const abi = {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_operator",
-                "type": "address"
-            },
-            {
-                "internalType": "bool",
-                "name": "_approved",
-                "type": "bool"
-            }
-        ],
-        "name": "setApprovalForAll",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
+  const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi, [
+    operator,
+    approved,
+  ]);
 
-    const encodedAbi = web3Client.eth.abi.encodeFunctionCall(abi,[operator, approved])
-
-    // return tx object
-    return {
-        from: undefined,
-        to: nftAddress,
-        data: encodedAbi,
-    };
+  // return tx object
+  return {
+    from: undefined,
+    to: nftAddress,
+    data: encodedAbi,
+  };
 }
 
 /**
@@ -1165,91 +1368,96 @@ function setApprovalForAll(nftAddress, operator, approved, web3Client) {
  * @return {string|null} The tokenId
  */
 function decodeMintedNftTokenId(receipt, web3Client) {
-    const mintedTopic = '0x997115af5924f5e38964c6d65c804d4cb85129b65e62eb20a8ca6329dbe57e18';
-    const abiInputs = [
-        {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-        },
-        {
-            "indexed": false,
-            "internalType": "address",
-            "name": "beneficiary",
-            "type": "address"
-        },
-        {
-            "indexed": false,
-            "internalType": "string",
-            "name": "tokenUri",
-            "type": "string"
-        },
-        {
-            "indexed": false,
-            "internalType": "address",
-            "name": "minter",
-            "type": "address"
-        }
-    ];
+  const mintedTopic =
+    '0x997115af5924f5e38964c6d65c804d4cb85129b65e62eb20a8ca6329dbe57e18';
+  const abiInputs = [
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'tokenId',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'address',
+      name: 'beneficiary',
+      type: 'address',
+    },
+    {
+      indexed: false,
+      internalType: 'string',
+      name: 'tokenUri',
+      type: 'string',
+    },
+    {
+      indexed: false,
+      internalType: 'address',
+      name: 'minter',
+      type: 'address',
+    },
+  ];
 
-    const log = receipt.logs.find(log => log.topics.includes(mintedTopic));
-    if (!log) throw "Minted topic not present in the transaction log";
-    const decoded = web3Client.eth.abi.decodeLog(abiInputs, log.data, log.topics.slice(1));
-    console.log('decodedMinted', decoded);
-    return decoded.tokenId;
+  const log = receipt.logs.find(log => log.topics.includes(mintedTopic));
+  if (!log) throw 'Minted topic not present in the transaction log';
+  const decoded = web3Client.eth.abi.decodeLog(
+    abiInputs,
+    log.data,
+    log.topics.slice(1)
+  );
+  console.log('decodedMinted', decoded);
+  return decoded.tokenId;
 }
 
 export default {
-    createNFTCollection,
-    createNFT,
-    createNFTWithRoyalty,
-    createArtCollection,
-    createArt,
-    registerTokenRoyalty,
-    listItem,
-    cancelListing,
-    updateListing,
-    buyListedItemWithPayToken,
-    createOffer,
-    cancelOffer,
-    acceptOffer,
-    createAuction,
-    placeAuctionBid,
-    withdrawAuctionBid,
-    resultAuction,
-    resultFailedAuction,
-    cancelAuction,
-    updateAuctionReservePrice,
-    updateAuctionStartTime,
-    updateAuctionEndTime,
-    randomPurchase,
-    artionERC721Burn,
-    decodeMintedNftTokenId,
-    setApprovalForAll,
-}
+  createNFTCollection,
+  createNFT,
+  createNFTWithRoyalty,
+  createArtCollection,
+  createArt,
+  registerTokenRoyalty,
+  listItem,
+  cancelListing,
+  updateListing,
+  buyListedItemWithPayToken,
+  createOffer,
+  cancelOffer,
+  acceptOffer,
+  createAuction,
+  placeAuctionBid,
+  withdrawAuctionBid,
+  resultAuction,
+  resultFailedAuction,
+  cancelAuction,
+  updateAuctionReservePrice,
+  updateAuctionStartTime,
+  updateAuctionEndTime,
+  randomPurchase,
+  artionERC721Burn,
+  decodeMintedNftTokenId,
+  setApprovalForAll,
+};
 
 const createNFTContractAbi = {
-    "inputs": [
-        {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
-        },
-        {
-        "internalType": "string",
-        "name": "_symbol",
-        "type": "string"
-        }
-    ],
-    "name": "createNFTContract",
-    "outputs": [
-        {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-        }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-}
+  inputs: [
+    {
+      internalType: 'string',
+      name: '_name',
+      type: 'string',
+    },
+    {
+      internalType: 'string',
+      name: '_symbol',
+      type: 'string',
+    },
+  ],
+  name: 'createNFTContract',
+  outputs: [
+    {
+      internalType: 'address',
+      name: '',
+      type: 'address',
+    },
+  ],
+  stateMutability: 'payable',
+  type: 'function',
+};

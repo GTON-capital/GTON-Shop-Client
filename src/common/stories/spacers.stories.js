@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System/Spacers',
+  title: 'Design System/Spacers',
 };
 
 export const Spacers = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div class="grid">
             <div class="col-6">
                 <h3>Vertical spacers</h3>
@@ -71,14 +71,14 @@ export const Spacers = () => ({
             </div>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });
 
 export const Paddings = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <h3><code>padding</code></h3>
             <div class="gridauto fos-4">
@@ -119,8 +119,8 @@ export const Paddings = () => ({
 });
 
 export const Margins = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <h3><code>margin</code></h3>
             <div class="gridauto fos-4">

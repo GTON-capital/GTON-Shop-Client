@@ -1,9 +1,11 @@
 <template>
-    <div class="AccountCollections">
-        <h2 class="not-visible" data-focus>{{ $t('page.accountCollections.title') }}</h2>
+  <div class="AccountCollections">
+    <h2 class="not-visible" data-focus>
+      {{ $t('page.accountCollections.title') }}
+    </h2>
 
-        <account-collections-grid :user-address="userAddress" />
-    </div>
+    <account-collections-grid :user-address="userAddress" />
+  </div>
 </template>
 
 <script>
@@ -12,22 +14,22 @@ import { moderatorPageMixin } from '@/common/mixins/moderator-page.js';
 import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 
 export default {
-    name: 'AccountCollections',
+  name: 'AccountCollections',
 
-    mixins: [moderatorPageMixin],
+  mixins: [moderatorPageMixin],
 
-    components: { AccountCollectionsGrid },
+  components: { AccountCollectionsGrid },
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
-        },
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
     },
+  },
 
-    mounted() {
-        focusElem(this.$el);
-    },
+  mounted() {
+    focusElem(this.$el);
+  },
 };
 </script>

@@ -1,10 +1,10 @@
 <template>
-    <section class="notificationsettings" :aria-labelledby="id">
-        <div class="notificationsettings_title">
-            <h1 :id="id" data-focus>{{ $t('notificationsettings.title') }}</h1>
-        </div>
-        <notification-settings-form />
-    </section>
+  <section class="notificationsettings" :aria-labelledby="id">
+    <div class="notificationsettings_title">
+      <h1 :id="id" data-focus>{{ $t('notificationsettings.title') }}</h1>
+    </div>
+    <notification-settings-form />
+  </section>
 </template>
 
 <script>
@@ -13,24 +13,24 @@ import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 import { getUniqueId } from 'fantom-vue-components/src/utils';
 
 export default {
-    name: 'NotificationSettings',
+  name: 'NotificationSettings',
 
-    components: { NotificationSettingsForm },
+  components: { NotificationSettingsForm },
 
-    data() {
-        return {
-            id: getUniqueId(),
-        };
-    },
+  data() {
+    return {
+      id: getUniqueId(),
+    };
+  },
 
-    mounted() {
-        focusElem(this.$el);
-    },
+  mounted() {
+    focusElem(this.$el);
+  },
 };
 </script>
 
 <style>
 .notificationsettings_title h1 {
-    margin-top: 0;
+  margin-top: 0;
 }
 </style>

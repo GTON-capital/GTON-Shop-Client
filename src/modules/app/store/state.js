@@ -17,12 +17,18 @@
 
 /** @type {AppState} */
 export const state = {
-    language: '',
-    theme: 'theme-default',
-    txStatus: {},
-    nftsDensity: 280,
-    autoDarkTheme: false,
-    rtlDirection: false,
+  language: '',
+  theme: 'theme-default',
+  txStatus: {},
+  nftsDensity: 280,
+  autoDarkTheme: false,
+  rtlDirection: false,
 };
 
-export const storeInLocalStorage = ['language', 'theme', 'nftsDensity', 'autoDarkTheme', 'rtlDirection'];
+export const storeInLocalStorage = [
+  'language',
+  'theme',
+  'nftsDensity',
+  'autoDarkTheme',
+  'rtlDirection',
+];

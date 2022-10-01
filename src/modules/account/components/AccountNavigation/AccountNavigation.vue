@@ -1,61 +1,81 @@
 <template>
-    <nav class="accountnavigation" :aria-label="$t('accountNav')">
-        <ul class="accountnavigation_list scrollsnap-horizontal">
-            <li v-for="item in dNavigation" :key="`accnav_${item.routeName}`" class="accountnavigation_item">
-                <router-link :to="{ name: item.routeName, params: item.routeParams || {}, query: { ...filters } }">
-                    <app-iconset v-if="item.icon" :icon="item.icon" size="24px" />{{ item.label }}
-                    <span v-if="'counter' in item">
-                        <span class="accountnavigation_counter" :aria-label="`${item.counter} ${$t('items')}`">
-                            {{ item.counter }}
-                        </span>
-                    </span>
-                </router-link>
-            </li>
-        </ul>
-    </nav>
+  <nav class="accountnavigation" :aria-label="$t('accountNav')">
+    <ul class="accountnavigation_list scrollsnap-horizontal">
+      <li
+        v-for="item in dNavigation"
+        :key="`accnav_${item.routeName}`"
+        class="accountnavigation_item"
+      >
+        <router-link
+          :to="{
+            name: item.routeName,
+            params: item.routeParams || {},
+            query: { ...filters },
+          }"
+        >
+          <app-iconset v-if="item.icon" :icon="item.icon" size="24px" />{{
+            item.label
+          }}
+          <span v-if="'counter' in item">
+            <span
+              class="accountnavigation_counter"
+              :aria-label="`${item.counter} ${$t('items')}`"
+            >
+              {{ item.counter }}
+            </span>
+          </span>
+        </router-link>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
 export default {
-    name: 'AccountNavigation',
+  name: 'AccountNavigation',
 
-    props: {
-        navigation: {
-            type: Array,
-            default() {
-                return [];
-            },
-        },
-
-        filters: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
+  props: {
+    navigation: {
+      type: Array,
+      default() {
+        return [];
+      },
     },
 
-    data() {
-        return {
-            dNavigation: this.navigation,
-        };
+    filters: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
+  },
 
-    watch: {
-        navigation(value) {
-            this.dNavigation = value;
-        },
+  data() {
+    return {
+      dNavigation: this.navigation,
+    };
+  },
+
+  watch: {
+    navigation(value) {
+      this.dNavigation = value;
     },
+  },
 
-    methods: {
-        updateCounter(routeName, count) {
-            const idx = this.dNavigation.findIndex(item => item.routeName === routeName);
+  methods: {
+    updateCounter(routeName, count) {
+      const idx = this.dNavigation.findIndex(
+        item => item.routeName === routeName
+      );
 
-            if (idx > -1) {
-                this.$set(this.dNavigation, idx, { ...this.dNavigation[idx], counter: count });
-            }
-        },
+      if (idx > -1) {
+        this.$set(this.dNavigation, idx, {
+          ...this.dNavigation[idx],
+          counter: count,
+        });
+      }
     },
+  },
 };
 </script>
 

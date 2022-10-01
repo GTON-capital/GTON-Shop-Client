@@ -2,32 +2,32 @@
 @use "fantom-vue-components/src/assets/scss/settings/breakpoints";
 
 .nftlist {
-    padding: var(--main-lr-padding);
-    padding-top: 0;
-    display: grid;
-    gap: var(--main-lr-padding);
+  padding: var(--main-lr-padding);
+  padding-top: 0;
+  display: grid;
+  gap: var(--main-lr-padding);
 
-    &-density {
-        &-large {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        }
-
-        &-small {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-
-            .atokenvalue {
-                --atokenvalue-max-value-width: 64px;
-            }
-        }
+  &-density {
+    &-large {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
+
+    &-small {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+      .atokenvalue {
+        --atokenvalue-max-value-width: 64px;
+      }
+    }
+  }
 }
 
 @include media.media-max(breakpoints.$breakpoint-sm) {
-    .nftlist {
-        &-density {
-            &-small {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-        }
+  .nftlist {
+    &-density {
+      &-small {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
     }
+  }
 }

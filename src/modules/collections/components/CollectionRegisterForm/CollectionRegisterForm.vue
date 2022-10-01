@@ -1,191 +1,211 @@
 <template>
-    <f-form class="collectionregisterform" v-model="values" @submit="onSubmit" :aria-label="$t('registerCollection')">
-        <div class="collectionregisterform_title">
-            <h1 data-focus>{{ $t('collectionregisterform.registerCollection') }}</h1>
-        </div>
-        <div class="collectionregisterform__desc">
-            {{ $t('collectionregisterform.useOwnerAddressOfCollection') }}
-        </div>
-        <a-upload-area :validator="imageValidator" @input="setTokenImage" class="auploadarea-nobackground">
-            {{ $t('collectionregisterform.alsoBeUsedForNavigation') }}
-        </a-upload-area>
-        <div v-if="fileError" class="pat-5 flex juc-center">
-            <f-message type="error" with-icon>{{ fileError }}</f-message>
-        </div>
+  <f-form
+    class="collectionregisterform"
+    v-model="values"
+    @submit="onSubmit"
+    :aria-label="$t('registerCollection')"
+  >
+    <div class="collectionregisterform_title">
+      <h1 data-focus>{{ $t('collectionregisterform.registerCollection') }}</h1>
+    </div>
+    <div class="collectionregisterform__desc">
+      {{ $t('collectionregisterform.useOwnerAddressOfCollection') }}
+    </div>
+    <a-upload-area
+      :validator="imageValidator"
+      @input="setTokenImage"
+      class="auploadarea-nobackground"
+    >
+      {{ $t('collectionregisterform.alsoBeUsedForNavigation') }}
+    </a-upload-area>
+    <div v-if="fileError" class="pat-5 flex juc-center">
+      <f-message type="error" with-icon>{{ fileError }}</f-message>
+    </div>
 
-        <f-form-input
-            type="text"
-            field-size="large"
-            name="name"
-            :label="$t('collectionregisterform.name')"
-            :placeholder="$t('collectionregisterform.collectionName')"
-            required
-            validate-on-input
-        />
-        <f-form-input
-            :label="$t('collectionregisterform.description')"
-            field-size="large"
-            type="textarea"
-            name="description"
-            :placeholder="$t('collectionregisterform.provideYourDescription')"
-            required
-            validate-on-input
-            rows="5"
-        />
-        <f-form-input
-            :validator="royaltyValidator"
-            validate-on-change
-            validate-on-input
-            :error-message="$t('collectionregisterform.royaltyErr')"
-            type="number"
-            name="royalty"
-            field-size="large"
+    <f-form-input
+      type="text"
+      field-size="large"
+      name="name"
+      :label="$t('collectionregisterform.name')"
+      :placeholder="$t('collectionregisterform.collectionName')"
+      required
+      validate-on-input
+    />
+    <f-form-input
+      :label="$t('collectionregisterform.description')"
+      field-size="large"
+      type="textarea"
+      name="description"
+      :placeholder="$t('collectionregisterform.provideYourDescription')"
+      required
+      validate-on-input
+      rows="5"
+    />
+    <f-form-input
+      :validator="royaltyValidator"
+      validate-on-change
+      validate-on-input
+      :error-message="$t('collectionregisterform.royaltyErr')"
+      type="number"
+      name="royalty"
+      field-size="large"
+    >
+      <template #label>
+        {{ $t('collectionregisterform.royalty') }}
+        <span
+          class="label_btn"
+          :data-tooltip="$t('collectionregisterform.royaltyTooltip')"
         >
-            <template #label>
-                {{ $t('collectionregisterform.royalty') }}
-                <span class="label_btn" :data-tooltip="$t('collectionregisterform.royaltyTooltip')">
-                    <app-iconset
-                        icon="question"
-                        :aria-hidden="false"
-                        :aria-label="$t('collectionregisterform.royaltyTooltip')"
-                    />
-                </span>
-            </template>
-        </f-form-input>
-        <f-form-input
-            type="text"
-            name="feeRecipient"
-            field-size="large"
-            :placeholder="$t('collectionregisterform.feeRecipient')"
-            required
-            validate-on-input
-            :validator="addressValidator"
+          <app-iconset
+            icon="question"
+            :aria-hidden="false"
+            :aria-label="$t('collectionregisterform.royaltyTooltip')"
+          />
+        </span>
+      </template>
+    </f-form-input>
+    <f-form-input
+      type="text"
+      name="feeRecipient"
+      field-size="large"
+      :placeholder="$t('collectionregisterform.feeRecipient')"
+      required
+      validate-on-input
+      :validator="addressValidator"
+    >
+      <template #label>
+        {{ $t('collectionregisterform.feeRecipient') }}
+        <span
+          class="label_btn"
+          :data-tooltip="$t('collectionregisterform.feesTooltip')"
         >
-            <template #label>
-                {{ $t('collectionregisterform.feeRecipient') }}
-                <span class="label_btn" :data-tooltip="$t('collectionregisterform.feesTooltip')">
-                    <app-iconset
-                        icon="question"
-                        :aria-hidden="false"
-                        :aria-label="$t('collectionregisterform.feesTooltip')"
-                    />
-                </span>
-            </template>
-        </f-form-input>
-        <div class="collectionregisterform_categories">
-            <div class="collectionregisterform_categories_label">{{ $t('collectionregisterform.category') }}</div>
-            <AddCategory @change="values.categories = $event" />
-        </div>
-        <div class="collectionregisterform_group">
-            <f-form-input
-                type="text"
-                field-size="large"
-                :placeholder="$t('collectionregisterform.enterCollection')"
-                name="contract"
-                no-label
-                validate-on-input
-                :validator="addressValidator"
-            >
-                <template #prefix>
-                    <app-iconset icon="nft" size="24px" />
-                </template>
-            </f-form-input>
-            <f-form-input
-                type="text"
-                field-size="large"
-                :placeholder="$t('collectionregisterform.enterWebsite')"
-                name="siteUrl"
-                no-label
-            >
-                <template #prefix>
-                    <app-iconset icon="web" size="24px" />
-                </template>
-            </f-form-input>
-            <f-form-input
-                type="text"
-                field-size="large"
-                :placeholder="$t('collectionregisterform.enterDiscord')"
-                name="discord"
-                no-label
-            >
-                <template #prefix>
-                    <app-iconset icon="discord" size="24px" />
-                </template>
-            </f-form-input>
-            <f-form-input
-                type="text"
-                field-size="large"
-                :placeholder="$t('collectionregisterform.enterTwitter')"
-                name="twitterHandle"
-                no-label
-            >
-                <template #prefix>
-                    <app-iconset icon="twitter-grey" size="24px" />
-                </template>
-            </f-form-input>
-            <f-form-input
-                type="text"
-                field-size="large"
-                :placeholder="$t('collectionregisterform.enterInstagram')"
-                name="instagramHandle"
-                no-label
-            >
-                <template #prefix>
-                    <app-iconset icon="instagram" size="24px" />
-                </template>
-            </f-form-input>
-            <f-form-input
-                type="text"
-                field-size="large"
-                :placeholder="$t('collectionregisterform.enterMedium')"
-                name="mediumHandle"
-                no-label
-            >
-                <template #prefix>
-                    <app-iconset icon="medium" size="24px" />
-                </template>
-            </f-form-input>
-            <f-form-input
-                type="text"
-                field-size="large"
-                :placeholder="$t('collectionregisterform.enterTelegram')"
-                name="telegram"
-                no-label
-            >
-                <template #prefix>
-                    <app-iconset icon="telegram" size="24px" />
-                </template>
-            </f-form-input>
-        </div>
-        <f-form-input
-            type="email"
-            name="email"
-            field-size="large"
-            :placeholder="$t('collectionregisterform.emailAddress')"
-            required
-            validate-on-input
-            :validator="emailValidator"
+          <app-iconset
+            icon="question"
+            :aria-hidden="false"
+            :aria-label="$t('collectionregisterform.feesTooltip')"
+          />
+        </span>
+      </template>
+    </f-form-input>
+    <div class="collectionregisterform_categories">
+      <div class="collectionregisterform_categories_label">
+        {{ $t('collectionregisterform.category') }}
+      </div>
+      <AddCategory @change="values.categories = $event" />
+    </div>
+    <div class="collectionregisterform_group">
+      <f-form-input
+        type="text"
+        field-size="large"
+        :placeholder="$t('collectionregisterform.enterCollection')"
+        name="contract"
+        no-label
+        validate-on-input
+        :validator="addressValidator"
+      >
+        <template #prefix>
+          <app-iconset icon="nft" size="24px" />
+        </template>
+      </f-form-input>
+      <f-form-input
+        type="text"
+        field-size="large"
+        :placeholder="$t('collectionregisterform.enterWebsite')"
+        name="siteUrl"
+        no-label
+      >
+        <template #prefix>
+          <app-iconset icon="web" size="24px" />
+        </template>
+      </f-form-input>
+      <f-form-input
+        type="text"
+        field-size="large"
+        :placeholder="$t('collectionregisterform.enterDiscord')"
+        name="discord"
+        no-label
+      >
+        <template #prefix>
+          <app-iconset icon="discord" size="24px" />
+        </template>
+      </f-form-input>
+      <f-form-input
+        type="text"
+        field-size="large"
+        :placeholder="$t('collectionregisterform.enterTwitter')"
+        name="twitterHandle"
+        no-label
+      >
+        <template #prefix>
+          <app-iconset icon="twitter-grey" size="24px" />
+        </template>
+      </f-form-input>
+      <f-form-input
+        type="text"
+        field-size="large"
+        :placeholder="$t('collectionregisterform.enterInstagram')"
+        name="instagramHandle"
+        no-label
+      >
+        <template #prefix>
+          <app-iconset icon="instagram" size="24px" />
+        </template>
+      </f-form-input>
+      <f-form-input
+        type="text"
+        field-size="large"
+        :placeholder="$t('collectionregisterform.enterMedium')"
+        name="mediumHandle"
+        no-label
+      >
+        <template #prefix>
+          <app-iconset icon="medium" size="24px" />
+        </template>
+      </f-form-input>
+      <f-form-input
+        type="text"
+        field-size="large"
+        :placeholder="$t('collectionregisterform.enterTelegram')"
+        name="telegram"
+        no-label
+      >
+        <template #prefix>
+          <app-iconset icon="telegram" size="24px" />
+        </template>
+      </f-form-input>
+    </div>
+    <f-form-input
+      type="email"
+      name="email"
+      field-size="large"
+      :placeholder="$t('collectionregisterform.emailAddress')"
+      required
+      validate-on-input
+      :validator="emailValidator"
+    >
+      <template #label>
+        {{ $t('collectionregisterform.contactEmail') }}
+        <span
+          class="label_btn"
+          :data-tooltip="$t('collectionregisterform.emailTooltip')"
         >
-            <template #label>
-                {{ $t('collectionregisterform.contactEmail') }}
-                <span class="label_btn" :data-tooltip="$t('collectionregisterform.emailTooltip')">
-                    <app-iconset
-                        icon="question"
-                        :aria-hidden="false"
-                        :aria-label="$t('collectionregisterform.emailTooltip')"
-                    />
-                </span>
-            </template>
-        </f-form-input>
-        <div v-if="fileError" class="pat-5 flex juc-center">
-            <f-message type="error" with-icon>{{ fileError }}</f-message>
-        </div>
-        <div class="collectionregisterform_btn">
-            <a-button type="submit" :loading="isLoading">
-                {{ $t('collectionregisterform.submit') }}
-            </a-button>
-        </div>
-    </f-form>
+          <app-iconset
+            icon="question"
+            :aria-hidden="false"
+            :aria-label="$t('collectionregisterform.emailTooltip')"
+          />
+        </span>
+      </template>
+    </f-form-input>
+    <div v-if="fileError" class="pat-5 flex juc-center">
+      <f-message type="error" with-icon>{{ fileError }}</f-message>
+    </div>
+    <div class="collectionregisterform_btn">
+      <a-button type="submit" :loading="isLoading">
+        {{ $t('collectionregisterform.submit') }}
+      </a-button>
+    </div>
+  </f-form>
 </template>
 
 <script>
@@ -201,129 +221,131 @@ import FMessage from 'fantom-vue-components/src/components/FMessage/FMessage.vue
 import Web3 from 'web3';
 
 export default {
-    name: 'CollectionRegisterForm',
+  name: 'CollectionRegisterForm',
 
-    components: { AUploadArea, AddCategory, AButton, FMessage },
+  components: { AUploadArea, AddCategory, AButton, FMessage },
 
-    data() {
-        return {
-            values: {
-                categories: [],
-            },
-            imageFile: null,
-            isLoading: false,
-            fileError: '',
-            emailRE: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        };
+  data() {
+    return {
+      values: {
+        categories: [],
+      },
+      imageFile: null,
+      isLoading: false,
+      fileError: '',
+      emailRE: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+    };
+  },
+
+  computed: {
+    isDisabled() {
+      return (
+        this.values.name === '' ||
+        this.values.description === '' ||
+        this.values.contract === '' ||
+        this.values.feeRecipient === '' ||
+        this.values.email === '' ||
+        !this.imageFile
+      );
+    },
+  },
+
+  mounted() {
+    focusElem(this.$el);
+  },
+
+  methods: {
+    royaltyValidator(_value) {
+      if (_value === '') return _value;
+      _value = Number(_value);
+      return !(_value >= 1 && _value <= 100);
     },
 
-    computed: {
-        isDisabled() {
-            return (
-                this.values.name === '' ||
-                this.values.description === '' ||
-                this.values.contract === '' ||
-                this.values.feeRecipient === '' ||
-                this.values.email === '' ||
-                !this.imageFile
-            );
-        },
+    addressValidator(_value) {
+      return !(Web3.utils.isHexStrict(_value) && Web3.utils.isAddress(_value))
+        ? this.$t('collectionregisterform.invalidAddress')
+        : '';
     },
 
-    mounted() {
-        focusElem(this.$el);
+    emailValidator(_value) {
+      return !this.emailRE.test(_value)
+        ? this.$t('collectionregisterform.invalidEmail')
+        : '';
     },
 
-    methods: {
-        royaltyValidator(_value) {
-            if (_value === '') return _value;
-            _value = Number(_value);
-            return !(_value >= 1 && _value <= 100);
-        },
+    setTokenImage(_files) {
+      this.imageFile = _files[0] || null;
 
-        addressValidator(_value) {
-            return !(Web3.utils.isHexStrict(_value) && Web3.utils.isAddress(_value))
-                ? this.$t('collectionregisterform.invalidAddress')
-                : '';
-        },
-
-        emailValidator(_value) {
-            return !this.emailRE.test(_value) ? this.$t('collectionregisterform.invalidEmail') : '';
-        },
-
-        setTokenImage(_files) {
-            this.imageFile = _files[0] || null;
-
-            if (this.imageFile) {
-                if (!imageValidator(this.imageFile)) {
-                    this.fileError = this.$t('badFileType');
-                    this.imageFile = null;
-                } else {
-                    this.fileError = '';
-                }
-            }
-        },
-
-        async onSubmit(_data) {
-            console.log('onSubmit', _data);
-            const vals = _data.values;
-
-            if (!this.imageFile) {
-                this.fileError = this.$t('nftcreate.fileError');
-                return;
-            } else {
-                this.fileError = '';
-            }
-
-            this.isLoading = true;
-
-            let signed = await checkSignIn();
-            if (!signed) {
-                console.error('not signed');
-                notifications.add({
-                    type: 'error',
-                    text: this.$t('collectionregisterform.signInFirst'),
-                });
-                this.isLoading = false;
-                return;
-            }
-
-            const collectionApplication = {
-                contract: vals.contract,
-                name: vals.name,
-                description: vals.description,
-                royalty: vals.royalty ? vals.royalty : 0,
-                feeRecipient: vals.feeRecipient,
-                categories: vals.categories,
-                discord: vals.discord,
-                email: vals.email,
-                telegram: vals.telegram,
-                siteUrl: vals.siteUrl,
-                mediumHandle: vals.mediumHandle,
-                twitterHandle: vals.twitterHandle,
-                instagramHandle: vals.instagramHandle,
-            };
-            try {
-                await uploadCollection(collectionApplication, this.imageFile);
-            } catch (err) {
-                console.error('uploadCollection failed', err);
-                notifications.add({
-                    type: 'error',
-                    text: this.$t('collectionregisterform.wasntUploaded') + err,
-                });
-                this.isLoading = false;
-                return;
-            }
-
-            notifications.add({
-                type: 'success',
-                text: this.$t('collectionregisterform.success'),
-            });
-            this.isLoading = false;
-        },
-
-        imageValidator,
+      if (this.imageFile) {
+        if (!imageValidator(this.imageFile)) {
+          this.fileError = this.$t('badFileType');
+          this.imageFile = null;
+        } else {
+          this.fileError = '';
+        }
+      }
     },
+
+    async onSubmit(_data) {
+      console.log('onSubmit', _data);
+      const vals = _data.values;
+
+      if (!this.imageFile) {
+        this.fileError = this.$t('nftcreate.fileError');
+        return;
+      } else {
+        this.fileError = '';
+      }
+
+      this.isLoading = true;
+
+      let signed = await checkSignIn();
+      if (!signed) {
+        console.error('not signed');
+        notifications.add({
+          type: 'error',
+          text: this.$t('collectionregisterform.signInFirst'),
+        });
+        this.isLoading = false;
+        return;
+      }
+
+      const collectionApplication = {
+        contract: vals.contract,
+        name: vals.name,
+        description: vals.description,
+        royalty: vals.royalty ? vals.royalty : 0,
+        feeRecipient: vals.feeRecipient,
+        categories: vals.categories,
+        discord: vals.discord,
+        email: vals.email,
+        telegram: vals.telegram,
+        siteUrl: vals.siteUrl,
+        mediumHandle: vals.mediumHandle,
+        twitterHandle: vals.twitterHandle,
+        instagramHandle: vals.instagramHandle,
+      };
+      try {
+        await uploadCollection(collectionApplication, this.imageFile);
+      } catch (err) {
+        console.error('uploadCollection failed', err);
+        notifications.add({
+          type: 'error',
+          text: this.$t('collectionregisterform.wasntUploaded') + err,
+        });
+        this.isLoading = false;
+        return;
+      }
+
+      notifications.add({
+        type: 'success',
+        text: this.$t('collectionregisterform.success'),
+      });
+      this.isLoading = false;
+    },
+
+    imageValidator,
+  },
 };
 </script>
 

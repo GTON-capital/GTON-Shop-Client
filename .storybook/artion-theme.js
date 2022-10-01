@@ -1,7 +1,7 @@
 import { create } from '@storybook/theming/create';
 
 export default create({
-    /*
+  /*
     base: 'light',
 
     colorPrimary: 'hotpink',
@@ -33,7 +33,7 @@ export default create({
     inputBorderRadius: 4,
 */
 
-    brandTitle: 'GTON Shop',
-    brandUrl: 'https://fantom.foundation/',
-    // brandImage: 'https://placehold.it/350x150',
+  brandTitle: 'GTON Shop',
+  brandUrl: 'https://fantom.foundation/',
+  // brandImage: 'https://placehold.it/350x150',
 });

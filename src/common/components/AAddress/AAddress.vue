@@ -1,18 +1,20 @@
 <template>
-    <span class="aaddress">
-        <f-image
-            v-if="!isAccount || imageSrc"
-            :src="imageSrc"
-            fit="cover"
-            size="24px"
-            class="placeholder-noimage"
-            :alt="name || address"
-            aria-hidden="true"
-        />
-        <template v-else><div class="aaddress_jazzicon" v-html="jazzicon" aria-hidden="true"></div></template>
-        <span v-if="name">{{ name }}</span>
-        <f-ellipsis v-else :text="address" overflow="middle" />
-    </span>
+  <span class="aaddress">
+    <f-image
+      v-if="!isAccount || imageSrc"
+      :src="imageSrc"
+      fit="cover"
+      size="24px"
+      class="placeholder-noimage"
+      :alt="name || address"
+      aria-hidden="true"
+    />
+    <template v-else
+      ><div class="aaddress_jazzicon" v-html="jazzicon" aria-hidden="true"></div
+    ></template>
+    <span v-if="name">{{ name }}</span>
+    <f-ellipsis v-else :text="address" overflow="middle" />
+  </span>
 </template>
 
 <script>
@@ -21,39 +23,39 @@ import { getImageThumbUrl } from '@/utils/url.js';
 import { getJazzicon } from '@/utils/jazzicon.js';
 
 export default {
-    name: 'AAddress',
+  name: 'AAddress',
 
-    components: { FEllipsis },
+  components: { FEllipsis },
 
-    props: {
-        address: {
-            type: String,
-            default: '',
-        },
-        name: {
-            type: String,
-            default: '',
-        },
-        image: {
-            type: String,
-            default: '',
-        },
-        /** If true, use jazzicon as a placeholder */
-        isAccount: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    address: {
+      type: String,
+      default: '',
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+    image: {
+      type: String,
+      default: '',
+    },
+    /** If true, use jazzicon as a placeholder */
+    isAccount: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  computed: {
+    imageSrc() {
+      return this.image ? getImageThumbUrl(this.image) : '';
     },
 
-    computed: {
-        imageSrc() {
-            return this.image ? getImageThumbUrl(this.image) : '';
-        },
-
-        jazzicon() {
-            return getJazzicon(this.address);
-        },
+    jazzicon() {
+      return getJazzicon(this.address);
     },
+  },
 };
 </script>
 

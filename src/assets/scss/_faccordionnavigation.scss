@@ -1,19 +1,20 @@
 :root {
-    .faccordionnavigation {
-        .fnavigationnode {
-            &_item {
-                color: inherit;
-                opacity: 0.8;
+  .faccordionnavigation {
+    .fnavigationnode {
+      &_item {
+        color: inherit;
+        opacity: 0.8;
 
-                &:hover, &:focus {
-                    background: var(--f-color-primary-2);
-                    opacity: 1;
-                }
-            }
-
-            &-level1 {
-                margin-bottom: 0;
-            }
+        &:hover,
+        &:focus {
+          background: var(--f-color-primary-2);
+          opacity: 1;
         }
+      }
+
+      &-level1 {
+        margin-bottom: 0;
+      }
     }
+  }
 }

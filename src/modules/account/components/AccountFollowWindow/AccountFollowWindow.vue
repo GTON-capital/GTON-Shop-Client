@@ -1,157 +1,166 @@
 <template>
-    <a-window
-        ref="window"
-        :title="title"
-        class="fwindow-width-3 accountfollowwindow"
-        v-on="$listeners"
-        @window-hide="update()"
+  <a-window
+    ref="window"
+    :title="title"
+    class="fwindow-width-3 accountfollowwindow"
+    v-on="$listeners"
+    @window-hide="update()"
+  >
+    <f-data-grid
+      ref="grid"
+      infinite-scroll
+      strategy="remote"
+      no-header
+      max-height="400px"
+      sticky-head
+      class="agrid accountfollowwindow agrid-mobileview-nolabel"
+      infinite-scroll-root=".accountfollowwindow .fdatagrid_table"
+      :caption="title"
+      :items="items"
+      :columns="columns"
+      :total-items="totalItems"
+      :per-page="perPage"
+      @change="_onGridPageChange"
+      @row-click="onRowClick"
     >
-        <f-data-grid
-            ref="grid"
-            infinite-scroll
-            strategy="remote"
-            no-header
-            max-height="400px"
-            sticky-head
-            class="agrid accountfollowwindow agrid-mobileview-nolabel"
-            infinite-scroll-root=".accountfollowwindow .fdatagrid_table"
-            :caption="title"
-            :items="items"
-            :columns="columns"
-            :total-items="totalItems"
-            :per-page="perPage"
-            @change="_onGridPageChange"
-            @row-click="onRowClick"
+      <template #column-token="{ item }">
+        <router-link
+          :to="{ name: 'account', params: { address: item.address } }"
         >
-            <template #column-token="{ item }">
-                <router-link :to="{ name: 'account', params: { address: item.address } }">
-                    <div class="accountfollowwindow_item">
-                        <div class="accountfollowwindow_item_img">
-                            <f-image
-                                v-if="item.img"
-                                :src="item.img"
-                                fit="cover"
-                                size="40px"
-                                :alt="item.name || item.address"
-                                class="placeholder-noimage"
-                                aria-hidden="true"
-                            />
-                            <div
-                                v-else
-                                v-html="getJazzicon(item.address, 40)"
-                                class="accountfollowwindow_item_jazzicon"
-                            ></div>
-                        </div>
-                        <div class="accountfollowwindow_item_data">
-                            <span class="accountfollowwindow_item_name">{{ item.name || $t('unnamed') }}</span>
-                            <span class="accountfollowwindow_item_address" aria-hidden="true">
-                                <f-ellipsis :text="item.address" overflow="middle" />
-                            </span>
-                        </div>
-                    </div>
-                </router-link>
-            </template>
-        </f-data-grid>
-    </a-window>
+          <div class="accountfollowwindow_item">
+            <div class="accountfollowwindow_item_img">
+              <f-image
+                v-if="item.img"
+                :src="item.img"
+                fit="cover"
+                size="40px"
+                :alt="item.name || item.address"
+                class="placeholder-noimage"
+                aria-hidden="true"
+              />
+              <div
+                v-else
+                v-html="getJazzicon(item.address, 40)"
+                class="accountfollowwindow_item_jazzicon"
+              ></div>
+            </div>
+            <div class="accountfollowwindow_item_data">
+              <span class="accountfollowwindow_item_name">{{
+                item.name || $t('unnamed')
+              }}</span>
+              <span class="accountfollowwindow_item_address" aria-hidden="true">
+                <f-ellipsis :text="item.address" overflow="middle" />
+              </span>
+            </div>
+          </div>
+        </router-link>
+      </template>
+    </f-data-grid>
+  </a-window>
 </template>
 
 <script>
 import AWindow from '@/common/components/AWindow/AWindow.vue';
 import FDataGrid from 'fantom-vue-components/src/components/FDataGrid/FDataGrid.vue';
 import FEllipsis from 'fantom-vue-components/src/components/FEllipsis/FEllipsis.vue';
-import { getUserFollowers, getUserFollowing } from '@/modules/account/queries/subscription.js';
+import {
+  getUserFollowers,
+  getUserFollowing,
+} from '@/modules/account/queries/subscription.js';
 import { copyMethods } from 'fantom-vue-components/src/utils/vue-helpers.js';
 import { getImageThumbUrl } from '@/utils/url.js';
 import { dataPageMixin } from '@/common/mixins/data-page.js';
 import { getJazzicon } from '@/utils/jazzicon.js';
 export default {
-    name: 'AccountFollowWindow',
+  name: 'AccountFollowWindow',
 
-    mixins: [dataPageMixin],
+  mixins: [dataPageMixin],
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
-        },
-
-        isFollowers: {
-            type: Boolean,
-            default: true,
-            required: true,
-        },
-
-        title: {
-            type: String,
-            default: '',
-        },
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
     },
 
-    components: { AWindow, FDataGrid, FEllipsis },
+    isFollowers: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
 
-    data() {
+    title: {
+      type: String,
+      default: '',
+    },
+  },
+
+  components: { AWindow, FDataGrid, FEllipsis },
+
+  data() {
+    return {
+      columns: [
+        {
+          name: 'token',
+          label: this.$t('accountoffersgrid.item'),
+        },
+      ],
+    };
+  },
+
+  methods: {
+    ...copyMethods(AWindow, ['hide', 'toggle'], 'window'),
+
+    async loadPage(pagination = { first: this.perPage }) {
+      const { userAddress } = this;
+
+      if (!userAddress || !this.$refs.window) {
+        return;
+      }
+
+      if (this.isFollowers) {
+        return await getUserFollowers(userAddress, pagination);
+      } else {
+        return await getUserFollowing(userAddress, pagination);
+      }
+    },
+
+    async loadData() {
+      await this._loadPage();
+    },
+
+    update() {
+      this._resetData();
+      this.$refs.grid.goToPageNum(1);
+    },
+
+    show() {
+      this.$refs.window.show();
+
+      this.$nextTick(() => {
+        this.loadData();
+      });
+    },
+
+    onRowClick() {
+      this.$refs.window.hide();
+    },
+
+    _getItemsFromData(data) {
+      return data.edges.map(edge => {
+        let item = this.isFollowers
+          ? edge.node.followerUser
+          : edge.node.followedUser;
         return {
-            columns: [
-                {
-                    name: 'token',
-                    label: this.$t('accountoffersgrid.item'),
-                },
-            ],
+          img: getImageThumbUrl(item.avatarThumb),
+          name: item.username,
+          address: item.address,
         };
+      });
     },
 
-    methods: {
-        ...copyMethods(AWindow, ['hide', 'toggle'], 'window'),
-
-        async loadPage(pagination = { first: this.perPage }) {
-            const { userAddress } = this;
-
-            if (!userAddress || !this.$refs.window) {
-                return;
-            }
-
-            if (this.isFollowers) {
-                return await getUserFollowers(userAddress, pagination);
-            } else {
-                return await getUserFollowing(userAddress, pagination);
-            }
-        },
-
-        async loadData() {
-            await this._loadPage();
-        },
-
-        update() {
-            this._resetData();
-            this.$refs.grid.goToPageNum(1);
-        },
-
-        show() {
-            this.$refs.window.show();
-
-            this.$nextTick(() => {
-                this.loadData();
-            });
-        },
-
-        onRowClick() {
-            this.$refs.window.hide();
-        },
-
-        _getItemsFromData(data) {
-            return data.edges.map(edge => {
-                let item = this.isFollowers ? edge.node.followerUser : edge.node.followedUser;
-                return {
-                    img: getImageThumbUrl(item.avatarThumb),
-                    name: item.username,
-                    address: item.address,
-                };
-            });
-        },
-
-        getJazzicon,
-    },
+    getJazzicon,
+  },
 };
 </script>
 

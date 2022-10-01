@@ -1,13 +1,17 @@
 <template>
-    <div class="pg-my-nfts-list">
-        <h2 class="h2 pg-my-nfts-list__header">My NFTs</h2>
-        <div class="pg-my-nfts-list__container">
-            <p-g-nft-card-generic v-for="(token, index) in tokens" :key="index" :token="token"></p-g-nft-card-generic>
-        </div>
-
-        <div class="pg-my-nfts-list__backdrop pg-my-nfts-list__backdrop--1"></div>
-        <div class="pg-my-nfts-list__backdrop pg-my-nfts-list__backdrop--2"></div>
+  <div class="pg-my-nfts-list">
+    <h2 class="h2 pg-my-nfts-list__header">My NFTs</h2>
+    <div class="pg-my-nfts-list__container">
+      <p-g-nft-card-generic
+        v-for="(token, index) in tokens"
+        :key="index"
+        :token="token"
+      ></p-g-nft-card-generic>
     </div>
+
+    <div class="pg-my-nfts-list__backdrop pg-my-nfts-list__backdrop--1"></div>
+    <div class="pg-my-nfts-list__backdrop pg-my-nfts-list__backdrop--2"></div>
+  </div>
 </template>
 
 <script>
@@ -85,58 +89,62 @@ const TMP_TOKENS = [
 */
 
 export const CONTRACTS_FILTER = [
-    // '0x61af4d29f672e27a097291f72fc571304bc93521',
-    '0x475631dbd805f46be62d8f87a4f07ca8afaf7e45',
+  // '0x61af4d29f672e27a097291f72fc571304bc93521',
+  '0x475631dbd805f46be62d8f87a4f07ca8afaf7e45',
 ];
 
 export default {
-    name: 'PGMyNftsList',
+  name: 'PGMyNftsList',
 
-    components: { PGNftCardGeneric },
+  components: { PGNftCardGeneric },
 
-    data() {
-        return {
-            tokens: [],
-        };
+  data() {
+    return {
+      tokens: [],
+    };
+  },
+
+  computed: {
+    ...mapState('wallet', {
+      walletAddress: 'account',
+    }),
+  },
+
+  watch: {
+    walletAddress(value) {
+      if (value) {
+        this.setTokens();
+      } else {
+        this.tokens = [];
+      }
+    },
+  },
+
+  created() {
+    this.init();
+  },
+
+  methods: {
+    async init() {
+      if (this.walletAddress) {
+        this.setTokens();
+      }
     },
 
-    computed: {
-        ...mapState('wallet', {
-            walletAddress: 'account',
-        }),
+    async setTokens() {
+      this.tokens = await this.loadTokens();
     },
 
-    watch: {
-        walletAddress(value) {
-            if (value) {
-                this.setTokens();
-            } else {
-                this.tokens = [];
-            }
-        },
+    async loadTokens() {
+      const data = await getUserOwnershipTokens(
+        this.walletAddress,
+        { first: 200 },
+        CONTRACTS_FILTER[0]
+      );
+
+      return data.edges.map(token => token.node.token);
     },
-
-    created() {
-        this.init();
-    },
-
-    methods: {
-        async init() {
-            if (this.walletAddress) {
-                this.setTokens();
-            }
-        },
-
-        async setTokens() {
-            this.tokens = await this.loadTokens();
-        },
-
-        async loadTokens() {
-            const data = await getUserOwnershipTokens(this.walletAddress, { first: 200 }, CONTRACTS_FILTER[0]);
-
-            return data.edges.map(token => token.node.token);
-        },
-    },
+  },
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
-    <f-svg-icon v-bind="$attrs">
-        <component :is="componentName" :aria-label="ariaLabel || null" />
-    </f-svg-icon>
+  <f-svg-icon v-bind="$attrs">
+    <component :is="componentName" :aria-label="ariaLabel || null" />
+  </f-svg-icon>
 </template>
 
 <script>
@@ -73,90 +73,90 @@ import IconTableList from '@/assets/vue-icons/IconTableList.vue';
  * Inherits props from `FSvgIcon`
  */
 export default {
-    name: 'AppIconset',
+  name: 'AppIconset',
 
-    components: {
-        FSvgIcon,
-        IconCard1,
-        IconCard2,
-        IconCard3,
-        IconCard4,
-        IconMagnifier,
-        IconBear,
-        IconCardboard,
-        IconDomain,
-        IconJoystick,
-        IconMonster,
-        IconSoccerball,
-        IconRainbow,
-        IconTools,
-        IconMetamask,
-        IconCoinbase,
-        IconClose,
-        IconLike,
-        IconLiked,
-        IconCheck,
-        IconQuestion,
-        IconShare,
-        IconTwitter,
-        IconTwitterGrey,
-        IconFacebook,
-        IconLogo,
-        IconAbout,
-        IconChain,
-        IconWeb,
-        IconTelegram,
-        IconDiscord,
-        IconView,
-        IconGraf,
-        IconTag,
-        IconList,
-        IconCollection,
-        IconProperty,
-        IconSolid1,
-        IconSolid2,
-        IconFilter,
-        IconEyeslash,
-        IconHistory,
-        IconPaint,
-        IconArrowright,
-        IconNotify,
-        IconUser,
-        IconInstagram,
-        IconCopy,
-        IconPlay,
-        IconPause,
-        IconNft,
-        IconMedium,
-        IconWalletconnect,
-        IconFilterArrow,
-        IconSwap,
-        IconRecycle,
-        IconBan,
-        IconThumbUp,
-        IconThumbDown,
-        IconPresent,
-        IconTableList,
-    },
+  components: {
+    FSvgIcon,
+    IconCard1,
+    IconCard2,
+    IconCard3,
+    IconCard4,
+    IconMagnifier,
+    IconBear,
+    IconCardboard,
+    IconDomain,
+    IconJoystick,
+    IconMonster,
+    IconSoccerball,
+    IconRainbow,
+    IconTools,
+    IconMetamask,
+    IconCoinbase,
+    IconClose,
+    IconLike,
+    IconLiked,
+    IconCheck,
+    IconQuestion,
+    IconShare,
+    IconTwitter,
+    IconTwitterGrey,
+    IconFacebook,
+    IconLogo,
+    IconAbout,
+    IconChain,
+    IconWeb,
+    IconTelegram,
+    IconDiscord,
+    IconView,
+    IconGraf,
+    IconTag,
+    IconList,
+    IconCollection,
+    IconProperty,
+    IconSolid1,
+    IconSolid2,
+    IconFilter,
+    IconEyeslash,
+    IconHistory,
+    IconPaint,
+    IconArrowright,
+    IconNotify,
+    IconUser,
+    IconInstagram,
+    IconCopy,
+    IconPlay,
+    IconPause,
+    IconNft,
+    IconMedium,
+    IconWalletconnect,
+    IconFilterArrow,
+    IconSwap,
+    IconRecycle,
+    IconBan,
+    IconThumbUp,
+    IconThumbDown,
+    IconPresent,
+    IconTableList,
+  },
 
-    props: {
-        /** Icon name. For example icon name for `IconArrowLeft` will be `arrow-left` */
-        icon: {
-            type: String,
-            default: '',
-            required: true,
-        },
-        /** Aria label for svg */
-        ariaLabel: {
-            type: String,
-            default: '',
-        },
+  props: {
+    /** Icon name. For example icon name for `IconArrowLeft` will be `arrow-left` */
+    icon: {
+      type: String,
+      default: '',
+      required: true,
     },
+    /** Aria label for svg */
+    ariaLabel: {
+      type: String,
+      default: '',
+    },
+  },
 
-    computed: {
-        componentName() {
-            return `icon-${this.icon}`;
-        },
+  computed: {
+    componentName() {
+      return `icon-${this.icon}`;
     },
+  },
 };
 </script>

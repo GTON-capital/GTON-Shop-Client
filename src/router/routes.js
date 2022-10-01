@@ -8,38 +8,42 @@ import { getCollectionsRoutes } from '@/modules/collections/routes.js';
 import { getPGRoutes } from '@/modules/pg/routes.js';
 
 export function getRoutes() {
-    return getAppRoutes([...getNftsRoutes(), ...getAccountRoutes(), ...getCollectionsRoutes()]);
+  return getAppRoutes([
+    ...getNftsRoutes(),
+    ...getAccountRoutes(),
+    ...getCollectionsRoutes(),
+  ]);
 }
 
 export function getMaintenanceRoutes() {
-    return [
-        {
-            name: 'maintenance',
-            path: '*',
-            component: UnderMaintenance,
-        },
-    ];
+  return [
+    {
+      name: 'maintenance',
+      path: '*',
+      component: UnderMaintenance,
+    },
+  ];
 }
 
 export function getPGModuleRoutes() {
-    return [
-        ...getPGRoutes('/'),
-        {
-            name: '404',
-            path: '/404',
-            component: Page404,
-            meta: {
-                theme: 'theme-pg',
-            },
-        },
-        {
-            name: 'n',
-            path: '*',
-            component: Page404,
-            redirect: { name: '404' },
-            meta: {
-                theme: 'theme-pg',
-            },
-        },
-    ];
+  return [
+    ...getPGRoutes('/'),
+    {
+      name: '404',
+      path: '/404',
+      component: Page404,
+      meta: {
+        theme: 'theme-pg',
+      },
+    },
+    {
+      name: 'n',
+      path: '*',
+      component: Page404,
+      redirect: { name: '404' },
+      meta: {
+        theme: 'theme-pg',
+      },
+    },
+  ];
 }

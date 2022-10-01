@@ -5,9 +5,9 @@ import dayjs from 'dayjs';
  * @return {number}
  */
 export function dateToUTCTimestamp(date) {
-    const d = dayjs(date);
+  const d = dayjs(date);
 
-    return d.unix() + d.utcOffset() * 60;
+  return d.unix() + d.utcOffset() * 60;
 }
 
 /**
@@ -15,7 +15,7 @@ export function dateToUTCTimestamp(date) {
  * @return {string}
  */
 export function dateToDatetime(date) {
-    return dayjs(date).format('YYYY-MM-DDTHH:mm');
+  return dayjs(date).format('YYYY-MM-DDTHH:mm');
 }
 
 /**
@@ -25,7 +25,7 @@ export function dateToDatetime(date) {
  * @return {string}
  */
 export function dateInFormatterTimestamp(timestamp) {
-    return dayjs(timestamp).format('YYYY-MM-DD');
+  return dayjs(timestamp).format('YYYY-MM-DD');
 }
 
 /**
@@ -35,7 +35,7 @@ export function dateInFormatterTimestamp(timestamp) {
  * @return {number}
  */
 export function dateOutFormatterTimestamp(date) {
-    return dayjs(date).valueOf();
+  return dayjs(date).valueOf();
 }
 
 /**
@@ -45,7 +45,7 @@ export function dateOutFormatterTimestamp(date) {
  * @return {string}
  */
 export function datetimeInFormatterTimestamp(timestamp) {
-    return dateToDatetime(timestamp);
+  return dateToDatetime(timestamp);
 }
 
 /**
@@ -53,8 +53,8 @@ export function datetimeInFormatterTimestamp(timestamp) {
  * @return {boolean}
  */
 export function isExpired(date) {
-    const now = dayjs();
-    const deadline = dayjs(date);
+  const now = dayjs();
+  const deadline = dayjs(date);
 
-    return deadline.diff(now) <= 0;
+  return deadline.diff(now) <= 0;
 }

@@ -17,10 +17,10 @@ import { clone } from 'fantom-vue-components/src/utils';
  */
 
 const PAY_TOKEN_IMAGES = {
-    wftm: '/img/pay-tokens/WFTM.png',
-    fusdt: '/img/pay-tokens/fUSDT.png',
-    usdc: '/img/pay-tokens/USDC.png',
-    dai: '/img/pay-tokens/DAI.png',
+  wftm: '/img/pay-tokens/WFTM.png',
+  fusdt: '/img/pay-tokens/fUSDT.png',
+  usdc: '/img/pay-tokens/USDC.png',
+  dai: '/img/pay-tokens/DAI.png',
 };
 
 export const WFTMContract = '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83';
@@ -32,69 +32,69 @@ let PT = [];
  * @return {number}
  */
 function getTokenFractionDigits(token) {
-    const tokenPrice = token.price || 0;
-    let decimals = 1;
+  const tokenPrice = token.price || 0;
+  let decimals = 1;
 
-    if (tokenPrice < 5 && tokenPrice >= 0) {
-        decimals = 1;
-    } else if (tokenPrice < 100) {
-        decimals = 2;
-    } else if (tokenPrice < 1000) {
-        decimals = 5;
-    }
+  if (tokenPrice < 5 && tokenPrice >= 0) {
+    decimals = 1;
+  } else if (tokenPrice < 100) {
+    decimals = 2;
+  } else if (tokenPrice < 1000) {
+    decimals = 5;
+  }
 
-    return decimals;
+  return decimals;
 }
 
 /**
  * @return {PayToken[]}
  */
 async function fetchPayTokens() {
-    const pt = await getPayTokens();
-    const payTokens = [];
+  const pt = await getPayTokens();
+  const payTokens = [];
 
-    pt.forEach(t => {
-        const symbolLC = t.symbol.toLowerCase();
-        const payToken = {
-            address: t.contract,
-            // name: t.name,
-            label: t.symbol === 'WFTM' ? 'wFTM' : t.symbol,
-            img: PAY_TOKEN_IMAGES[symbolLC] || '',
-            decimals: t.decimals,
-            price: bFromTokenValue(t.price, 6).toNumber(),
-            priceDecimals: 6,
-            origPrice: t.price,
-            value: symbolLC,
-        };
+  pt.forEach(t => {
+    const symbolLC = t.symbol.toLowerCase();
+    const payToken = {
+      address: t.contract,
+      // name: t.name,
+      label: t.symbol === 'WFTM' ? 'wFTM' : t.symbol,
+      img: PAY_TOKEN_IMAGES[symbolLC] || '',
+      decimals: t.decimals,
+      price: bFromTokenValue(t.price, 6).toNumber(),
+      priceDecimals: 6,
+      origPrice: t.price,
+      value: symbolLC,
+    };
 
-        payToken.fractionDigits = getTokenFractionDigits(payToken);
+    payToken.fractionDigits = getTokenFractionDigits(payToken);
 
-        payTokens.push(payToken);
-    });
+    payTokens.push(payToken);
+  });
 
-    return payTokens;
+  return payTokens;
 }
 
 async function setPT() {
-    PT = await fetchPayTokens();
+  PT = await fetchPayTokens();
 }
 
 /**
  * @return {Promise<PayToken[]>}
  */
 export async function PAY_TOKENS() {
-    if (!PT || PT.length === 0) {
-        await setPT();
-    }
+  if (!PT || PT.length === 0) {
+    await setPT();
+  }
 
-    return clone(PT);
+  return clone(PT);
 }
 
 /**
  * @return {Promise<PayToken[]>}
  */
 export async function PAY_TOKENS_WITH_PRICES() {
-    return fetchPayTokens();
+  return fetchPayTokens();
 }
 
 setPT();

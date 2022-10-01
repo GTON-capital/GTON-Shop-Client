@@ -1,12 +1,12 @@
 import FSelect from 'fantom-vue-components/src/components/FSelect/FSelect.vue';
 
 export default {
-    title: 'Design System/Form Inputs',
+  title: 'Design System/Form Inputs',
 };
 
 export const Input = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <f-input field-size="large" label="Large" />
             <f-input label="Default" placeholder="placehodler" />
@@ -29,14 +29,14 @@ export const Input = () => ({
             <f-input invalid field-size="mini" label="Mini" value="value" />
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });
 
 export const Textarea = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <f-input is-textarea cols="20" rows="5" field-size="large" label="Large" />
             <f-input is-textarea cols="20" rows="5" label="Default" placeholder="placehodler" />
@@ -59,15 +59,15 @@ export const Textarea = () => ({
             <f-input invalid is-textarea cols="20" rows="5" field-size="mini" label="Mini" value="value" />
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });
 
 export const Select = () => ({
-    components: { FSelect },
-    //language=HTML
-    template: `
+  components: { FSelect },
+  //language=HTML
+  template: `
         <div>
             <f-select label="Large" select-size="large" :data="[...fselectData]" />
             <f-select label="Default" :data="[...fselectData]" />
@@ -85,21 +85,21 @@ export const Select = () => ({
             <f-select invalid label="Mini" select-size="mini" :data="[...fselectData]" />
         </div>
     `,
-    data() {
-        return {
-            fselectData: [
-                { label: 'Select an option', value: null, disabled: true },
-                { label: 'Option 1', value: 1 },
-                { label: 'Option 2', value: 2 },
-                { label: 'Option 3', value: 3 },
-            ],
-        };
-    },
+  data() {
+    return {
+      fselectData: [
+        { label: 'Select an option', value: null, disabled: true },
+        { label: 'Option 1', value: 1 },
+        { label: 'Option 2', value: 2 },
+        { label: 'Option 3', value: 3 },
+      ],
+    };
+  },
 });
 
 export const Checkbox = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <f-option type="checkbox" option-size="large" label="Large" name="checkbox1_lg" />
             <f-option type="checkbox" label="Default" name="checkbox1" />
@@ -120,14 +120,14 @@ export const Checkbox = () => ({
             <f-option type="checkbox" disabled checked option-size="mini" label="Mini" name="checkbox1_xs" />
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });
 
 export const Radio = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <div class="gridauto">
                 <span class="par-4">
@@ -184,14 +184,14 @@ export const Radio = () => ({
             </div>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });
 
 export const ToggleButton = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <f-toggle-button option-size="large" label="Large" name="togglebtn1_lg" />
             <f-toggle-button label="Default" name="togglebtn1" />
@@ -212,14 +212,14 @@ export const ToggleButton = () => ({
             <f-toggle-button disabled checked option-size="mini" label="Mini" name="togglebtn1_xs" />
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });
 
 export const Form = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
         <f-form style="max-width: 600px">
             <div class="mab-5">
@@ -301,7 +301,7 @@ export const Form = () => ({
 
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

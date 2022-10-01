@@ -1,17 +1,17 @@
 <template>
-    <div>
-        <p-g-my-nfts-list></p-g-my-nfts-list>
-    </div>
+  <div>
+    <p-g-my-nfts-list></p-g-my-nfts-list>
+  </div>
 </template>
 
 <script>
 import PGMyNftsList from '../../components/PGMyNftsList/PGMyNftsList';
 
 export default {
-    name: 'PGMyNfts',
+  name: 'PGMyNfts',
 
-    components: {
-        PGMyNftsList,
-    },
+  components: {
+    PGMyNftsList,
+  },
 };
 </script>

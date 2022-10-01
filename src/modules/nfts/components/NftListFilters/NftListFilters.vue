@@ -1,8 +1,8 @@
 <template>
-    <div class="nftlistfilters">
-        <group-filter v-model="dFilters.group" />
-        <sort-by-filter v-model="dFilters.sortBy" />
-    </div>
+  <div class="nftlistfilters">
+    <group-filter v-model="dFilters.group" />
+    <sort-by-filter v-model="dFilters.sortBy" />
+  </div>
 </template>
 
 <script>
@@ -11,54 +11,54 @@ import GroupFilter from '@/modules/nfts/components/GroupFilter/GroupFilter.vue';
 import SortByFilter from '@/modules/nfts/components/SortByFilter/SortByFilter.vue';
 
 export default {
-    name: 'NftListFilters',
+  name: 'NftListFilters',
 
-    components: { SortByFilter, GroupFilter },
+  components: { SortByFilter, GroupFilter },
 
-    model: {
-        prop: 'filters',
-        event: 'change',
+  model: {
+    prop: 'filters',
+    event: 'change',
+  },
+
+  props: {
+    filters: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+
+  watch: {
+    dFilters: {
+      handler(value) {
+        if (!this._dontEmitChange) {
+          this.$emit('change', clone(value));
+        }
+      },
+      deep: true,
     },
 
-    props: {
-        filters: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-    },
+    filters(value) {
+      this._dontEmitChange = true;
 
-    watch: {
-        dFilters: {
-            handler(value) {
-                if (!this._dontEmitChange) {
-                    this.$emit('change', clone(value));
-                }
-            },
-            deep: true,
-        },
+      this.dFilters = { ...value };
 
-        filters(value) {
-            this._dontEmitChange = true;
-
-            this.dFilters = { ...value };
-
-            this.$nextTick(() => {
-                this._dontEmitChange = false;
-            });
-        },
-    },
-
-    data() {
-        return {
-            dFilters: { ...this.filters },
-        };
-    },
-
-    created() {
+      this.$nextTick(() => {
         this._dontEmitChange = false;
+      });
     },
+  },
+
+  data() {
+    return {
+      dFilters: { ...this.filters },
+    };
+  },
+
+  created() {
+    this._dontEmitChange = false;
+  },
 };
 </script>
 

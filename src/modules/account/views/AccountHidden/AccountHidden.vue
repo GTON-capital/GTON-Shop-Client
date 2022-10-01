@@ -1,12 +1,12 @@
 <template>
-    <div class="accounthidden">
-        AccountHidden
-    </div>
+  <div class="accounthidden">
+    AccountHidden
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'AccountHidden',
+  name: 'AccountHidden',
 };
 </script>
 

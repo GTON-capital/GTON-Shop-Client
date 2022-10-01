@@ -1,8 +1,10 @@
 <template>
-    <section class="appsectioncategories container" :aria-labelledby="id">
-        <h2 :id="id" class="h1 tea-center">{{ $t('appsectioncategories.title') }}</h2>
-        <app-category-card-list />
-    </section>
+  <section class="appsectioncategories container" :aria-labelledby="id">
+    <h2 :id="id" class="h1 tea-center">
+      {{ $t('appsectioncategories.title') }}
+    </h2>
+    <app-category-card-list />
+  </section>
 </template>
 
 <script>
@@ -10,15 +12,15 @@ import AppCategoryCardList from '@/modules/app/components/AppCategoryCardList/Ap
 import { getUniqueId } from 'fantom-vue-components/src/utils';
 
 export default {
-    name: 'AppSectionCategories',
+  name: 'AppSectionCategories',
 
-    components: { AppCategoryCardList },
+  components: { AppCategoryCardList },
 
-    data() {
-        return {
-            id: getUniqueId(),
-        };
-    },
+  data() {
+    return {
+      id: getUniqueId(),
+    };
+  },
 };
 </script>
 

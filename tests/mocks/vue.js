@@ -20,7 +20,7 @@ function store() {
 */
 
 export function mount(component, options = {}) {
-    return originalMount(component, { ...options, i18n });
+  return originalMount(component, { ...options, i18n });
 }
 
 /**

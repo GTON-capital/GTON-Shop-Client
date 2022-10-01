@@ -1,17 +1,19 @@
 <template>
-    <div class="accountsettings">
-        <div class="accountsettings_sidebar">
-            <div class="accountsettings_title" aria-hidden="true">{{ $t('accountsettings.title') }}</div>
-            <f-accordion-navigation
-                iconset-component="app-iconset"
-                :navigation="navigation"
-                :aria-label="$t('accountsettings.navigation')"
-            />
-        </div>
-        <div class="accountsettings_view">
-            <router-view></router-view>
-        </div>
+  <div class="accountsettings">
+    <div class="accountsettings_sidebar">
+      <div class="accountsettings_title" aria-hidden="true">
+        {{ $t('accountsettings.title') }}
+      </div>
+      <f-accordion-navigation
+        iconset-component="app-iconset"
+        :navigation="navigation"
+        :aria-label="$t('accountsettings.navigation')"
+      />
     </div>
+    <div class="accountsettings_view">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -22,60 +24,64 @@ import { mapState } from 'vuex';
 import { getUser } from '@/modules/account/queries/user.js';
 
 export default {
-    name: 'AccountSettings',
+  name: 'AccountSettings',
 
-    mixins: [authPageMixin],
+  mixins: [authPageMixin],
 
-    components: { FAccordionNavigation },
+  components: { FAccordionNavigation },
 
-    data() {
-        return {
-            navigation: [
-                { label: this.$t('accountsettings.profile'), route: 'account-settings-profile', icon: 'user' },
-                {
-                    label: this.$t('accountsettings.notifications'),
-                    route: 'account-settings-notifications',
-                    // icon: 'notify',
-                },
-                // { label: this.$t('accountsettings.offers'), icon: 'tag' },
-                {
-                    label: this.$t('accountsettings.appearance'),
-                    route: 'account-settings-appearance',
-                    // icon: 'tag',
-                },
-            ],
-            user: {},
-        };
-    },
-
-    computed: {
-        ...mapState('wallet', {
-            walletAddress: 'account',
-        }),
-    },
-
-    watch: {
-        $route() {
-            this.setMetaInfo();
+  data() {
+    return {
+      navigation: [
+        {
+          label: this.$t('accountsettings.profile'),
+          route: 'account-settings-profile',
+          icon: 'user',
         },
-    },
-
-    async created() {
-        this.user = await getUser(this.walletAddress);
-
-        this.setMetaInfo();
-    },
-
-    methods: {
-        setMetaInfo() {
-            const sTitle = documentMeta.getSplittedTitle();
-            const { user } = this;
-
-            documentMeta.setMetaInfo({
-                title: `${sTitle[0]} | Account ${user.username || user.address}`,
-            });
+        {
+          label: this.$t('accountsettings.notifications'),
+          route: 'account-settings-notifications',
+          // icon: 'notify',
         },
+        // { label: this.$t('accountsettings.offers'), icon: 'tag' },
+        {
+          label: this.$t('accountsettings.appearance'),
+          route: 'account-settings-appearance',
+          // icon: 'tag',
+        },
+      ],
+      user: {},
+    };
+  },
+
+  computed: {
+    ...mapState('wallet', {
+      walletAddress: 'account',
+    }),
+  },
+
+  watch: {
+    $route() {
+      this.setMetaInfo();
     },
+  },
+
+  async created() {
+    this.user = await getUser(this.walletAddress);
+
+    this.setMetaInfo();
+  },
+
+  methods: {
+    setMetaInfo() {
+      const sTitle = documentMeta.getSplittedTitle();
+      const { user } = this;
+
+      documentMeta.setMetaInfo({
+        title: `${sTitle[0]} | Account ${user.username || user.address}`,
+      });
+    },
+  },
 };
 </script>
 

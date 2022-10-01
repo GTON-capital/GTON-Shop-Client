@@ -1,25 +1,29 @@
 <template>
-    <f-popover
-        ref="popover"
-        v-bind="$attrs"
-        attach-position="auto-vertical-exact"
-        :attach-margin="[0, 0, 0, 0]"
-        :animation-in="animationIn"
-        :animation-out="animationOut"
-        width-as-attach
-        hide-on-document-mousedown
-        class="fdropdownlistbox_fwindow"
-        @window-hide="$emit('window-hide', $event)"
-    >
-        <f-accordion-navigation ref="navigation" :navigation="navigation" @node-selected="onNavigationNodeSelected" />
-        <div class="walletmenupopover_darkthemeswitch">
-            <f-dark-theme-switch
-                :model-value="darkTheme"
-                :label="$t('appearancesettings.darkMode')"
-                @change="onDarkThemeSwitchChange"
-            />
-        </div>
-    </f-popover>
+  <f-popover
+    ref="popover"
+    v-bind="$attrs"
+    attach-position="auto-vertical-exact"
+    :attach-margin="[0, 0, 0, 0]"
+    :animation-in="animationIn"
+    :animation-out="animationOut"
+    width-as-attach
+    hide-on-document-mousedown
+    class="fdropdownlistbox_fwindow"
+    @window-hide="$emit('window-hide', $event)"
+  >
+    <f-accordion-navigation
+      ref="navigation"
+      :navigation="navigation"
+      @node-selected="onNavigationNodeSelected"
+    />
+    <div class="walletmenupopover_darkthemeswitch">
+      <f-dark-theme-switch
+        :model-value="darkTheme"
+        :label="$t('appearancesettings.darkMode')"
+        @change="onDarkThemeSwitchChange"
+      />
+    </div>
+  </f-popover>
 </template>
 
 <script>
@@ -35,70 +39,73 @@ import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 const THEME_DARK = 'theme-dark';
 
 export default {
-    name: 'WalletMenuPopover',
+  name: 'WalletMenuPopover',
 
-    inheritAttrs: false,
+  inheritAttrs: false,
 
-    mixins: [popoverAnimationMixin],
+  mixins: [popoverAnimationMixin],
 
-    components: { FAccordionNavigation, FPopover, FDarkThemeSwitch },
+  components: { FAccordionNavigation, FPopover, FDarkThemeSwitch },
 
-    props: {
-        navigation: {
-            type: Array,
-            default() {
-                return [];
-            },
-        },
+  props: {
+    navigation: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
+
+  data() {
+    return {
+      darkTheme: false,
+    };
+  },
+
+  computed: {
+    ...mapState('app', {
+      theme: 'theme',
+    }),
+  },
+
+  watch: {
+    theme(value) {
+      this.darkTheme = value === THEME_DARK;
+    },
+  },
+
+  created() {
+    this.darkTheme = this.theme === THEME_DARK;
+  },
+
+  methods: {
+    show() {
+      const { $refs } = this;
+
+      $refs.popover.show();
+
+      defer(() => {
+        focusElem(this.$refs.navigation.$refs.nav.$el, 'a');
+      });
     },
 
-    data() {
-        return {
-            darkTheme: false,
-        };
+    hide() {
+      this.$refs.popover.hide();
     },
 
-    computed: {
-        ...mapState('app', {
-            theme: 'theme',
-        }),
+    onNavigationNodeSelected(node) {
+      this.$refs.popover.hide();
+
+      this.$emit('wallet-menu', clone(node));
     },
 
-    watch: {
-        theme(value) {
-            this.darkTheme = value === THEME_DARK;
-        },
+    onDarkThemeSwitchChange(value) {
+      this.$store.commit(
+        `app/${SET_THEME}`,
+        value ? THEME_DARK : 'theme-default'
+      );
     },
-
-    created() {
-        this.darkTheme = this.theme === THEME_DARK;
-    },
-
-    methods: {
-        show() {
-            const { $refs } = this;
-
-            $refs.popover.show();
-
-            defer(() => {
-                focusElem(this.$refs.navigation.$refs.nav.$el, 'a');
-            });
-        },
-
-        hide() {
-            this.$refs.popover.hide();
-        },
-
-        onNavigationNodeSelected(node) {
-            this.$refs.popover.hide();
-
-            this.$emit('wallet-menu', clone(node));
-        },
-
-        onDarkThemeSwitchChange(value) {
-            this.$store.commit(`app/${SET_THEME}`, value ? THEME_DARK : 'theme-default');
-        },
-    },
+  },
 };
 </script>
 

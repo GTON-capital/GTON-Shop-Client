@@ -1,19 +1,20 @@
 .accountfollow {
-	display: flex;
-	align-items: center;
-	column-gap: var(--f-spacer-3);
-	&_btn {
-	}
+  display: flex;
+  align-items: center;
+  column-gap: var(--f-spacer-3);
+  &_btn {
+  }
 
-	&_followers {
-	}
+  &_followers {
+  }
 
-	&_following {
-	}
+  &_following {
+  }
 
-	&_followers,
-	&_following {
-		&:hover { cursor: pointer; }
-	}
-
+  &_followers,
+  &_following {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

@@ -1,14 +1,14 @@
 <template>
-    <div class="collectionregister">
-        <collection-register-form />
-    </div>
+  <div class="collectionregister">
+    <collection-register-form />
+  </div>
 </template>
 
 <script>
 import CollectionRegisterForm from '@/modules/collections/components/CollectionRegisterForm/CollectionRegisterForm.vue';
 export default {
-    name: 'CollectionRegister',
+  name: 'CollectionRegister',
 
-    components: { CollectionRegisterForm },
+  components: { CollectionRegisterForm },
 };
 </script>

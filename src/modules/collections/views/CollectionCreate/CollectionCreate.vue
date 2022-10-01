@@ -1,9 +1,9 @@
 <template>
-    <div class="collectioncreate">CollectionCreate</div>
+  <div class="collectioncreate">CollectionCreate</div>
 </template>
 
 <script>
 export default {
-    name: 'CollectionCreate',
+  name: 'CollectionCreate',
 };
 </script>

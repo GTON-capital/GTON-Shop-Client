@@ -1,15 +1,19 @@
 <template>
-    <div class="nftcancelauctionbutton">
-        <a-button
-            :label="$t('nftcancelauction.cancelAuction')"
-            :loading="txStatus === 'pending'"
-            :disabled="!canCancelAuction"
-            :data-tooltip="!canCancelAuction ? $t('nftcancelauction.highestBidAboveReservePrice') : null"
-            @click.native="onButtonClick"
-        />
+  <div class="nftcancelauctionbutton">
+    <a-button
+      :label="$t('nftcancelauction.cancelAuction')"
+      :loading="txStatus === 'pending'"
+      :disabled="!canCancelAuction"
+      :data-tooltip="
+        !canCancelAuction
+          ? $t('nftcancelauction.highestBidAboveReservePrice')
+          : null
+      "
+      @click.native="onButtonClick"
+    />
 
-        <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
-    </div>
+    <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
+  </div>
 </template>
 
 <script>
@@ -19,67 +23,75 @@ import Web3 from 'web3';
 import contracts from '@/utils/gton-shop-contracts-utils.js';
 
 export default {
-    name: 'NftCancelAuctionButton',
+  name: 'NftCancelAuctionButton',
 
-    components: { ASignTransaction, AButton },
+  components: { ASignTransaction, AButton },
 
-    props: {
-        token: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        /** @type {Auction} */
-        auction: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
+  props: {
+    token: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    /** @type {Auction} */
+    auction: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+
+  data() {
+    return {
+      tx: {},
+      txStatus: '',
+    };
+  },
+
+  computed: {
+    canCancelAuction() {
+      return (
+        !this.auction.reservePriceExceeded ||
+        this.auction.props.canCancelSuccessful
+      );
+    },
+  },
+
+  methods: {
+    cancelAuction() {
+      const web3 = new Web3();
+      const { token } = this;
+
+      if (!token || !token.contract) {
+        return;
+      }
+
+      this.tx = contracts.cancelAuction(
+        token.contract,
+        token.tokenId,
+        web3,
+        this.auction.auctionHall
+      );
     },
 
-    data() {
-        return {
-            tx: {},
-            txStatus: '',
-        };
+    onButtonClick() {
+      this.cancelAuction();
     },
 
-    computed: {
-        canCancelAuction() {
-            return !this.auction.reservePriceExceeded || this.auction.props.canCancelSuccessful;
-        },
+    onTransactionStatus(payload) {
+      this.txStatus = payload.status;
+
+      if (this.txStatus === 'success') {
+        this.$notifications.add({
+          text: this.$t('nftcancelauction.cancelSuccessful'),
+          type: 'success',
+        });
+
+        this.$emit('tx-success');
+      }
     },
-
-    methods: {
-        cancelAuction() {
-            const web3 = new Web3();
-            const { token } = this;
-
-            if (!token || !token.contract) {
-                return;
-            }
-
-            this.tx = contracts.cancelAuction(token.contract, token.tokenId, web3, this.auction.auctionHall);
-        },
-
-        onButtonClick() {
-            this.cancelAuction();
-        },
-
-        onTransactionStatus(payload) {
-            this.txStatus = payload.status;
-
-            if (this.txStatus === 'success') {
-                this.$notifications.add({
-                    text: this.$t('nftcancelauction.cancelSuccessful'),
-                    type: 'success',
-                });
-
-                this.$emit('tx-success');
-            }
-        },
-    },
+  },
 };
 </script>

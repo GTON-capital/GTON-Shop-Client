@@ -1,24 +1,24 @@
 <template>
-    <div id="app">
-        <!--        <app-language />-->
+  <div id="app">
+    <!--        <app-language />-->
 
-        <router-view />
+    <router-view />
 
-        <wallet-picker />
-        <f-app-theme :themes="['theme-default', 'theme-dark', 'theme-pg']" />
-        <app-dark-theme />
-        <f-tooltip with-arrow hide-on-document-scroll />
-        <f-notifications
-            strategy="newest-first"
-            with-icon
-            position="top-center"
-            hide-on-click
-            animation-in="scale-center-enter-active"
-            animation-out="scale-center-leave-active"
-        />
-        <f-network-status />
-        <f-aria-alert />
-    </div>
+    <wallet-picker />
+    <f-app-theme :themes="['theme-default', 'theme-dark', 'theme-pg']" />
+    <app-dark-theme />
+    <f-tooltip with-arrow hide-on-document-scroll />
+    <f-notifications
+      strategy="newest-first"
+      with-icon
+      position="top-center"
+      hide-on-click
+      animation-in="scale-center-enter-active"
+      animation-out="scale-center-leave-active"
+    />
+    <f-network-status />
+    <f-aria-alert />
+  </div>
 </template>
 
 <script>
@@ -38,64 +38,72 @@ import { clientInfo } from 'fantom-vue-components/src/utils/client-info.js';
 // import AppLanguage from '@/modules/app/components/AppLanguage/AppLanguage.vue';
 
 export default {
-    name: 'App',
+  name: 'App',
 
-    components: { AppDarkTheme, WalletPicker, FNotifications, FNetworkStatus, FTooltip, FAppTheme, FAriaAlert },
+  components: {
+    AppDarkTheme,
+    WalletPicker,
+    FNotifications,
+    FNetworkStatus,
+    FTooltip,
+    FAppTheme,
+    FAriaAlert,
+  },
 
-    data() {
-        return {
-            appTitle: appConfig.name,
-        };
+  data() {
+    return {
+      appTitle: appConfig.name,
+    };
+  },
+
+  computed: {
+    ...mapState('wallet', {
+      walletAddress: 'account',
+    }),
+    ...mapState('app', {
+      rtlDirection: 'rtlDirection',
+    }),
+  },
+
+  watch: {
+    walletAddress: {
+      handler(value) {
+        this.setUser(value);
+      },
+      immediate: true,
     },
 
-    computed: {
-        ...mapState('wallet', {
-            walletAddress: 'account',
-        }),
-        ...mapState('app', {
-            rtlDirection: 'rtlDirection',
-        }),
+    rtlDirection: {
+      handler(value) {
+        this.setTextDirection(value);
+      },
+      immediate: true,
+    },
+  },
+
+  created() {
+    // this.$root._appNode = this;
+    if (clientInfo.mobile) {
+      document.body.classList.add('touch-device');
+    }
+  },
+
+  methods: {
+    async setUser(account) {
+      if (!account) {
+        return;
+      }
+
+      await setUser(account, !!getBearerToken());
     },
 
-    watch: {
-        walletAddress: {
-            handler(value) {
-                this.setUser(value);
-            },
-            immediate: true,
-        },
-
-        rtlDirection: {
-            handler(value) {
-                this.setTextDirection(value);
-            },
-            immediate: true,
-        },
+    setTextDirection(rtl = false) {
+      document.documentElement.dir = rtl ? 'rtl' : '';
     },
 
-    created() {
-        // this.$root._appNode = this;
-        if (clientInfo.mobile) {
-            document.body.classList.add('touch-device');
-        }
+    setAppTheme() {
+      // AppTheme.setTheme('theme-dark');
     },
-
-    methods: {
-        async setUser(account) {
-            if (!account) {
-                return;
-            }
-
-            await setUser(account, !!getBearerToken());
-        },
-
-        setTextDirection(rtl = false) {
-            document.documentElement.dir = rtl ? 'rtl' : '';
-        },
-
-        setAppTheme() {
-            // AppTheme.setTheme('theme-dark');
-        },
-    },
+  },
 };
 </script>

@@ -10,56 +10,56 @@ import FPlaceholder from 'fantom-vue-components/src/components/FPlaceholder/FPla
 let wrapper = null;
 
 function destroyWrapper(wrapper) {
-    // st = null;
+  // st = null;
 
-    if (wrapper) {
-        wrapper.destroy();
-        wrapper = null;
-    }
+  if (wrapper) {
+    wrapper.destroy();
+    wrapper = null;
+  }
 }
 
 function createWrapper({ propsData = {}, slots = {} } = {}) {
-    return mount(AccountAvatar, {
-        propsData,
-        slots,
-    });
+  return mount(AccountAvatar, {
+    propsData,
+    slots,
+  });
 }
 
 afterEach(() => {
-    destroyWrapper(wrapper);
+  destroyWrapper(wrapper);
 });
 
 describe('AccountAvatar', () => {
-    /*it('should render correctly', () => {
+  /*it('should render correctly', () => {
         wrapper = createWrapper();
 
         expect(wrapper.element).toMatchSnapshot();
     });*/
 
-    it('should show the placeholders if the `loading` prop is set to `true`', () => {
-        wrapper = createWrapper({ propsData: { loading: true } });
+  it('should show the placeholders if the `loading` prop is set to `true`', () => {
+    wrapper = createWrapper({ propsData: { loading: true } });
 
-        expect(wrapper.findComponent(FPlaceholder).exists()).toBeTruthy();
+    expect(wrapper.findComponent(FPlaceholder).exists()).toBeTruthy();
+  });
+
+  it('should show image if `src` prop is given', async () => {
+    wrapper = createWrapper({
+      propsData: {
+        src: 'avatar.jpg',
+      },
     });
 
-    it('should show image if `src` prop is given', async () => {
-        wrapper = createWrapper({
-            propsData: {
-                src: 'avatar.jpg',
-            },
-        });
+    const eImg = wrapper.find('img');
 
-        const eImg = wrapper.find('img');
+    wrapper.vm.onImgLoad();
 
-        wrapper.vm.onImgLoad();
+    await wrapper.vm.$nextTick();
 
-        await wrapper.vm.$nextTick();
+    expect(eImg.exists()).toBeTruthy();
+    expect(eImg.attributes().src).toBe('avatar.jpg');
+  });
 
-        expect(eImg.exists()).toBeTruthy();
-        expect(eImg.attributes().src).toBe('avatar.jpg');
-    });
-
-    xit('should hide placeholder and show image if `loading` prop is set to `true` and image is loaded', () => {});
+  xit('should hide placeholder and show image if `loading` prop is set to `true` and image is loaded', () => {});
 });
 
 /* eslint-enable no-undef */

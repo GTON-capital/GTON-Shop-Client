@@ -1,61 +1,77 @@
 <template>
-    <f-form
-        v-model="values"
-        class="notificationsettingsform"
-        @submit="onFormSubmit"
-        :aria-label="$t('notificationsettings.title')"
-    >
-        <div class="notificationsettingsform_lists">
-            <div class="notificationsettingsform_list">
-                <f-form-input name="sNotification" type="checkbox" label="Your Activity Notifications" />
-                <div class="notificationsettingsform_wrap">
-                    <div
-                        class="notificationsettingsform_item"
-                        v-for="(value, name, index) in myNotifications"
-                        :key="index + name"
-                    >
-                        <f-form-input
-                            :name="name"
-                            type="checkbox"
-                            :disabled="!yourActivity || isItemDisabled(name)"
-                            class="notificationsettingsform_checkbox"
-                            :class="{ 'foption-disabled': !yourActivity || isItemDisabled(name) }"
-                        >
-                            <span class="notificationsettingsform_title">{{ $t(`notifications.${name}`) }}</span>
-                            <span class="notificationsettingsform_desc">
-                                {{ $t(`notifications.${name}` + 'Desc') }}
-                            </span>
-                        </f-form-input>
-                    </div>
-                </div>
-            </div>
-
-            <div class="notificationsettingsform_list">
-                <f-form-input name="fNotification" type="checkbox" label="Follower Activity Notifications" />
-                <div class="notificationsettingsform_wrap">
-                    <div
-                        class="notificationsettingsform_item"
-                        v-for="(value, name, index) in followerNotifications"
-                        :key="index + name"
-                    >
-                        <f-form-input
-                            :name="name"
-                            type="checkbox"
-                            :disabled="!followerActivity || isItemDisabled(name)"
-                            class="notificationsettingsform_checkbox"
-                            :class="{ 'foption-disabled': !followerActivity || isItemDisabled(name) }"
-                        >
-                            <span class="notificationsettingsform_title">{{ $t(`notifications.${name}`) }}</span>
-                            <span class="notificationsettingsform_desc">
-                                {{ $t(`notifications.${name}` + 'Desc') }}
-                            </span>
-                        </f-form-input>
-                    </div>
-                </div>
-            </div>
+  <f-form
+    v-model="values"
+    class="notificationsettingsform"
+    @submit="onFormSubmit"
+    :aria-label="$t('notificationsettings.title')"
+  >
+    <div class="notificationsettingsform_lists">
+      <div class="notificationsettingsform_list">
+        <f-form-input
+          name="sNotification"
+          type="checkbox"
+          label="Your Activity Notifications"
+        />
+        <div class="notificationsettingsform_wrap">
+          <div
+            class="notificationsettingsform_item"
+            v-for="(value, name, index) in myNotifications"
+            :key="index + name"
+          >
+            <f-form-input
+              :name="name"
+              type="checkbox"
+              :disabled="!yourActivity || isItemDisabled(name)"
+              class="notificationsettingsform_checkbox"
+              :class="{
+                'foption-disabled': !yourActivity || isItemDisabled(name),
+              }"
+            >
+              <span class="notificationsettingsform_title">{{
+                $t(`notifications.${name}`)
+              }}</span>
+              <span class="notificationsettingsform_desc">
+                {{ $t(`notifications.${name}` + 'Desc') }}
+              </span>
+            </f-form-input>
+          </div>
         </div>
+      </div>
 
-        <!-- <div class="notificationsettingsform_price">
+      <div class="notificationsettingsform_list">
+        <f-form-input
+          name="fNotification"
+          type="checkbox"
+          label="Follower Activity Notifications"
+        />
+        <div class="notificationsettingsform_wrap">
+          <div
+            class="notificationsettingsform_item"
+            v-for="(value, name, index) in followerNotifications"
+            :key="index + name"
+          >
+            <f-form-input
+              :name="name"
+              type="checkbox"
+              :disabled="!followerActivity || isItemDisabled(name)"
+              class="notificationsettingsform_checkbox"
+              :class="{
+                'foption-disabled': !followerActivity || isItemDisabled(name),
+              }"
+            >
+              <span class="notificationsettingsform_title">{{
+                $t(`notifications.${name}`)
+              }}</span>
+              <span class="notificationsettingsform_desc">
+                {{ $t(`notifications.${name}` + 'Desc') }}
+              </span>
+            </f-form-input>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="notificationsettingsform_price">
             <div class="notificationsettingsform_price_title">{{ $t('notificationsettingsform.minimumBid') }}</div>
             <div class="notificationsettingsform_price_desc">
                 {{ $t('notificationsettingsform.recieveWhenPriceEqualOrGreater') }}
@@ -68,98 +84,107 @@
                 name="price"
             />
         </div> -->
-        <div class="notificationsettingsform_btn">
-            <f-button type="submit">{{ $t('notifications.save') }}</f-button>
-        </div>
-    </f-form>
+    <div class="notificationsettingsform_btn">
+      <f-button type="submit">{{ $t('notifications.save') }}</f-button>
+    </div>
+  </f-form>
 </template>
 <script>
 //import { PAY_TOKENS_WITH_PRICES } from '@/common/constants/pay-tokens.js';
 import { getNotificationSettings } from '@/modules/account/queries/notifications.js';
 import { updateNotificationSettings } from '@/modules/account/mutations/notifications.js';
-import { sNotifications, fNotifications } from '@/common/constants/notifications.js';
+import {
+  sNotifications,
+  fNotifications,
+} from '@/common/constants/notifications.js';
 import { checkSignIn } from '@/modules/account/auth.js';
 import { clone, isObject } from 'fantom-vue-components/src/utils';
 
 const DISABLE_BUNDLES = true;
 
 export default {
-    name: 'NotificationSettingsForm',
+  name: 'NotificationSettingsForm',
 
-    data() {
-        return {
-            values: {},
-            oldValues: null,
-            //payTokens: [],
-            myNotifications: null,
-            followerNotifications: null,
-        };
+  data() {
+    return {
+      values: {},
+      oldValues: null,
+      //payTokens: [],
+      myNotifications: null,
+      followerNotifications: null,
+    };
+  },
+
+  created() {
+    this.init();
+  },
+
+  computed: {
+    yourActivity() {
+      return this.values.sNotification;
     },
 
-    created() {
-        this.init();
+    followerActivity() {
+      return this.values.fNotification;
+    },
+  },
+
+  methods: {
+    async init() {
+      //this.payTokens = await PAY_TOKENS_WITH_PRICES();
+      let notifications = await getNotificationSettings();
+      this.myNotifications = sNotifications();
+      this.followerNotifications = fNotifications();
+
+      if (notifications !== null && isObject(notifications)) {
+        this.values = clone(notifications);
+      }
     },
 
-    computed: {
-        yourActivity() {
-            return this.values.sNotification;
-        },
-
-        followerActivity() {
-            return this.values.fNotification;
-        },
+    isItemDisabled(name) {
+      return DISABLE_BUNDLES && name.indexOf('Bundle') > -1;
     },
 
-    methods: {
-        async init() {
-            //this.payTokens = await PAY_TOKENS_WITH_PRICES();
-            let notifications = await getNotificationSettings();
-            this.myNotifications = sNotifications();
-            this.followerNotifications = fNotifications();
+    // priceValidator(value) {
+    //     const val = parseFloat(value);
 
-            if (notifications !== null && isObject(notifications)) {
-                this.values = clone(notifications);
-            }
-        },
+    //     if (isNaN(val) || val <= 0) {
+    //         return this.$t('nftmakeofferform.nonZeroPrice');
+    //     } else if (this.accountBalance < val) {
+    //         return this.$t('nftmakeofferform.insufficientBalance');
+    //     }
 
-        isItemDisabled(name) {
-            return DISABLE_BUNDLES && name.indexOf('Bundle') > -1;
-        },
+    //     return '';
+    // },
 
-        // priceValidator(value) {
-        //     const val = parseFloat(value);
+    async onFormSubmit(data) {
+      let ok = await checkSignIn();
 
-        //     if (isNaN(val) || val <= 0) {
-        //         return this.$t('nftmakeofferform.nonZeroPrice');
-        //     } else if (this.accountBalance < val) {
-        //         return this.$t('nftmakeofferform.insufficientBalance');
-        //     }
+      if (ok) {
+        console.log(data.values);
+        let values = {};
+        if (!this.yourActivity)
+          Object.keys(sNotifications()).forEach(
+            name => (this.values[name] = false)
+          );
+        if (!this.followerActivity)
+          Object.keys(fNotifications()).forEach(
+            name => (this.values[name] = false)
+          );
 
-        //     return '';
-        // },
+        Object.assign(values, data.values);
+        Object.assign(values, this.values);
 
-        async onFormSubmit(data) {
-            let ok = await checkSignIn();
-
-            if (ok) {
-                console.log(data.values);
-                let values = {};
-                if (!this.yourActivity) Object.keys(sNotifications()).forEach(name => (this.values[name] = false));
-                if (!this.followerActivity) Object.keys(fNotifications()).forEach(name => (this.values[name] = false));
-
-                Object.assign(values, data.values);
-                Object.assign(values, this.values);
-
-                let output = await updateNotificationSettings(values);
-                if (output) {
-                    this.$notifications.add({
-                        type: 'success',
-                        text: this.$t('notifications.successMessage'),
-                    });
-                }
-            }
-        },
+        let output = await updateNotificationSettings(values);
+        if (output) {
+          this.$notifications.add({
+            type: 'success',
+            text: this.$t('notifications.successMessage'),
+          });
+        }
+      }
     },
+  },
 };
 </script>
 <style lang="scss">

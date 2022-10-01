@@ -1,18 +1,18 @@
 <template>
-    <f-combo-box
-        :data="data"
-        v-model="group"
-        select-mode
-        readonly
-        :inline-autocomplete="false"
-        field-size="large"
-        attach-position="bottom"
-        hide-on-document-scroll
-        fit-height-to-viewport
-        no-label
-        :aria-label="$t('accountactivitylist.filter')"
-        class="accountactivityfilter"
-    />
+  <f-combo-box
+    :data="data"
+    v-model="group"
+    select-mode
+    readonly
+    :inline-autocomplete="false"
+    field-size="large"
+    attach-position="bottom"
+    hide-on-document-scroll
+    fit-height-to-viewport
+    no-label
+    :aria-label="$t('accountactivitylist.filter')"
+    class="accountactivityfilter"
+  />
 </template>
 
 <script>
@@ -20,40 +20,44 @@ import FComboBox from 'fantom-vue-components/src/components/FComboBox/FComboBox.
 import { ACTIVITY_TYPES } from '@/common/constants/activity-type-filters.js';
 
 export default {
-    name: 'AccountActivityFilter',
+  name: 'AccountActivityFilter',
 
-    components: { FComboBox },
+  components: { FComboBox },
 
-    model: {
-        prop: 'selected',
-        event: 'change',
+  model: {
+    prop: 'selected',
+    event: 'change',
+  },
+
+  props: {
+    selected: {
+      type: String,
+      default: '',
     },
+  },
 
-    props: {
-        selected: {
-            type: String,
-            default: '',
-        },
-    },
-
-    data() {
+  data() {
+    return {
+      data: ACTIVITY_TYPES().map(type => {
         return {
-            data: ACTIVITY_TYPES().map(type => {
-                return { label: this.$t(type.label), value: type.filter, disabled: type.disabled };
-            }),
-            group: this.selected,
+          label: this.$t(type.label),
+          value: type.filter,
+          disabled: type.disabled,
         };
+      }),
+      group: this.selected,
+    };
+  },
+
+  watch: {
+    group(value) {
+      this.$emit('change', value);
     },
 
-    watch: {
-        group(value) {
-            this.$emit('change', value);
-        },
-
-        selected(value) {
-            this.group = value;
-        },
+    selected(value) {
+      this.group = value;
     },
+  },
 };
 </script>
 

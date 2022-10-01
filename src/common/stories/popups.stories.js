@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System/Popups',
+  title: 'Design System/Popups',
 };
 
 export const Popups = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <a-window
                 modal
@@ -28,7 +28,7 @@ export const Popups = () => ({
             </div>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

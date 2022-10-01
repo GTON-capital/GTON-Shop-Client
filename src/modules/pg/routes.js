@@ -7,45 +7,45 @@ import PGAccountSettings from '@/modules/pg/views/PGAccountSettings/PGAccountSet
 import PGMyNfts from './views/PGMyNfts/PGMyNfts';
 
 export function getPGRoutes(mainPath = '/pg') {
-    return [
+  return [
+    {
+      name: 'pg',
+      path: `${mainPath}`,
+      component: PGMain,
+      meta: {
+        // title: i18n.t('page.pg.title'),
+        theme: 'theme-pg',
+      },
+      redirect: { name: 'pg-home' },
+      children: [
         {
-            name: 'pg',
-            path: `${mainPath}`,
-            component: PGMain,
-            meta: {
-                // title: i18n.t('page.pg.title'),
-                theme: 'theme-pg',
-            },
-            redirect: { name: 'pg-home' },
-            children: [
-                {
-                    path: '',
-                    name: 'pg-home',
-                    component: PGHome,
-                    meta: {
-                        title: appConfig.title,
-                        theme: 'theme-pg',
-                    },
-                },
-                {
-                    path: 'account/settings',
-                    name: 'pg-account-settings',
-                    component: PGAccountSettings,
-                    meta: {
-                        theme: 'theme-pg',
-                        auth: true,
-                    },
-                },
-                {
-                    path: 'account/my-nfts',
-                    name: 'pg-account-my-nfts',
-                    component: PGMyNfts,
-                    meta: {
-                        theme: 'theme-pg',
-                        auth: false, // TEMPORARY
-                    },
-                },
-            ],
+          path: '',
+          name: 'pg-home',
+          component: PGHome,
+          meta: {
+            title: appConfig.title,
+            theme: 'theme-pg',
+          },
         },
-    ];
+        {
+          path: 'account/settings',
+          name: 'pg-account-settings',
+          component: PGAccountSettings,
+          meta: {
+            theme: 'theme-pg',
+            auth: true,
+          },
+        },
+        {
+          path: 'account/my-nfts',
+          name: 'pg-account-my-nfts',
+          component: PGMyNfts,
+          meta: {
+            theme: 'theme-pg',
+            auth: false, // TEMPORARY
+          },
+        },
+      ],
+    },
+  ];
 }

@@ -2,10 +2,10 @@ import { bFromTokenValue } from '@/utils/big-number.js';
 import { i18n } from '@/plugins/vue-i18n.js';
 
 export const localeOptions = {
-    currLocale: 'en-US',
-    currency: 'USD',
-    fractionDigits: 0,
-    tokenPrice: 0,
+  currLocale: 'en-US',
+  currency: 'USD',
+  fractionDigits: 0,
+  tokenPrice: 0,
 };
 
 /**
@@ -16,31 +16,39 @@ export const localeOptions = {
  * @return {*}
  */
 export function formatNumberByLocale(
-    _number,
-    _fractionDigits = localeOptions.fractionDigits,
-    _currency,
-    _variableFDigits
+  _number,
+  _fractionDigits = localeOptions.fractionDigits,
+  _currency,
+  _variableFDigits
 ) {
-    let options = {
-        minimumFractionDigits: _variableFDigits ? 0 : _fractionDigits,
-        maximumFractionDigits: _fractionDigits,
-    };
+  let options = {
+    minimumFractionDigits: _variableFDigits ? 0 : _fractionDigits,
+    maximumFractionDigits: _fractionDigits,
+  };
 
-    if (_currency) {
-        options.style = 'currency';
-        options.currency = _currency;
-    }
+  if (_currency) {
+    options.style = 'currency';
+    options.currency = _currency;
+  }
 
-    return new Intl.NumberFormat(localeOptions.currLocale, options).format(_number);
+  return new Intl.NumberFormat(localeOptions.currLocale, options).format(
+    _number
+  );
 }
 
-export function formatTokenValue(value, tokenPriceDecimals = 18, _fractionDigits, _currency, _variableFDigits = false) {
-    return formatNumberByLocale(
-        bFromTokenValue(value, tokenPriceDecimals).toNumber(),
-        _fractionDigits,
-        _currency ? localeOptions.currency : '',
-        _variableFDigits
-    );
+export function formatTokenValue(
+  value,
+  tokenPriceDecimals = 18,
+  _fractionDigits,
+  _currency,
+  _variableFDigits = false
+) {
+  return formatNumberByLocale(
+    bFromTokenValue(value, tokenPriceDecimals).toNumber(),
+    _fractionDigits,
+    _currency ? localeOptions.currency : '',
+    _variableFDigits
+  );
 }
 
 /**
@@ -48,7 +56,7 @@ export function formatTokenValue(value, tokenPriceDecimals = 18, _fractionDigits
  * @return {VueI18n.DateTimeFormatResult|null}
  */
 export function dateFormatter(value) {
-    return value ? i18n.d(new Date(value), 'short') : null;
+  return value ? i18n.d(new Date(value), 'short') : null;
 }
 
 /**
@@ -56,5 +64,5 @@ export function dateFormatter(value) {
  * @return {VueI18n.DateTimeFormatResult|null}
  */
 export function datetimeFormatter(value) {
-    return value ? i18n.d(new Date(value), 'shortDatetime') : null;
+  return value ? i18n.d(new Date(value), 'shortDatetime') : null;
 }

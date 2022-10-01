@@ -7,49 +7,49 @@ import appConfig from '@/app.config.js';
 import { FApolloClient } from './FApolloClient.js';
 
 export const artionFApolloClient = new FApolloClient({
-    apolloProviders: appConfig.apollo.gtonShop.providers,
-    defaultProviderIndex: appConfig.apollo.gtonShop.defaultProviderIndex,
+  apolloProviders: appConfig.apollo.gtonShop.providers,
+  defaultProviderIndex: appConfig.apollo.gtonShop.defaultProviderIndex,
 });
 
 export const fantomFApolloClient = new FApolloClient({
-    apolloProviders: appConfig.apollo.gton.providers,
-    defaultProviderIndex: appConfig.apollo.gton.defaultProviderIndex,
+  apolloProviders: appConfig.apollo.gton.providers,
+  defaultProviderIndex: appConfig.apollo.gton.defaultProviderIndex,
 });
 
 export const artionApolloClient = new ApolloClient({
-    link: ApolloLink.from([
-        artionFApolloClient.getNetErrorLink(),
-        artionFApolloClient.getRetryLink(),
-        artionFApolloClient.getErrorLink(),
-        artionFApolloClient.getHttpAuthLink(),
-        artionFApolloClient.getHttpLink(),
-    ]),
-    cache: new InMemoryCache(),
-    connectToDevTools: true,
+  link: ApolloLink.from([
+    artionFApolloClient.getNetErrorLink(),
+    artionFApolloClient.getRetryLink(),
+    artionFApolloClient.getErrorLink(),
+    artionFApolloClient.getHttpAuthLink(),
+    artionFApolloClient.getHttpLink(),
+  ]),
+  cache: new InMemoryCache(),
+  connectToDevTools: true,
 });
 
 export const fantomApolloClient = new ApolloClient({
-    link: ApolloLink.from([
-        fantomFApolloClient.getNetErrorLink(),
-        fantomFApolloClient.getRetryLink(),
-        fantomFApolloClient.getErrorLink(),
-        fantomFApolloClient.getHttpLink(),
-    ]),
-    cache: new InMemoryCache(),
-    connectToDevTools: true,
+  link: ApolloLink.from([
+    fantomFApolloClient.getNetErrorLink(),
+    fantomFApolloClient.getRetryLink(),
+    fantomFApolloClient.getErrorLink(),
+    fantomFApolloClient.getHttpLink(),
+  ]),
+  cache: new InMemoryCache(),
+  connectToDevTools: true,
 });
 
 Vue.use(VueApollo);
 
 export const apolloProvider = new VueApollo({
-    clients: {
-        artion: artionApolloClient,
-        fantom: fantomApolloClient,
+  clients: {
+    artion: artionApolloClient,
+    fantom: fantomApolloClient,
+  },
+  defaultClient: artionApolloClient,
+  defaultOptions: {
+    $query: {
+      fetchPolicy: 'network-only', // 'cache-and-network', 'network-only', 'cache-first'
     },
-    defaultClient: artionApolloClient,
-    defaultOptions: {
-        $query: {
-            fetchPolicy: 'network-only', // 'cache-and-network', 'network-only', 'cache-first'
-        },
-    },
+  },
 });

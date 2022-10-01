@@ -11,15 +11,18 @@ const jazziconsCache = {};
  * @return {string}
  */
 export function getJazzicon(address, diameter = 24) {
-    const key = address ? `${address.toLowerCase()}_${diameter}` : '';
+  const key = address ? `${address.toLowerCase()}_${diameter}` : '';
 
-    if (!key) {
-        return '';
-    }
+  if (!key) {
+    return '';
+  }
 
-    if (!(key in jazziconsCache)) {
-        jazziconsCache[key] = Jazzicon(diameter, parseInt(address.slice(2, 10), 16)).outerHTML;
-    }
+  if (!(key in jazziconsCache)) {
+    jazziconsCache[key] = Jazzicon(
+      diameter,
+      parseInt(address.slice(2, 10), 16)
+    ).outerHTML;
+  }
 
-    return jazziconsCache[key];
+  return jazziconsCache[key];
 }

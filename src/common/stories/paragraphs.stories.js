@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System/Paragraphs',
+  title: 'Design System/Paragraphs',
 };
 
 export const Paragraphs = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <p>
                 <span>
@@ -54,7 +54,7 @@ export const Paragraphs = () => ({
             </p>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

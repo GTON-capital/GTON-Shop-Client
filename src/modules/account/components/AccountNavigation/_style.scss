@@ -2,87 +2,87 @@
 @use "fantom-vue-components/src/assets/scss/tools/media";
 
 .accountnavigation {
-    --accountnavigation-link-color: var(--f-color-grey-5);
-    --accountnavigation-link-active-color: var(--f-color-grey-7);
+  --accountnavigation-link-color: var(--f-color-grey-5);
+  --accountnavigation-link-active-color: var(--f-color-grey-7);
 
-    margin-top: var(--f-spacer-6);
+  margin-top: var(--f-spacer-6);
 
-    &_list {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        padding: 0;
-    }
+  &_list {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+  }
 
-    &_item {
-        list-style-type: none;
-        position: relative;
-        white-space: nowrap;
-    }
+  &_item {
+    list-style-type: none;
+    position: relative;
+    white-space: nowrap;
+  }
 
-    &_counter {
-        font-size: var(--f-font-size-2);
-        background: var(--f-color-grey-2);
-        padding: var(--f-spacer-1) var(--f-spacer-2);
-        border-radius: var(--f-border-radius-rounded);
-    }
+  &_counter {
+    font-size: var(--f-font-size-2);
+    background: var(--f-color-grey-2);
+    padding: var(--f-spacer-1) var(--f-spacer-2);
+    border-radius: var(--f-border-radius-rounded);
+  }
 
-    @include linkTools.links() {
-        position: relative;
-        top: 1px;
-        display: flex;
-        color: var(--accountnavigation-link-color);
-        align-items: center;
-        column-gap: var(--f-spacer-2);
-        padding: var(--f-spacer-4) var(--f-spacer-6);
-        font-weight: 600;
-        transition: all 0.3s ease;
+  @include linkTools.links() {
+    position: relative;
+    top: 1px;
+    display: flex;
+    color: var(--accountnavigation-link-color);
+    align-items: center;
+    column-gap: var(--f-spacer-2);
+    padding: var(--f-spacer-4) var(--f-spacer-6);
+    font-weight: 600;
+    transition: all 0.3s ease;
 
-        &::after {
-            transition: background-color 0.4s ease 0s;
-            background-color: transparent;
-            bottom: 0%;
-            content: '';
-            display: block;
-            height: 1px;
-            left: 0px;
-            position: absolute;
-            width: 100%;
-            /*
+    &::after {
+      transition: background-color 0.4s ease 0s;
+      background-color: transparent;
+      bottom: 0%;
+      content: '';
+      display: block;
+      height: 1px;
+      left: 0px;
+      position: absolute;
+      width: 100%;
+      /*
             border-top-left-radius: var(--f-border-radius-2);
             border-top-right-radius: var(--f-border-radius-2);
             */
-        }
-
-        &:hover,
-        &.router-link-active {
-            color: var(--accountnavigation-link-active-color);
-        }
-
-        &.router-link-active {
-            &::after {
-                background-color: var(--f-color-primary-5);
-            }
-        }
     }
+
+    &:hover,
+    &.router-link-active {
+      color: var(--accountnavigation-link-active-color);
+    }
+
+    &.router-link-active {
+      &::after {
+        background-color: var(--f-color-primary-5);
+      }
+    }
+  }
 }
 
 @include media.media-max(1200px) {
-    .accountnavigation {
-        &_list {
-            justify-content: flex-start;
-            padding-inline-start: var(--f-spacer-2);
-            overflow-x: scroll;
-            overflow-y: hidden;
+  .accountnavigation {
+    &_list {
+      justify-content: flex-start;
+      padding-inline-start: var(--f-spacer-2);
+      overflow-x: scroll;
+      overflow-y: hidden;
 
-            /*&::-webkit-scrollbar {
+      /*&::-webkit-scrollbar {
                 width: 0;
                 height: 0;
             }*/
-        }
-
-        @include linkTools.links() {
-            padding: var(--f-spacer-2) var(--f-spacer-4);
-        }
     }
+
+    @include linkTools.links() {
+      padding: var(--f-spacer-2) var(--f-spacer-4);
+    }
+  }
 }

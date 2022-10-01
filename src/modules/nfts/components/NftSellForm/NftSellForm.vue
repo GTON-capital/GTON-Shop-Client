@@ -1,47 +1,52 @@
 <template>
-    <f-form class="nftsellform grid" v-model="values" @submit="onSubmit" :aria-label="$t('nftsellwindow.sellItem')">
-        <f-form-input
-            ref="priceField"
-            type="a-price-field"
-            :currencies="payTokens"
-            name="price"
-            :label="$t('nftsellform.price')"
-            :validator="priceValidator"
-            validate-on-input
-            @token-selected="onTokenSelected"
-        />
-        <div class="nftsellform_row">
-            <f-form-input
-                type="datetime"
-                name="startingTime"
-                :validator="startingTimeValidator"
-                :in-formatter="datetimeInFormatterTimestamp"
-                :out-formatter="dateOutFormatterTimestamp"
-                validate-on-input
-                field-size="large"
-                :label="$t('nftsellform.startingTime')"
-            />
-            <f-form-input
-                v-if="useQuantity"
-                type="number"
-                name="quantity"
-                :validator="quantityValidator"
-                validate-on-input
-                field-size="large"
-                min="1"
-                :label="$t('nftsellform.quantity')"
-                class="nftsellform_quantityfield"
-            />
-        </div>
+  <f-form
+    class="nftsellform grid"
+    v-model="values"
+    @submit="onSubmit"
+    :aria-label="$t('nftsellwindow.sellItem')"
+  >
+    <f-form-input
+      ref="priceField"
+      type="a-price-field"
+      :currencies="payTokens"
+      name="price"
+      :label="$t('nftsellform.price')"
+      :validator="priceValidator"
+      validate-on-input
+      @token-selected="onTokenSelected"
+    />
+    <div class="nftsellform_row">
+      <f-form-input
+        type="datetime"
+        name="startingTime"
+        :validator="startingTimeValidator"
+        :in-formatter="datetimeInFormatterTimestamp"
+        :out-formatter="dateOutFormatterTimestamp"
+        validate-on-input
+        field-size="large"
+        :label="$t('nftsellform.startingTime')"
+      />
+      <f-form-input
+        v-if="useQuantity"
+        type="number"
+        name="quantity"
+        :validator="quantityValidator"
+        validate-on-input
+        field-size="large"
+        min="1"
+        :label="$t('nftsellform.quantity')"
+        class="nftsellform_quantityfield"
+      />
+    </div>
 
-        <div class="fform_buttons">
-            <a-button type="submit" size="large" :loading="txStatus === 'pending'">
-                {{ $t('nftsellform.listItem') }}
-            </a-button>
-        </div>
+    <div class="fform_buttons">
+      <a-button type="submit" size="large" :loading="txStatus === 'pending'">
+        {{ $t('nftsellform.listItem') }}
+      </a-button>
+    </div>
 
-        <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
-    </f-form>
+    <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
+  </f-form>
 </template>
 <script>
 import contracts from '@/utils/gton-shop-contracts-utils.js';
@@ -49,7 +54,10 @@ import { bToTokenValue, toHex } from '@/utils/big-number.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 import { PAY_TOKENS_WITH_PRICES } from '@/common/constants/pay-tokens.js';
 import dayjs from 'dayjs';
-import { datetimeInFormatterTimestamp, dateOutFormatterTimestamp } from '@/utils/date.js';
+import {
+  datetimeInFormatterTimestamp,
+  dateOutFormatterTimestamp,
+} from '@/utils/date.js';
 import AButton from '@/common/components/AButton/AButton.vue';
 import { wallet } from '@/plugins/wallet/Wallet.js';
 import { isApprovedForAll } from '@/modules/nfts/queries/is-approved';
@@ -57,141 +65,152 @@ import Web3 from 'web3';
 import { getContractAddress } from '@/utils/gton-shop-contract-addresses.js';
 
 export default {
-    name: 'NftSellForm',
+  name: 'NftSellForm',
 
-    components: { AButton, ASignTransaction },
+  components: { AButton, ASignTransaction },
 
-    props: {
-        token: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        /** Use quantity field */
-        useQuantity: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    token: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    /** Use quantity field */
+    useQuantity: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      values: {
+        price: '',
+        startingTime: dayjs().valueOf(),
+        quantity: 1,
+      },
+      payTokens: [],
+      selectedPayToken: null,
+      tx: {},
+      txStatus: '',
+      listTx: {},
+      isSettingApproval: false,
+    };
+  },
+
+  created() {
+    this.init();
+  },
+
+  methods: {
+    async init() {
+      this.payTokens = await PAY_TOKENS_WITH_PRICES();
+      this.selectedPayToken = this.payTokens[0];
     },
 
-    data() {
-        return {
-            values: {
-                price: '',
-                startingTime: dayjs().valueOf(),
-                quantity: 1,
-            },
-            payTokens: [],
-            selectedPayToken: null,
-            tx: {},
-            txStatus: '',
-            listTx: {},
-            isSettingApproval: false,
-        };
+    async sellItem(values) {
+      const web3 = new Web3();
+      const { token } = this;
+      const price = toHex(
+        bToTokenValue(values.price, this.selectedPayToken.decimals)
+      );
+      const startingTime = parseInt(values.startingTime / 1000);
+      const quantity = this.useQuantity ? parseInt(values.quantity) : 1;
+      const contract = await getContractAddress('marketplace');
+
+      this.listTx = contracts.listItem(
+        token.contract,
+        token.tokenId,
+        quantity,
+        this.selectedPayToken.address,
+        price,
+        startingTime,
+        web3,
+        contract
+      );
+
+      const isApproved = await isApprovedForAll(
+        token.contract,
+        wallet.getUser(),
+        contract
+      );
+      console.log('isApprovedForAll', isApproved);
+
+      if (isApproved) {
+        this.tx = this.listTx;
+      } else {
+        this.$notifications.add({
+          type: 'info',
+          text: this.$t('nftsellform.needApproval'),
+        });
+        this.isSettingApproval = true;
+        this.tx = contracts.setApprovalForAll(
+          this.token.contract,
+          contract,
+          true,
+          web3
+        );
+      }
     },
 
-    created() {
-        this.init();
+    priceValidator(value) {
+      const val = parseFloat(value);
+
+      if (isNaN(val) || val <= 0) {
+        return this.$t('nftsellform.nonZeroPrice');
+      }
+
+      return '';
     },
 
-    methods: {
-        async init() {
-            this.payTokens = await PAY_TOKENS_WITH_PRICES();
-            this.selectedPayToken = this.payTokens[0];
-        },
+    quantityValidator(value) {
+      const val = parseInt(value);
 
-        async sellItem(values) {
-            const web3 = new Web3();
-            const { token } = this;
-            const price = toHex(bToTokenValue(values.price, this.selectedPayToken.decimals));
-            const startingTime = parseInt(values.startingTime / 1000);
-            const quantity = this.useQuantity ? parseInt(values.quantity) : 1;
-            const contract = await getContractAddress('marketplace');
+      if (isNaN(val) || val <= 0) {
+        return this.$t('nftsellform.nonZeroQuantity');
+      }
 
-            this.listTx = contracts.listItem(
-                token.contract,
-                token.tokenId,
-                quantity,
-                this.selectedPayToken.address,
-                price,
-                startingTime,
-                web3,
-                contract
-            );
-
-            const isApproved = await isApprovedForAll(token.contract, wallet.getUser(), contract);
-            console.log('isApprovedForAll', isApproved);
-
-            if (isApproved) {
-                this.tx = this.listTx;
-            } else {
-                this.$notifications.add({
-                    type: 'info',
-                    text: this.$t('nftsellform.needApproval'),
-                });
-                this.isSettingApproval = true;
-                this.tx = contracts.setApprovalForAll(this.token.contract, contract, true, web3);
-            }
-        },
-
-        priceValidator(value) {
-            const val = parseFloat(value);
-
-            if (isNaN(val) || val <= 0) {
-                return this.$t('nftsellform.nonZeroPrice');
-            }
-
-            return '';
-        },
-
-        quantityValidator(value) {
-            const val = parseInt(value);
-
-            if (isNaN(val) || val <= 0) {
-                return this.$t('nftsellform.nonZeroQuantity');
-            }
-
-            return '';
-        },
-
-        startingTimeValidator(value) {
-            console.log(value);
-            // const now = dayjs().valueOf();
-
-            // return dayjs(value).valueOf() <= now ? this.$t('nftsellform.badDate') : '';
-            return '';
-        },
-
-        onTokenSelected(token) {
-            this.selectedPayToken = token;
-        },
-
-        onSubmit(data) {
-            this.sellItem(data.values);
-        },
-
-        onTransactionStatus(payload) {
-            this.txStatus = payload.status;
-
-            if (this.txStatus === 'success') {
-                if (this.isSettingApproval) {
-                    // setting approval succeed, start listing tx
-                    this.tx = this.listTx;
-                } else {
-                    this.$notifications.add({
-                        type: 'success',
-                        text: this.$t('nftsellform.sellSuccess'),
-                    });
-                }
-            }
-
-            this.$emit('transaction-status', payload);
-        },
-
-        datetimeInFormatterTimestamp,
-        dateOutFormatterTimestamp,
+      return '';
     },
+
+    startingTimeValidator(value) {
+      console.log(value);
+      // const now = dayjs().valueOf();
+
+      // return dayjs(value).valueOf() <= now ? this.$t('nftsellform.badDate') : '';
+      return '';
+    },
+
+    onTokenSelected(token) {
+      this.selectedPayToken = token;
+    },
+
+    onSubmit(data) {
+      this.sellItem(data.values);
+    },
+
+    onTransactionStatus(payload) {
+      this.txStatus = payload.status;
+
+      if (this.txStatus === 'success') {
+        if (this.isSettingApproval) {
+          // setting approval succeed, start listing tx
+          this.tx = this.listTx;
+        } else {
+          this.$notifications.add({
+            type: 'success',
+            text: this.$t('nftsellform.sellSuccess'),
+          });
+        }
+      }
+
+      this.$emit('transaction-status', payload);
+    },
+
+    datetimeInFormatterTimestamp,
+    dateOutFormatterTimestamp,
+  },
 };
 </script>
 

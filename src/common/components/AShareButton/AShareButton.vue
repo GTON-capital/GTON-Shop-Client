@@ -1,46 +1,46 @@
 <template>
-    <div class="asharebutton">
-        <f-button
-            secondary
-            :id="buttonId"
-            @click.native="onButtonClick"
-            :data-tooltip="$t('ashareButton.share')"
-            :aria-label="$t('ashareButton.share')"
-        >
-            <app-iconset icon="share" original />
-        </f-button>
-        <f-popover
-            v-if="showModal"
-            ref="popover"
-            :attach-to="`#${buttonId}`"
-            attach-position="auto-vertical-exact"
-            :attach-margin="[0, 0, 0, 0]"
-            :prevent-focus="false"
-            animation-in="scale-center-enter-active"
-            animation-out="scale-center-leave-active"
-            hide-on-document-mousedown
-            class="asharebutton_window fdropdownlistbox_fwindow"
-            @window-hide="$emit('window-hide', $event)"
-        >
-            <f-listbox
-                :data="dShareItems"
-                ref="listbox"
-                :focus-item-on-focus="true"
-                class="asharebutton_flistbox"
-                @component-change="onListboxItemSelected"
-            >
-                <template v-slot="{ item }">
-                    <app-iconset size="24px" :icon="item.icon" original />
-                    {{ item.label }}
-                    <!--                    <div class="asharebutton_listitem" tabindex="0">
+  <div class="asharebutton">
+    <f-button
+      secondary
+      :id="buttonId"
+      @click.native="onButtonClick"
+      :data-tooltip="$t('ashareButton.share')"
+      :aria-label="$t('ashareButton.share')"
+    >
+      <app-iconset icon="share" original />
+    </f-button>
+    <f-popover
+      v-if="showModal"
+      ref="popover"
+      :attach-to="`#${buttonId}`"
+      attach-position="auto-vertical-exact"
+      :attach-margin="[0, 0, 0, 0]"
+      :prevent-focus="false"
+      animation-in="scale-center-enter-active"
+      animation-out="scale-center-leave-active"
+      hide-on-document-mousedown
+      class="asharebutton_window fdropdownlistbox_fwindow"
+      @window-hide="$emit('window-hide', $event)"
+    >
+      <f-listbox
+        :data="dShareItems"
+        ref="listbox"
+        :focus-item-on-focus="true"
+        class="asharebutton_flistbox"
+        @component-change="onListboxItemSelected"
+      >
+        <template v-slot="{ item }">
+          <app-iconset size="24px" :icon="item.icon" original />
+          {{ item.label }}
+          <!--                    <div class="asharebutton_listitem" tabindex="0">
                         <app-iconset size="32px" :icon="item.icon" original />
                         {{ item.label }}
                     </div>-->
-                </template>
-            </f-listbox>
-        </f-popover>
-        <!-- <f-notifications with-icon position="bottom-right" /> -->
-    </div>
+        </template>
+      </f-listbox>
+    </f-popover>
+    <!-- <f-notifications with-icon position="bottom-right" /> -->
+  </div>
 </template>
 <script>
 import AppIconset from '@/modules/app/components/AppIconset/AppIconset';
@@ -50,96 +50,96 @@ import FPopover from 'fantom-vue-components/src/components/FPopover/FPopover.vue
 import { getUniqueId, defer } from 'fantom-vue-components/src/utils';
 
 export default {
-    name: 'AShareButton',
+  name: 'AShareButton',
 
-    components: {
-        AppIconset,
-        FListbox,
-        FPopover,
-        //    FNotifications,
+  components: {
+    AppIconset,
+    FListbox,
+    FPopover,
+    //    FNotifications,
+  },
+
+  props: {
+    twitterText: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      buttonId: getUniqueId(),
+      showModal: true,
+      shareItems: [
+        {
+          label: this.$t('ashareButton.copy'),
+          icon: 'logo',
+          link: false,
+        },
+        {
+          label: this.$t('ashareButton.shareFacebook'),
+          icon: 'facebook',
+          link: 'https://www.facebook.com/sharer/sharer.php?u=',
+        },
+        {
+          label: this.$t('ashareButton.shareTwitter'),
+          icon: 'twitter',
+          link: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+            this.twitterText || this.$t('ashareButton.checkOutAccount')
+          )}&url=`,
+        },
+      ],
+    };
+  },
+
+  computed: {
+    dShareItems() {
+      return this.shareItems.map((item, idx) => {
+        // return { ...item, value: item.id, label: this.$t(item.label), id: undefined };
+        return { ...item, _idx: idx };
+      });
+    },
+  },
+
+  methods: {
+    onButtonClick() {
+      //this.$refs.popover.toggle();
+      //if(this.$refs.popover) this.$refs.listbox.focus();
+      this.$nextTick(() => {
+        const { $refs } = this;
+        $refs.popover.show();
+        defer(() => {
+          $refs.listbox.focus();
+        });
+      });
     },
 
-    props: {
-        twitterText: {
-            type: String,
-            default: '',
-        },
+    onListboxItemSelected(item) {
+      const currentLink = window.location.href;
+
+      if (item.link === false) {
+        this.copyToClickBoard(currentLink);
+        this.$notifications.add({
+          type: 'success',
+          text: this.$t('ashareButton.successCopied'),
+        });
+      } else {
+        const newLink = item.link + currentLink;
+        window.open(newLink);
+      }
+
+      this.$refs.popover.hide();
     },
 
-    data() {
-        return {
-            buttonId: getUniqueId(),
-            showModal: true,
-            shareItems: [
-                {
-                    label: this.$t('ashareButton.copy'),
-                    icon: 'logo',
-                    link: false,
-                },
-                {
-                    label: this.$t('ashareButton.shareFacebook'),
-                    icon: 'facebook',
-                    link: 'https://www.facebook.com/sharer/sharer.php?u=',
-                },
-                {
-                    label: this.$t('ashareButton.shareTwitter'),
-                    icon: 'twitter',
-                    link: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        this.twitterText || this.$t('ashareButton.checkOutAccount')
-                    )}&url=`,
-                },
-            ],
-        };
+    copyToClickBoard(link) {
+      let input = document.createElement('input');
+      document.body.appendChild(input);
+      input.value = link;
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
     },
-
-    computed: {
-        dShareItems() {
-            return this.shareItems.map((item, idx) => {
-                // return { ...item, value: item.id, label: this.$t(item.label), id: undefined };
-                return { ...item, _idx: idx };
-            });
-        },
-    },
-
-    methods: {
-        onButtonClick() {
-            //this.$refs.popover.toggle();
-            //if(this.$refs.popover) this.$refs.listbox.focus();
-            this.$nextTick(() => {
-                const { $refs } = this;
-                $refs.popover.show();
-                defer(() => {
-                    $refs.listbox.focus();
-                });
-            });
-        },
-
-        onListboxItemSelected(item) {
-            const currentLink = window.location.href;
-
-            if (item.link === false) {
-                this.copyToClickBoard(currentLink);
-                this.$notifications.add({
-                    type: 'success',
-                    text: this.$t('ashareButton.successCopied'),
-                });
-            } else {
-                const newLink = item.link + currentLink;
-                window.open(newLink);
-            }
-
-            this.$refs.popover.hide();
-        },
-
-        copyToClickBoard(link) {
-            let input = document.createElement('input');
-            document.body.appendChild(input);
-            input.value = link;
-            input.select();
-            document.execCommand('copy');
-            document.body.removeChild(input);
-        },
-    },
+  },
 };
 </script>
 <style lang="scss">

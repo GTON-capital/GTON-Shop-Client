@@ -1,7 +1,11 @@
 <template>
-    <f-placeholder v-bind="$attrs" animation="fplaceholder-pulsebganim" v-on="$listeners">
-        <slot></slot>
-    </f-placeholder>
+  <f-placeholder
+    v-bind="$attrs"
+    animation="fplaceholder-pulsebganim"
+    v-on="$listeners"
+  >
+    <slot></slot>
+  </f-placeholder>
 </template>
 
 <script>
@@ -11,10 +15,10 @@ import FPlaceholder from 'fantom-vue-components/src/components/FPlaceholder/FPla
  * FPlaceholder wrapper
  */
 export default {
-    name: 'APlaceholder',
+  name: 'APlaceholder',
 
-    components: { FPlaceholder },
+  components: { FPlaceholder },
 
-    inheritAttrs: false,
+  inheritAttrs: false,
 };
 </script>

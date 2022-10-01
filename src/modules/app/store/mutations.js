@@ -6,46 +6,46 @@ export const SET_AUTO_DARK_MODE = 'setAutoDarkMode';
 export const SET_RTL_DIRECTION = 'setRTLDirection';
 
 export const mutations = {
-    /**
-     * @param {AppState} state
-     * @param {string} languageCode
-     */
-    [SET_LANGUAGE](state, languageCode) {
-        state.language = languageCode;
-    },
-    /**
-     * @param {AppState} state
-     * @param {string} theme
-     */
-    [SET_THEME](state, theme) {
-        state.theme = theme;
-    },
-    /**
-     * @param {AppState} state
-     * @param {TxStatus} txStatus
-     */
-    [SET_TX_STATUS](state, txStatus) {
-        state.txStatus = txStatus;
-    },
-    /**
-     * @param {AppState} state
-     * @param {number} nftsDensity
-     */
-    [SET_NFTS_DENSITY](state, nftsDensity) {
-        state.nftsDensity = nftsDensity;
-    },
-    /**
-     * @param {AppState} state
-     * @param {boolean} autoDarkTheme
-     */
-    [SET_AUTO_DARK_MODE](state, autoDarkTheme) {
-        state.autoDarkTheme = autoDarkTheme;
-    },
-    /**
-     * @param {AppState} state
-     * @param {boolean} rtlDirection
-     */
-    [SET_RTL_DIRECTION](state, rtlDirection) {
-        state.rtlDirection = rtlDirection;
-    },
+  /**
+   * @param {AppState} state
+   * @param {string} languageCode
+   */
+  [SET_LANGUAGE](state, languageCode) {
+    state.language = languageCode;
+  },
+  /**
+   * @param {AppState} state
+   * @param {string} theme
+   */
+  [SET_THEME](state, theme) {
+    state.theme = theme;
+  },
+  /**
+   * @param {AppState} state
+   * @param {TxStatus} txStatus
+   */
+  [SET_TX_STATUS](state, txStatus) {
+    state.txStatus = txStatus;
+  },
+  /**
+   * @param {AppState} state
+   * @param {number} nftsDensity
+   */
+  [SET_NFTS_DENSITY](state, nftsDensity) {
+    state.nftsDensity = nftsDensity;
+  },
+  /**
+   * @param {AppState} state
+   * @param {boolean} autoDarkTheme
+   */
+  [SET_AUTO_DARK_MODE](state, autoDarkTheme) {
+    state.autoDarkTheme = autoDarkTheme;
+  },
+  /**
+   * @param {AppState} state
+   * @param {boolean} rtlDirection
+   */
+  [SET_RTL_DIRECTION](state, rtlDirection) {
+    state.rtlDirection = rtlDirection;
+  },
 };

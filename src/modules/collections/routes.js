@@ -5,34 +5,34 @@ import CollectionRegister from '@/modules/collections/views/CollectionRegister/C
 import { i18n } from '@/plugins/vue-i18n.js';
 
 export function getCollectionsRoutes() {
-    return [
+  return [
+    {
+      path: '/collection',
+      name: 'collection',
+      component: Collection,
+      children: [
         {
-            path: '/collection',
-            name: 'collection',
-            component: Collection,
-            children: [
-                {
-                    path: 'create',
-                    name: 'collection-create',
-                    component: CollectionCreate,
-                    meta: {
-                        title: i18n.t('page.collectionCreate.title'),
-                    },
-                },
-                {
-                    path: 'register',
-                    name: 'collection-register',
-                    component: CollectionRegister,
-                    meta: {
-                        title: i18n.t('page.collectionRegister.title'),
-                    },
-                },
-            ],
+          path: 'create',
+          name: 'collection-create',
+          component: CollectionCreate,
+          meta: {
+            title: i18n.t('page.collectionCreate.title'),
+          },
         },
         {
-            path: '/collections',
-            name: 'collections',
-            component: Collections,
+          path: 'register',
+          name: 'collection-register',
+          component: CollectionRegister,
+          meta: {
+            title: i18n.t('page.collectionRegister.title'),
+          },
         },
-    ];
+      ],
+    },
+    {
+      path: '/collections',
+      name: 'collections',
+      component: Collections,
+    },
+  ];
 }

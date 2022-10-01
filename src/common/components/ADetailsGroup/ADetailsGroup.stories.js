@@ -2,14 +2,14 @@ import ADetailsGroup from '@/common/components/ADetailsGroup/ADetailsGroup.vue';
 import ADetails from '@/common/components/ADetails/ADetails.vue';
 
 export default {
-    title: 'Components/ADetailsGroup',
-    components: ADetailsGroup,
+  title: 'Components/ADetailsGroup',
+  components: ADetailsGroup,
 };
 
 export const Default = () => ({
-    components: { ADetailsGroup, ADetails },
-    //language=HTML
-    template: `
+  components: { ADetailsGroup, ADetails },
+  //language=HTML
+  template: `
         <div style="max-width: 400px">
             <a-details-group>
                 <a-details label="Section 1">
@@ -30,9 +30,9 @@ export const Default = () => ({
 });
 
 export const Rounded = () => ({
-    components: { ADetailsGroup, ADetails },
-    //language=HTML
-    template: `
+  components: { ADetailsGroup, ADetails },
+  //language=HTML
+  template: `
         <div style="max-width: 400px">
             <a-details-group rounded>
                 <a-details label="Section 1">

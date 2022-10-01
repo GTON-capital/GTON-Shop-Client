@@ -1,19 +1,19 @@
 <template>
-    <f-listbox
-        :data="cCategories"
-        :value="parseInt(selected, 10)"
-        @component-change="onListboxItemSelected"
-        __multiselect
-        :aria-label="$t('categories')"
-        class="categoriesfilter"
-    >
-        <template v-slot="{ item }">
-            <div class="categoriesfilter_item tes-4">
-                <div v-html="item.icon"></div>
-                {{ item.name }}
-            </div>
-        </template>
-    </f-listbox>
+  <f-listbox
+    :data="cCategories"
+    :value="parseInt(selected, 10)"
+    @component-change="onListboxItemSelected"
+    __multiselect
+    :aria-label="$t('categories')"
+    class="categoriesfilter"
+  >
+    <template v-slot="{ item }">
+      <div class="categoriesfilter_item tes-4">
+        <div v-html="item.icon"></div>
+        {{ item.name }}
+      </div>
+    </template>
+  </f-listbox>
 </template>
 
 <script>
@@ -21,48 +21,48 @@ import { CATEGORIES } from '@/common/constants/categories.js';
 import FListbox from 'fantom-vue-components/src/components/FListbox/FListbox.vue';
 
 export default {
-    name: 'CategoriesFilter',
+  name: 'CategoriesFilter',
 
-    components: { FListbox },
+  components: { FListbox },
 
-    model: {
-        prop: 'selected',
-        event: 'change',
+  model: {
+    prop: 'selected',
+    event: 'change',
+  },
+
+  props: {
+    /** @type {Category[]} */
+    categories: {
+      type: Array,
+      default() {
+        return CATEGORIES();
+      },
     },
-
-    props: {
-        /** @type {Category[]} */
-        categories: {
-            type: Array,
-            default() {
-                return CATEGORIES();
-            },
-        },
-        selected: {
-            // type: [Array, String],
-            type: [Number, String],
-            default: '',
-        },
+    selected: {
+      // type: [Array, String],
+      type: [Number, String],
+      default: '',
     },
+  },
 
-    computed: {
-        cCategories() {
-            return this.categories.map((category, idx) => {
-                // return { ...category, value: category.id, label: this.$t(category.label), id: undefined };
-                return { ...category, value: category.id, id: undefined, _idx: idx };
-            });
-        },
+  computed: {
+    cCategories() {
+      return this.categories.map((category, idx) => {
+        // return { ...category, value: category.id, label: this.$t(category.label), id: undefined };
+        return { ...category, value: category.id, id: undefined, _idx: idx };
+      });
     },
+  },
 
-    methods: {
-        onListboxItemSelected(item) {
-            this.$emit('change', this.categories[item._idx].id);
-            /*this.$emit(
+  methods: {
+    onListboxItemSelected(item) {
+      this.$emit('change', this.categories[item._idx].id);
+      /*this.$emit(
                 'change',
                 items.map(item => item.value)
             );*/
-        },
     },
+  },
 };
 </script>
 

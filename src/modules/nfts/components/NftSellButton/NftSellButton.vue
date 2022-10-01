@@ -1,17 +1,25 @@
 <template>
-    <div class="nftsellbutton">
-        <a-button :label="$t('nftsellbutton.sell')" :loading="txStatus === 'pending'" @click.native="onButtonClick" />
+  <div class="nftsellbutton">
+    <a-button
+      :label="$t('nftsellbutton.sell')"
+      :loading="txStatus === 'pending'"
+      @click.native="onButtonClick"
+    />
 
-        <a-tx-window ref="window" :title="$t('nftsellwindow.sellItem')" v-slot="{ onTxStatus }">
-            <nft-sell-form
-                :token="token"
-                @transaction-status="
-                    onTxStatus($event);
-                    onTransactionStatus($event);
-                "
-            />
-        </a-tx-window>
-    </div>
+    <a-tx-window
+      ref="window"
+      :title="$t('nftsellwindow.sellItem')"
+      v-slot="{ onTxStatus }"
+    >
+      <nft-sell-form
+        :token="token"
+        @transaction-status="
+          onTxStatus($event);
+          onTransactionStatus($event);
+        "
+      />
+    </a-tx-window>
+  </div>
 </template>
 
 <script>
@@ -20,38 +28,38 @@ import ATxWindow from '@/common/components/ATxWindow/ATxWindow.vue';
 import NftSellForm from '@/modules/nfts/components/NftSellForm/NftSellForm.vue';
 
 export default {
-    name: 'NftSellButton',
+  name: 'NftSellButton',
 
-    components: { NftSellForm, ATxWindow, AButton },
+  components: { NftSellForm, ATxWindow, AButton },
 
-    props: {
-        token: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
+  props: {
+    token: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+
+  data() {
+    return {
+      txStatus: '',
+    };
+  },
+
+  methods: {
+    onButtonClick() {
+      this.$refs.window.show();
     },
 
-    data() {
-        return {
-            txStatus: '',
-        };
+    onTransactionStatus(payload) {
+      console.log('transaction status', payload);
+      this.txStatus = payload.status;
+
+      if (this.txStatus === 'success') {
+        this.$emit('tx-success');
+      }
     },
-
-    methods: {
-        onButtonClick() {
-            this.$refs.window.show();
-        },
-
-        onTransactionStatus(payload) {
-            console.log('transaction status', payload);
-            this.txStatus = payload.status;
-
-            if (this.txStatus === 'success') {
-                this.$emit('tx-success');
-            }
-        },
-    },
+  },
 };
 </script>

@@ -1,32 +1,32 @@
 @mixin filter-item($className) {
+  .#{$className} {
+    --flistbox-item-background-color: none;
+
+    max-height: 360px;
+    overflow: auto;
+
+    &_item {
+      display: flex;
+      align-items: center;
+      gap: var(--f-spacer-4);
+    }
+
+    .flistbox_list_item {
+      padding: var(--f-spacer-1) var(--filter-item-padding);
+
+      &:not([aria-selected]) {
+        background: none;
+      }
+    }
+  }
+
+  .no-flexgap {
     .#{$className} {
-        --flistbox-item-background-color: none;
-
-        max-height: 360px;
-        overflow: auto;
-
-        &_item {
-            display: flex;
-            align-items: center;
-            gap: var(--f-spacer-4);
+      &_item {
+        > *:not(:last-child) {
+          margin-inline-end: var(--f-spacer-4);
         }
-
-        .flistbox_list_item {
-            padding: var(--f-spacer-1) var(--filter-item-padding);
-
-            &:not([aria-selected]) {
-                background: none;
-            }
-        }
+      }
     }
-
-    .no-flexgap {
-        .#{$className} {
-            &_item {
-                > *:not(:last-child) {
-                    margin-inline-end: var(--f-spacer-4);
-                }
-            }
-        }
-    }
+  }
 }

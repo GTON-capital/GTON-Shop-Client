@@ -7,16 +7,16 @@ import { toHex } from '@/utils/big-number.js';
  * @param {string} tokenId
  */
 export async function likeToken({ contract = '', tokenId = '' }) {
-    const mutation = {
-        mutation: gql`
-            mutation LikeToken($contract: Address!, $tokenId: BigInt!) {
-                likeToken(contract: $contract, tokenId: $tokenId)
-            }
-        `,
-        variables: { contract, tokenId: toHex(tokenId) },
-    };
+  const mutation = {
+    mutation: gql`
+      mutation LikeToken($contract: Address!, $tokenId: BigInt!) {
+        likeToken(contract: $contract, tokenId: $tokenId)
+      }
+    `,
+    variables: { contract, tokenId: toHex(tokenId) },
+  };
 
-    return gqlMutation(mutation, 'likeToken');
+  return gqlMutation(mutation, 'likeToken');
 }
 
 /**
@@ -24,14 +24,14 @@ export async function likeToken({ contract = '', tokenId = '' }) {
  * @param {string} tokenId
  */
 export async function unlikeToken({ contract = '', tokenId = '' }) {
-    const mutation = {
-        mutation: gql`
-            mutation UnlikeToken($contract: Address!, $tokenId: BigInt!) {
-                unlikeToken(contract: $contract, tokenId: $tokenId)
-            }
-        `,
-        variables: { contract, tokenId: toHex(tokenId) },
-    };
+  const mutation = {
+    mutation: gql`
+      mutation UnlikeToken($contract: Address!, $tokenId: BigInt!) {
+        unlikeToken(contract: $contract, tokenId: $tokenId)
+      }
+    `,
+    variables: { contract, tokenId: toHex(tokenId) },
+  };
 
-    return gqlMutation(mutation, 'unlikeToken');
+  return gqlMutation(mutation, 'unlikeToken');
 }

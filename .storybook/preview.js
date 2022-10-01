@@ -14,41 +14,41 @@ import store from '@/store';
 import '../src/global-components.js';
 
 const decor = (story, context) => {
-    const wrapped = story(context);
+  const wrapped = story(context);
 
-    return Vue.extend({
-        i18n,
-        store,
-        apolloProvider,
-        components: { wrapped, FTooltip, FNotifications },
-        template: `
+  return Vue.extend({
+    i18n,
+    store,
+    apolloProvider,
+    components: { wrapped, FTooltip, FNotifications },
+    template: `
             <div>
                 <wrapped />
                 <f-tooltip with-arrow hide-on-document-scroll />
             </div>
         `,
-    });
+  });
 };
 
 addParameters({
-    a11y: {
-        // optional selector which element to inspect
-        element: '#root',
-        // axe-core configurationOptions (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#parameters-1)
-        config: {},
-        // axe-core optionsParameter (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#options-parameter)
-        options: {},
-        // optional flag to prevent the automatic check
-        manual: false,
-    },
-    themes: {
-        default: '',
-        list: [
-            { name: 'dark', class: 'theme-dark', color: '#202225' },
-            { name: 'PG', class: 'theme-pg', color: '#090c10' },
-        ],
-        target: 'root',
-    },
+  a11y: {
+    // optional selector which element to inspect
+    element: '#root',
+    // axe-core configurationOptions (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#parameters-1)
+    config: {},
+    // axe-core optionsParameter (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#options-parameter)
+    options: {},
+    // optional flag to prevent the automatic check
+    manual: false,
+  },
+  themes: {
+    default: '',
+    list: [
+      { name: 'dark', class: 'theme-dark', color: '#202225' },
+      { name: 'PG', class: 'theme-pg', color: '#090c10' },
+    ],
+    target: 'root',
+  },
 });
 
 addDecorator(withDirection);

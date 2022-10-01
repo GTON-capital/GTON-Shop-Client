@@ -16,123 +16,123 @@ import AccountBannedTokens from '@/modules/account/views/AccountBannedTokens/Acc
 import AccountCollections from '@/modules/account/views/AccountCollections/AccountCollections.vue';
 
 export function getAccountRoutes() {
-    return [
+  return [
+    {
+      path: '/account/:address?',
+      name: 'account',
+      component: Account,
+      redirect: { name: 'account-single-items' },
+      children: [
         {
-            path: '/account/:address?',
-            name: 'account',
-            component: Account,
-            redirect: { name: 'account-single-items' },
-            children: [
-                {
-                    path: '/account/:address?/singleitems',
-                    name: 'account-single-items',
-                    component: AccountSingleItems,
-                    meta: {
-                        title: i18n.t('page.accountSingleItems.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/created',
-                    name: 'account-created',
-                    component: AccountCreated,
-                    meta: {
-                        title: i18n.t('page.accountCreated.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/favorited',
-                    name: 'account-favorited',
-                    component: AccountFavorited,
-                    meta: {
-                        title: i18n.t('page.accountFavorited.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/activity',
-                    name: 'account-activity',
-                    component: AccountActivity,
-                    meta: {
-                        title: i18n.t('page.accountActivity.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/hidden',
-                    name: 'account-hidden',
-                    component: AccountHidden,
-                    meta: {
-                        title: i18n.t('page.accountHidden.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/offers',
-                    name: 'account-offers',
-                    component: AccountOffers,
-                    meta: {
-                        title: i18n.t('page.accountOffers.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/myoffers',
-                    name: 'account-my-offers',
-                    component: AccountMyOffers,
-                    meta: {
-                        title: i18n.t('page.accountMyOffers.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/banned-tokens',
-                    name: 'account-banned-tokens',
-                    component: AccountBannedTokens,
-                    meta: {
-                        title: i18n.t('page.accountBannedTokens.title'),
-                    },
-                },
-                {
-                    path: '/account/:address?/collections',
-                    name: 'account-collections',
-                    component: AccountCollections,
-                    meta: {
-                        title: i18n.t('page.accountCollections.title'),
-                    },
-                },
-            ],
+          path: '/account/:address?/singleitems',
+          name: 'account-single-items',
+          component: AccountSingleItems,
+          meta: {
+            title: i18n.t('page.accountSingleItems.title'),
+          },
         },
         {
-            path: '/account/settings',
-            name: 'account-settings',
-            redirect: { name: 'account-settings-profile' },
-            component: AccountSettings,
-            meta: {
-                //    auth: true, // needs authorization
-                title: i18n.t('your_profile'),
-            },
-            children: [
-                {
-                    path: 'profile',
-                    name: 'account-settings-profile',
-                    component: AccountSettingsProfile,
-                    meta: {
-                        auth: true, // needs authorization
-                        title: i18n.t('accountsettingsprofile.title'),
-                    },
-                },
-                {
-                    path: 'notifications',
-                    name: 'account-settings-notifications',
-                    component: NotificationSettings,
-                    meta: {
-                        title: i18n.t('notificationsettings.title'),
-                    },
-                },
-                {
-                    path: 'appearance',
-                    name: 'account-settings-appearance',
-                    component: AppearanceSettings,
-                    meta: {
-                        title: i18n.t('appearancesettings.title'),
-                    },
-                },
-            ],
+          path: '/account/:address?/created',
+          name: 'account-created',
+          component: AccountCreated,
+          meta: {
+            title: i18n.t('page.accountCreated.title'),
+          },
         },
-    ];
+        {
+          path: '/account/:address?/favorited',
+          name: 'account-favorited',
+          component: AccountFavorited,
+          meta: {
+            title: i18n.t('page.accountFavorited.title'),
+          },
+        },
+        {
+          path: '/account/:address?/activity',
+          name: 'account-activity',
+          component: AccountActivity,
+          meta: {
+            title: i18n.t('page.accountActivity.title'),
+          },
+        },
+        {
+          path: '/account/:address?/hidden',
+          name: 'account-hidden',
+          component: AccountHidden,
+          meta: {
+            title: i18n.t('page.accountHidden.title'),
+          },
+        },
+        {
+          path: '/account/:address?/offers',
+          name: 'account-offers',
+          component: AccountOffers,
+          meta: {
+            title: i18n.t('page.accountOffers.title'),
+          },
+        },
+        {
+          path: '/account/:address?/myoffers',
+          name: 'account-my-offers',
+          component: AccountMyOffers,
+          meta: {
+            title: i18n.t('page.accountMyOffers.title'),
+          },
+        },
+        {
+          path: '/account/:address?/banned-tokens',
+          name: 'account-banned-tokens',
+          component: AccountBannedTokens,
+          meta: {
+            title: i18n.t('page.accountBannedTokens.title'),
+          },
+        },
+        {
+          path: '/account/:address?/collections',
+          name: 'account-collections',
+          component: AccountCollections,
+          meta: {
+            title: i18n.t('page.accountCollections.title'),
+          },
+        },
+      ],
+    },
+    {
+      path: '/account/settings',
+      name: 'account-settings',
+      redirect: { name: 'account-settings-profile' },
+      component: AccountSettings,
+      meta: {
+        //    auth: true, // needs authorization
+        title: i18n.t('your_profile'),
+      },
+      children: [
+        {
+          path: 'profile',
+          name: 'account-settings-profile',
+          component: AccountSettingsProfile,
+          meta: {
+            auth: true, // needs authorization
+            title: i18n.t('accountsettingsprofile.title'),
+          },
+        },
+        {
+          path: 'notifications',
+          name: 'account-settings-notifications',
+          component: NotificationSettings,
+          meta: {
+            title: i18n.t('notificationsettings.title'),
+          },
+        },
+        {
+          path: 'appearance',
+          name: 'account-settings-appearance',
+          component: AppearanceSettings,
+          meta: {
+            title: i18n.t('appearancesettings.title'),
+          },
+        },
+      ],
+    },
+  ];
 }

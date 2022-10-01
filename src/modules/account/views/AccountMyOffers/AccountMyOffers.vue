@@ -1,29 +1,31 @@
 <template>
-    <div class="accountmyoffers">
-        <h2 class="not-visible" data-focus>{{ $t('page.accountMyOffers.title') }}</h2>
+  <div class="accountmyoffers">
+    <h2 class="not-visible" data-focus>
+      {{ $t('page.accountMyOffers.title') }}
+    </h2>
 
-        <account-my-offers-grid :user-address="userAddress" />
-    </div>
+    <account-my-offers-grid :user-address="userAddress" />
+  </div>
 </template>
 
 <script>
 import AccountMyOffersGrid from '@/modules/account/components/AccountMyOffersGrid/AccountMyOffersGrid.vue';
 import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 export default {
-    name: 'AccountMyOffers',
+  name: 'AccountMyOffers',
 
-    components: { AccountMyOffersGrid },
+  components: { AccountMyOffersGrid },
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
-        },
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
     },
+  },
 
-    mounted() {
-        focusElem(this.$el);
-    },
+  mounted() {
+    focusElem(this.$el);
+  },
 };
 </script>

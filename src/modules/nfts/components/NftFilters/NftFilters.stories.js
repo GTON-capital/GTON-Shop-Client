@@ -2,14 +2,14 @@ import NftFilters from '@/modules/nfts/components/NftFilters/NftFilters.vue';
 import FButton from 'fantom-vue-components/src/components/FButton/FButton.vue';
 
 export default {
-    title: 'Components/NftFilters',
-    components: NftFilters,
+  title: 'Components/NftFilters',
+  components: NftFilters,
 };
 
 export const Default = () => ({
-    components: { NftFilters },
-    //language=HTML
-    template: `
+  components: { NftFilters },
+  //language=HTML
+  template: `
         <div style="max-width: 365px">
             <nft-filters />
         </div>
@@ -17,9 +17,9 @@ export const Default = () => ({
 });
 
 export const Filters = () => ({
-    components: { NftFilters },
-    //language=HTML
-    template: `
+  components: { NftFilters },
+  //language=HTML
+  template: `
         <div style="max-width: 365px">
             <nft-filters :filters="{ category: 1, collections: ['rarity-crafting'], status: ['has_bids'] }" />
         </div>
@@ -27,9 +27,9 @@ export const Filters = () => ({
 });
 
 export const Model = () => ({
-    components: { NftFilters, FButton },
-    //language=HTML
-    template: `
+  components: { NftFilters, FButton },
+  //language=HTML
+  template: `
         <div class="grid" style="max-width: 750px">
             <nft-filters v-model="filters" class="col-6" />
             <div class="col-6 tes-4">
@@ -40,9 +40,13 @@ export const Model = () => ({
             </div>
         </div>
     `,
-    data() {
-        return {
-            filters: { category: 1, collections: ['rarity-crafting'], status: ['has_bids'] },
-        };
-    },
+  data() {
+    return {
+      filters: {
+        category: 1,
+        collections: ['rarity-crafting'],
+        status: ['has_bids'],
+      },
+    };
+  },
 });

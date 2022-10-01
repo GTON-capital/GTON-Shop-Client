@@ -5,11 +5,11 @@ import { artionFApolloClient } from '@/plugins/apollo/apollo-provider.js';
  * @return {string}
  */
 export function getImageThumbUrl(imageThumbUrl) {
-    if (!imageThumbUrl) {
-        return '';
-    }
+  if (!imageThumbUrl) {
+    return '';
+  }
 
-    return `${artionFApolloClient.getCurrentHttpProviderOrigin()}${imageThumbUrl}`;
+  return `${artionFApolloClient.getCurrentHttpProviderOrigin()}${imageThumbUrl}`;
 }
 
 /**
@@ -17,11 +17,11 @@ export function getImageThumbUrl(imageThumbUrl) {
  * @return {string}
  */
 export function getCollectionImageUrl(contract) {
-    if (!contract) {
-        return '';
-    }
+  if (!contract) {
+    return '';
+  }
 
-    return `${artionFApolloClient.getCurrentHttpProviderOrigin()}/images/collection/${contract}/`;
+  return `${artionFApolloClient.getCurrentHttpProviderOrigin()}/images/collection/${contract}/`;
 }
 
 /**
@@ -29,11 +29,11 @@ export function getCollectionImageUrl(contract) {
  * @return {string}
  */
 export function getIPFSUrl(hash) {
-    if (!hash) {
-        return '';
-    }
+  if (!hash) {
+    return '';
+  }
 
-    return `https://cloudflare-ipfs.com/ipfs/${hash}`;
+  return `https://cloudflare-ipfs.com/ipfs/${hash}`;
 }
 
 /**
@@ -42,9 +42,9 @@ export function getIPFSUrl(hash) {
  * @return {string}
  */
 export function getTokenJsonMetadataUrl(contract, tokenId) {
-    if (!contract || !tokenId) {
-        return '';
-    }
+  if (!contract || !tokenId) {
+    return '';
+  }
 
-    return `${artionFApolloClient.getCurrentHttpProviderOrigin()}/metadata/token/${contract}/${tokenId}`;
+  return `${artionFApolloClient.getCurrentHttpProviderOrigin()}/metadata/token/${contract}/${tokenId}`;
 }

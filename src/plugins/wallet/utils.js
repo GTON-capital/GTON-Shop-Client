@@ -15,22 +15,22 @@ const eventBus = new EventBus();
  * @return {Promise<boolean>}
  */
 export async function checkWallet() {
-    let ok = false;
+  let ok = false;
 
-    if (!wallet.connected) {
-        const payload = {};
+  if (!wallet.connected) {
+    const payload = {};
 
-        eventBus.emit('show-wallet-picker', payload);
+    eventBus.emit('show-wallet-picker', payload);
 
-        const walletInfo = await payload.promise;
-        if (walletInfo && walletInfo.walletSet) {
-            ok = true;
-        }
-    } else {
-        ok = true;
+    const walletInfo = await payload.promise;
+    if (walletInfo && walletInfo.walletSet) {
+      ok = true;
     }
+  } else {
+    ok = true;
+  }
 
-    return ok;
+  return ok;
 }
 
 /**
@@ -39,21 +39,21 @@ export async function checkWallet() {
  * @return {Promise<null|BigNumber>}
  */
 export async function getUserBalance(tokenAddress = '', userAddress = '') {
-    let walletAddress = userAddress;
+  let walletAddress = userAddress;
 
-    if (!walletAddress) {
-        const walletOk = await checkWallet();
+  if (!walletAddress) {
+    const walletOk = await checkWallet();
 
-        if (walletOk) {
-            walletAddress = wallet.account;
-        }
+    if (walletOk) {
+      walletAddress = wallet.account;
     }
+  }
 
-    if (walletAddress) {
-        return toBigNumber(await getErc20TokenBalance(walletAddress, tokenAddress));
-    }
+  if (walletAddress) {
+    return toBigNumber(await getErc20TokenBalance(walletAddress, tokenAddress));
+  }
 
-    return null;
+  return null;
 }
 
 /**
@@ -65,22 +65,22 @@ export async function getUserBalance(tokenAddress = '', userAddress = '') {
  * @return {Promise<null|BigNumber>} null or balance
  */
 export async function checkUserBalance(value, tokenAddress, tokenSymbol) {
-    console.log('checking user balance...', value, tokenSymbol);
-    const balance = await getUserBalance(tokenAddress);
+  console.log('checking user balance...', value, tokenSymbol);
+  const balance = await getUserBalance(tokenAddress);
 
-    if (toBigNumber(value).isGreaterThan(balance)) {
-        notifications.add({
-            text: tokenSymbol
-                ? i18n.t('insufficientTokenBalance', { token: tokenSymbol })
-                : i18n.t('insufficientBalance'),
-            type: 'error',
-        });
+  if (toBigNumber(value).isGreaterThan(balance)) {
+    notifications.add({
+      text: tokenSymbol
+        ? i18n.t('insufficientTokenBalance', { token: tokenSymbol })
+        : i18n.t('insufficientBalance'),
+      type: 'error',
+    });
 
-        return null;
-    }
+    return null;
+  }
 
-    console.log('user balance is sufficient - it is ', balance, tokenSymbol);
-    return balance;
+  console.log('user balance is sufficient - it is ', balance, tokenSymbol);
+  return balance;
 }
 
 /**
@@ -89,22 +89,28 @@ export async function checkUserBalance(value, tokenAddress, tokenSymbol) {
  * @param {string} [userAddress] If not set, current wallet address will be taken
  * @return {Promise<null|BigNumber>}
  */
-export async function getUserAllowance(tokenAddress = '', contract = '', userAddress = '') {
-    let walletAddress = userAddress;
+export async function getUserAllowance(
+  tokenAddress = '',
+  contract = '',
+  userAddress = ''
+) {
+  let walletAddress = userAddress;
 
-    if (!walletAddress) {
-        const walletOk = await checkWallet();
+  if (!walletAddress) {
+    const walletOk = await checkWallet();
 
-        if (walletOk) {
-            walletAddress = wallet.account;
-        }
+    if (walletOk) {
+      walletAddress = wallet.account;
     }
+  }
 
-    if (walletAddress) {
-        return toBigNumber(await getErc20TokenAllowance(walletAddress, tokenAddress, contract));
-    }
+  if (walletAddress) {
+    return toBigNumber(
+      await getErc20TokenAllowance(walletAddress, tokenAddress, contract)
+    );
+  }
 
-    return null;
+  return null;
 }
 
 /**
@@ -116,29 +122,37 @@ export async function getUserAllowance(tokenAddress = '', contract = '', userAdd
  * @return {Promise<null|{data: string, chainId: string, to: string, value: string}>}
  */
 export async function getUserAllowanceTx({
-    value = '',
-    tokenAddress = '',
-    contract = '',
-    txCode = 'allowance',
-    approve = false,
+  value = '',
+  tokenAddress = '',
+  contract = '',
+  txCode = 'allowance',
+  approve = false,
 }) {
-    const bAllowance = await getUserAllowance(tokenAddress, contract);
-    // const bAllowance = allowance ? toBigNumber(allowance) : null;
-    const bValue = toBigNumber(value);
+  const bAllowance = await getUserAllowance(tokenAddress, contract);
+  // const bAllowance = allowance ? toBigNumber(allowance) : null;
+  const bValue = toBigNumber(value);
 
-    console.log('increasing payToken allowence by ', value, ' = ', bValue);
+  console.log('increasing payToken allowence by ', value, ' = ', bValue);
 
-    if (!bAllowance || bValue.isGreaterThan(bAllowance)) {
-        const tx = !approve
-            ? erc20Utils.erc20IncreaseAllowanceTx(tokenAddress, contract, toHex(bValue.plus(10)))
-            : erc20Utils.erc20ApproveTx(tokenAddress, contract, toHex(bValue.plus(10)));
+  if (!bAllowance || bValue.isGreaterThan(bAllowance)) {
+    const tx = !approve
+      ? erc20Utils.erc20IncreaseAllowanceTx(
+          tokenAddress,
+          contract,
+          toHex(bValue.plus(10))
+        )
+      : erc20Utils.erc20ApproveTx(
+          tokenAddress,
+          contract,
+          toHex(bValue.plus(10))
+        );
 
-        tx._code = txCode;
+    tx._code = txCode;
 
-        return tx;
-    }
+    return tx;
+  }
 
-    return null;
+  return null;
 }
 
 /*

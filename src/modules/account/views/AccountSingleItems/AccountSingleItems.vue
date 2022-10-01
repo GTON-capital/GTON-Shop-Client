@@ -1,9 +1,11 @@
 <template>
-    <div class="accountsingleitems">
-        <h2 class="not-visible" data-focus>{{ $t('page.accountSingleItems.title') }}</h2>
+  <div class="accountsingleitems">
+    <h2 class="not-visible" data-focus>
+      {{ $t('page.accountSingleItems.title') }}
+    </h2>
 
-        <user-collected-list :user-address="userAddress" v-on="$listeners" />
-    </div>
+    <user-collected-list :user-address="userAddress" v-on="$listeners" />
+  </div>
 </template>
 
 <script>
@@ -11,20 +13,20 @@ import UserCollectedList from '@/modules/account/components/UserCollectedList/Us
 import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 
 export default {
-    name: 'AccountSingleItems',
+  name: 'AccountSingleItems',
 
-    components: { UserCollectedList },
+  components: { UserCollectedList },
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
-        },
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
     },
+  },
 
-    mounted() {
-        focusElem(this.$el);
-    },
+  mounted() {
+    focusElem(this.$el);
+  },
 };
 </script>

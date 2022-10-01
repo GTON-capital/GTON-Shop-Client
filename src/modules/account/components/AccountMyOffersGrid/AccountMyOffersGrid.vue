@@ -1,46 +1,53 @@
 <template>
-    <div class="accountmyoffersgrid">
-        <f-data-grid
-            ref="grid"
-            infinite-scroll
-            strategy="remote"
-            no-header
-            sticky-head
-            class="agrid nfttmpgrid"
-            __max-height="400px"
-            __infinite-scroll-root=".nfttmpgrid .fdatagrid_table"
-            :caption="$t('page.accountMyOffers.title')"
-            :items="items"
-            :columns="columns"
-            :total-items="totalItems"
-            :per-page="perPage"
-            @change="_onGridPageChange"
+  <div class="accountmyoffersgrid">
+    <f-data-grid
+      ref="grid"
+      infinite-scroll
+      strategy="remote"
+      no-header
+      sticky-head
+      class="agrid nfttmpgrid"
+      __max-height="400px"
+      __infinite-scroll-root=".nfttmpgrid .fdatagrid_table"
+      :caption="$t('page.accountMyOffers.title')"
+      :items="items"
+      :columns="columns"
+      :total-items="totalItems"
+      :per-page="perPage"
+      @change="_onGridPageChange"
+    >
+      <template #column-token="{ item }">
+        <router-link
+          v-if="item.token"
+          :to="{
+            name: 'nft-detail',
+            params: { tokenContract: item.contract, tokenId: item.tokenId },
+          }"
         >
-            <template #column-token="{ item }">
-                <router-link
-                    v-if="item.token"
-                    :to="{ name: 'nft-detail', params: { tokenContract: item.contract, tokenId: item.tokenId } }"
-                >
-                    <a-address :address="item.token.contract" :name="item.token.name" :image="item.token.imageThumb" />
-                </router-link>
-            </template>
-            <template #column-unitPrice="{ item, value }">
-                <a-token-value
-                    :token="item.payToken"
-                    :value="value"
-                    :fraction-digits="2"
-                    :use-placeholder="false"
-                    no-symbol
-                />
-            </template>
-            <template #column-quantity="{ value }">
-                {{ transformQty(value) }}
-            </template>
-            <template #column-deadline="{ value }">
-                {{ value }}
-            </template>
-        </f-data-grid>
-    </div>
+          <a-address
+            :address="item.token.contract"
+            :name="item.token.name"
+            :image="item.token.imageThumb"
+          />
+        </router-link>
+      </template>
+      <template #column-unitPrice="{ item, value }">
+        <a-token-value
+          :token="item.payToken"
+          :value="value"
+          :fraction-digits="2"
+          :use-placeholder="false"
+          no-symbol
+        />
+      </template>
+      <template #column-quantity="{ value }">
+        {{ transformQty(value) }}
+      </template>
+      <template #column-deadline="{ value }">
+        {{ value }}
+      </template>
+    </f-data-grid>
+  </div>
 </template>
 
 <script>
@@ -53,85 +60,85 @@ import { datetimeFormatter } from '@/utils/formatters.js';
 import { getUserMyOffers } from '@/modules/account/queries/user-tokens-offers';
 
 export default {
-    name: 'AccountMyOffersGrid',
+  name: 'AccountMyOffersGrid',
 
-    components: { FDataGrid, AAddress, ATokenValue },
+  components: { FDataGrid, AAddress, ATokenValue },
 
-    mixins: [dataPageMixin],
+  mixins: [dataPageMixin],
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      columns: [
+        {
+          name: 'token',
+          label: this.$t('accountoffersgrid.item'),
         },
+        {
+          name: 'unitPrice',
+          label: this.$t('accountoffersgrid.price'),
+        },
+        {
+          name: 'quantity',
+          label: this.$t('accountoffersgrid.qty'),
+        },
+        {
+          name: 'deadline',
+          label: this.$t('accountoffersgrid.deadline'),
+          formatter(value) {
+            return datetimeFormatter(value);
+          },
+        },
+      ],
+    };
+  },
+
+  watch: {
+    userAddress: {
+      handler(value) {
+        if (value) {
+          this.loadMyOffers();
+        } else {
+          this.loading = true;
+        }
+      },
+      immediate: true,
     },
 
-    data() {
-        return {
-            columns: [
-                {
-                    name: 'token',
-                    label: this.$t('accountoffersgrid.item'),
-                },
-                {
-                    name: 'unitPrice',
-                    label: this.$t('accountoffersgrid.price'),
-                },
-                {
-                    name: 'quantity',
-                    label: this.$t('accountoffersgrid.qty'),
-                },
-                {
-                    name: 'deadline',
-                    label: this.$t('accountoffersgrid.deadline'),
-                    formatter(value) {
-                        return datetimeFormatter(value);
-                    },
-                },
-            ],
-        };
+    loading(value) {
+      this.$emit('loading', value);
+    },
+  },
+
+  methods: {
+    async loadPage(pagination = { first: this.perPage }) {
+      return await getUserMyOffers(this.userAddress, pagination);
     },
 
-    watch: {
-        userAddress: {
-            handler(value) {
-                if (value) {
-                    this.loadMyOffers();
-                } else {
-                    this.loading = true;
-                }
-            },
-            immediate: true,
-        },
-
-        loading(value) {
-            this.$emit('loading', value);
-        },
+    async loadMyOffers() {
+      await this._loadPage();
     },
 
-    methods: {
-        async loadPage(pagination = { first: this.perPage }) {
-            return await getUserMyOffers(this.userAddress, pagination);
-        },
-
-        async loadMyOffers() {
-            await this._loadPage();
-        },
-
-        transformQty(value) {
-            if (!value) return '';
-            return toInt(value);
-        },
-
-        update() {
-            this.pageInfo = {};
-            this.items = [];
-            this.$nextTick(() => {
-                this.$refs.grid.goToPageNum(1);
-            });
-        },
+    transformQty(value) {
+      if (!value) return '';
+      return toInt(value);
     },
+
+    update() {
+      this.pageInfo = {};
+      this.items = [];
+      this.$nextTick(() => {
+        this.$refs.grid.goToPageNum(1);
+      });
+    },
+  },
 };
 </script>
 

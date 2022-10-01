@@ -1,52 +1,63 @@
 <template>
-    <div class="explore" :class="{ no_aside: isSideClose }">
-        <h1 class="not-visible" data-focus>{{ $t('page.explore.title') }}</h1>
+  <div class="explore" :class="{ no_aside: isSideClose }">
+    <h1 class="not-visible" data-focus>{{ $t('page.explore.title') }}</h1>
 
-        <div class="explore_sidebar" :class="{ close: isSideClose }">
-            <aside class="explore_sidebar_cont" :aria-label="$t('page.explore.filters')">
-                <div class="h3 explore_sidebar_wrap">
-                    <button
-                        :aria-label="$t('page.explore.filters')"
-                        @click="isSideClose = !isSideClose"
-                        class="btn-nostyle"
-                    >
-                        <span class="explore_sidebar_label">{{ $t('page.explore.filters') }}</span>
-                        <span class="explore_sidebar_icon">
-                            <app-iconset icon="filter-arrow" rotate="180deg" size="24px" />
-                        </span>
-                    </button>
-                </div>
-                <nft-filters v-model="filters" />
-            </aside>
+    <div class="explore_sidebar" :class="{ close: isSideClose }">
+      <aside
+        class="explore_sidebar_cont"
+        :aria-label="$t('page.explore.filters')"
+      >
+        <div class="h3 explore_sidebar_wrap">
+          <button
+            :aria-label="$t('page.explore.filters')"
+            @click="isSideClose = !isSideClose"
+            class="btn-nostyle"
+          >
+            <span class="explore_sidebar_label">{{
+              $t('page.explore.filters')
+            }}</span>
+            <span class="explore_sidebar_icon">
+              <app-iconset icon="filter-arrow" rotate="180deg" size="24px" />
+            </span>
+          </button>
         </div>
-        <div>
-            <section :aria-label="$t('page.explore.filters')">
-                <div class="explore_nftlist_header">
-                    <!--                    <div class="explore_results">
+        <nft-filters v-model="filters" />
+      </aside>
+    </div>
+    <div>
+      <section :aria-label="$t('page.explore.filters')">
+        <div class="explore_nftlist_header">
+          <!--                    <div class="explore_results">
                         <a-placeholder block :content-loaded="results > -1" replacement-text="1000 results">
                             {{ results }} {{ $t('results') }}
                         </a-placeholder>
                     </div>-->
-                    <div class="explore_nftlist_header_endcol">
-                        <nft-list-filters v-model="filters" />
-                        <density-switch />
-                    </div>
-                </div>
-                <nft-filter-chips v-model="filters" />
-            </section>
-            <section :aria-labelledby="id" class="explore_nftlist">
-                <h2 :id="id" class="not-visible">{{ $t('page.explore.nftList') }}</h2>
+          <div class="explore_nftlist_header_endcol">
+            <nft-list-filters v-model="filters" />
+            <density-switch />
+          </div>
+        </div>
+        <nft-filter-chips v-model="filters" />
+      </section>
+      <section :aria-labelledby="id" class="explore_nftlist">
+        <h2 :id="id" class="not-visible">{{ $t('page.explore.nftList') }}</h2>
 
-                <nft-main-list :filters="filters" @tokens-count="onTokensCount" @loading="onNftMainListLoading" />
-            </section>
-        </div>
-        <div class="explore_filterButton" aria-hidden="true">
-            <f-button @click.native="isSideClose = !isSideClose">
-                {{ $t('page.explore.filters') }}
-                <span v-if="filterNumber" class="explore_filterButton_counter">{{ filterNumber }}</span>
-            </f-button>
-        </div>
+        <nft-main-list
+          :filters="filters"
+          @tokens-count="onTokensCount"
+          @loading="onNftMainListLoading"
+        />
+      </section>
     </div>
+    <div class="explore_filterButton" aria-hidden="true">
+      <f-button @click.native="isSideClose = !isSideClose">
+        {{ $t('page.explore.filters') }}
+        <span v-if="filterNumber" class="explore_filterButton_counter">{{
+          filterNumber
+        }}</span>
+      </f-button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -60,58 +71,64 @@ import { getUniqueId, isArray } from 'fantom-vue-components/src/utils';
 import { focusElem } from 'fantom-vue-components/src/utils/aria.js';
 
 export default {
-    name: 'Explore',
+  name: 'Explore',
 
-    mixins: [routeQueryMixin('filters')],
+  mixins: [routeQueryMixin('filters')],
 
-    components: { NftMainList, NftFilterChips, NftListFilters, NftFilters, DensitySwitch },
+  components: {
+    NftMainList,
+    NftFilterChips,
+    NftListFilters,
+    NftFilters,
+    DensitySwitch,
+  },
 
-    data() {
-        return {
-            id: getUniqueId(),
-            filters: {},
-            results: -1,
-            labels: {},
-            isSideClose: false,
-        };
+  data() {
+    return {
+      id: getUniqueId(),
+      filters: {},
+      results: -1,
+      labels: {},
+      isSideClose: false,
+    };
+  },
+
+  computed: {
+    filterNumber() {
+      let counter = 0;
+      let values = Object.values(this.filters);
+
+      values.forEach(item => {
+        if (isArray(item)) {
+          counter += item.length;
+        } else {
+          counter += 1;
+        }
+      });
+
+      return counter;
+    },
+  },
+
+  created() {
+    if (document.body.clientWidth <= 600) this.isSideClose = true;
+  },
+
+  mounted() {
+    focusElem(this.$el);
+  },
+
+  methods: {
+    onTokensCount(count) {
+      this.results = count;
     },
 
-    computed: {
-        filterNumber() {
-            let counter = 0;
-            let values = Object.values(this.filters);
-
-            values.forEach(item => {
-                if (isArray(item)) {
-                    counter += item.length;
-                } else {
-                    counter += 1;
-                }
-            });
-
-            return counter;
-        },
+    onNftMainListLoading(loading) {
+      if (loading) {
+        this.results = -1;
+      }
     },
-
-    created() {
-        if (document.body.clientWidth <= 600) this.isSideClose = true;
-    },
-
-    mounted() {
-        focusElem(this.$el);
-    },
-
-    methods: {
-        onTokensCount(count) {
-            this.results = count;
-        },
-
-        onNftMainListLoading(loading) {
-            if (loading) {
-                this.results = -1;
-            }
-        },
-    },
+  },
 };
 </script>
 

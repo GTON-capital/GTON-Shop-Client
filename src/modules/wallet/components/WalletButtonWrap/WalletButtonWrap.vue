@@ -1,15 +1,20 @@
 <template>
-    <div class="walletbuttonwrap">
-        <wallet-button v-on="$listeners" :wallet="wallet" @click="onWalletButtonClick" id="wb" />
-        <wallet-menu-popover
-            class="walletbuttonmenu"
-            ref="menu"
-            :navigation="walletMenu"
-            attach-to="#wb"
-            @wallet-menu="onWalletMenu"
-        />
-        <wrap-station-window ref="wrapStationWindow" />
-    </div>
+  <div class="walletbuttonwrap">
+    <wallet-button
+      v-on="$listeners"
+      :wallet="wallet"
+      @click="onWalletButtonClick"
+      id="wb"
+    />
+    <wallet-menu-popover
+      class="walletbuttonmenu"
+      ref="menu"
+      :navigation="walletMenu"
+      attach-to="#wb"
+      @wallet-menu="onWalletMenu"
+    />
+    <wrap-station-window ref="wrapStationWindow" />
+  </div>
 </template>
 
 <script>
@@ -24,156 +29,161 @@ import { getBearerToken, signIn } from '@/modules/account/auth.js';
 import appConfig from '@/app.config.js';
 
 export default {
-    name: 'WalletButtonWrap',
+  name: 'WalletButtonWrap',
 
-    mixins: [eventBusMixin],
+  mixins: [eventBusMixin],
 
-    components: { WrapStationWindow, WalletMenuPopover, WalletButton },
+  components: { WrapStationWindow, WalletMenuPopover, WalletButton },
 
-    props: {
-        walletMenu: {
-            type: Array,
-            default() {
-                return [
-                    {
-                        label: this.$t('walletMenu.profile'),
-                        route: 'account',
-                    },
-                    {
-                        label: this.$t('walletMenu.settings'),
-                        route: 'account-settings',
-                    },
-                    {
-                        label: this.$t('walletMenu.collection'),
-                        route: 'collection-register',
-                    },
-                    {
-                        label: this.$t('wrapStation'),
-                        action: 'show-wrap-station',
-                    },
-                    {
-                        label: this.$t('walletMenu.login'),
-                        action: 'login',
-                        dontRender: true,
-                    },
-                    {
-                        label: this.$t('walletMenu.logout'),
-                        action: 'logout',
-                    },
-                ];
-            },
-        },
+  props: {
+    walletMenu: {
+      type: Array,
+      default() {
+        return [
+          {
+            label: this.$t('walletMenu.profile'),
+            route: 'account',
+          },
+          {
+            label: this.$t('walletMenu.settings'),
+            route: 'account-settings',
+          },
+          {
+            label: this.$t('walletMenu.collection'),
+            route: 'collection-register',
+          },
+          {
+            label: this.$t('wrapStation'),
+            action: 'show-wrap-station',
+          },
+          {
+            label: this.$t('walletMenu.login'),
+            action: 'login',
+            dontRender: true,
+          },
+          {
+            label: this.$t('walletMenu.logout'),
+            action: 'logout',
+          },
+        ];
+      },
     },
+  },
 
-    data() {
-        return {
-            wallet: {
-                address: '',
-                chain: '',
-                avatar: '',
-            },
+  data() {
+    return {
+      wallet: {
+        address: '',
+        chain: '',
+        avatar: '',
+      },
+    };
+  },
+
+  computed: {
+    ...mapState('wallet', {
+      walletAddress: 'account',
+      chainId: 'chainId',
+      userName: 'userName',
+      userAvatar: 'userAvatar',
+    }),
+  },
+
+  watch: {
+    walletAddress: {
+      handler(value) {
+        this.wallet = {
+          ...this.wallet,
+          address: value || '',
         };
+
+        this.setLoginItemVisibility();
+      },
+      immediate: true,
     },
 
-    computed: {
-        ...mapState('wallet', {
-            walletAddress: 'account',
-            chainId: 'chainId',
-            userName: 'userName',
-            userAvatar: 'userAvatar',
-        }),
+    chainId: {
+      handler(value) {
+        this.wallet = {
+          ...this.wallet,
+          chain:
+            CHAINS[typeof value === 'string' ? parseInt(value, 16) : value] ||
+            '',
+        };
+      },
+      immediate: true,
     },
 
-    watch: {
-        walletAddress: {
-            handler(value) {
-                this.wallet = {
-                    ...this.wallet,
-                    address: value || '',
-                };
-
-                this.setLoginItemVisibility();
-            },
-            immediate: true,
-        },
-
-        chainId: {
-            handler(value) {
-                this.wallet = {
-                    ...this.wallet,
-                    chain: CHAINS[typeof value === 'string' ? parseInt(value, 16) : value] || '',
-                };
-            },
-            immediate: true,
-        },
-
-        userName: {
-            handler(value) {
-                this.wallet = { ...this.wallet, userName: value };
-            },
-            immediate: true,
-        },
-
-        userAvatar: {
-            handler(value) {
-                this.wallet = { ...this.wallet, avatar: value ? getImageThumbUrl(value) : '' };
-            },
-            immediate: true,
-        },
-
-        //chainId(value) {},
+    userName: {
+      handler(value) {
+        this.wallet = { ...this.wallet, userName: value };
+      },
+      immediate: true,
     },
 
-    methods: {
-        /**
-         * Set visibility of navigation item with action 'login'
-         * @param {boolean} [visible]
-         */
-        setLoginItemVisibility(visible = !getBearerToken()) {
-            if (!appConfig.flags.moderatorFunctions) {
-                return;
-            }
-
-            const { walletMenu } = this;
-            const index = walletMenu.findIndex(item => item.action === 'login');
-
-            if (index > -1) {
-                this.$set(walletMenu[index], 'dontRender', !visible);
-            }
-        },
-
-        async onWalletButtonClick() {
-            if (this.$wallet.connected) {
-                this.setLoginItemVisibility();
-                this.$refs.menu.show();
-            } else {
-                const payload = {};
-
-                this._eventBus.emit('show-wallet-picker', payload);
-
-                const walletInfo = await payload.promise;
-                if (walletInfo && walletInfo.walletSet) {
-                    // this.$refs.menu.show();
-                }
-            }
-        },
-
-        async onWalletMenu(item) {
-            const { action } = item;
-
-            if (action === 'logout') {
-                this.$wallet.logout();
-            } else if (action === 'show-wrap-station') {
-                this.$refs.wrapStationWindow.show();
-            } else if (action === 'login') {
-                if (await signIn()) {
-                    this.setLoginItemVisibility(false);
-                }
-            }
-
-            this.$refs.menu.hide();
-        },
+    userAvatar: {
+      handler(value) {
+        this.wallet = {
+          ...this.wallet,
+          avatar: value ? getImageThumbUrl(value) : '',
+        };
+      },
+      immediate: true,
     },
+
+    //chainId(value) {},
+  },
+
+  methods: {
+    /**
+     * Set visibility of navigation item with action 'login'
+     * @param {boolean} [visible]
+     */
+    setLoginItemVisibility(visible = !getBearerToken()) {
+      if (!appConfig.flags.moderatorFunctions) {
+        return;
+      }
+
+      const { walletMenu } = this;
+      const index = walletMenu.findIndex(item => item.action === 'login');
+
+      if (index > -1) {
+        this.$set(walletMenu[index], 'dontRender', !visible);
+      }
+    },
+
+    async onWalletButtonClick() {
+      if (this.$wallet.connected) {
+        this.setLoginItemVisibility();
+        this.$refs.menu.show();
+      } else {
+        const payload = {};
+
+        this._eventBus.emit('show-wallet-picker', payload);
+
+        const walletInfo = await payload.promise;
+        if (walletInfo && walletInfo.walletSet) {
+          // this.$refs.menu.show();
+        }
+      }
+    },
+
+    async onWalletMenu(item) {
+      const { action } = item;
+
+      if (action === 'logout') {
+        this.$wallet.logout();
+      } else if (action === 'show-wrap-station') {
+        this.$refs.wrapStationWindow.show();
+      } else if (action === 'login') {
+        if (await signIn()) {
+          this.setLoginItemVisibility(false);
+        }
+      }
+
+      this.$refs.menu.hide();
+    },
+  },
 };
 </script>
 

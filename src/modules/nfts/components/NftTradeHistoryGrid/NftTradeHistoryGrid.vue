@@ -1,6 +1,6 @@
 <template>
-    <div class="nfttradehistorygrid">
-        <!-- <div class="nfttradehistorygrid_header">
+  <div class="nfttradehistorygrid">
+    <!-- <div class="nfttradehistorygrid_header">
             <div class="nfttradehistorygrid_title">
                 {{ $t('nfttradehistorygrid.tradeHistory') }}
             </div>
@@ -8,11 +8,11 @@
                 <trade-history-switcher @filter-switch="currentComponent = $event" />
             </div>
         </div> -->
-        <div class="nfttradehistorygrid_histories">
-            <!-- <component :is="currentComponent" /> -->
-            <nft-history-grid :token="token" />
-        </div>
+    <div class="nfttradehistorygrid_histories">
+      <!-- <component :is="currentComponent" /> -->
+      <nft-history-grid :token="token" />
     </div>
+  </div>
 </template>
 <script>
 //import TradeHistorySwitcher from '@/modules/nfts/components/TradeHistorySwitcher/TradeHistorySwitcher';
@@ -20,28 +20,28 @@
 import NftHistoryGrid from '@/modules/nfts/components/NftHistoryGrid/NftHistoryGrid';
 
 export default {
-    name: 'NftTradeHistoryGrid',
+  name: 'NftTradeHistoryGrid',
 
-    components: {
-        // TradeHistorySwitcher,
-        // NftTradeGrid,
-        NftHistoryGrid,
-    },
+  components: {
+    // TradeHistorySwitcher,
+    // NftTradeGrid,
+    NftHistoryGrid,
+  },
 
-    props: {
-        token: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
+  props: {
+    token: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
+  },
 
-    data() {
-        return {
-            currentComponent: 'NftHistoryGrid',
-        };
-    },
+  data() {
+    return {
+      currentComponent: 'NftHistoryGrid',
+    };
+  },
 };
 </script>
 <style lang="scss">

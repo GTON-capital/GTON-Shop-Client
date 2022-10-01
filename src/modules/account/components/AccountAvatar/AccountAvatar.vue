@@ -1,44 +1,47 @@
 <template>
-    <div class="accountavatar" :class="{ 'accountavatar-imgloaded': !imgLoading }">
-        <a-placeholder :content-loaded="cLoaded" />
-        <img :src="imgSrc" alt="avatar" @load="onImgLoad" @error="onImgError" />
-    </div>
+  <div
+    class="accountavatar"
+    :class="{ 'accountavatar-imgloaded': !imgLoading }"
+  >
+    <a-placeholder :content-loaded="cLoaded" />
+    <img :src="imgSrc" alt="avatar" @load="onImgLoad" @error="onImgError" />
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'AccountAvatar',
+  name: 'AccountAvatar',
 
-    props: {
-        /** Image src */
-        src: {
-            type: String,
-            default: '',
-        },
-        loading: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    /** Image src */
+    src: {
+      type: String,
+      default: '',
     },
-
-    computed: {
-        cLoaded() {
-            return !this.loading && !!this.imgSrc && !this.imgLoading;
-        },
+    loading: {
+      type: Boolean,
+      default: false,
     },
+  },
 
-    data() {
-        return {
-            imgLoading: false,
-            imgSrc: '',
-        };
+  computed: {
+    cLoaded() {
+      return !this.loading && !!this.imgSrc && !this.imgLoading;
     },
+  },
 
-    watch: {
-        src(value) {
-            this.imgSrc = value;
-        },
-        /*
+  data() {
+    return {
+      imgLoading: false,
+      imgSrc: '',
+    };
+  },
+
+  watch: {
+    src(value) {
+      this.imgSrc = value;
+    },
+    /*
         src: {
             handler(value) {
                 this.imgSrc = value;
@@ -46,25 +49,25 @@ export default {
             immediate: true,
         },
 */
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.imgSrc = this.src;
+    });
+  },
+
+  methods: {
+    onImgLoad() {
+      this.imgLoading = false;
+      console.log('!!!!!!!!!!!!');
     },
 
-    mounted() {
-        this.$nextTick(() => {
-            this.imgSrc = this.src;
-        });
+    onImgError() {
+      this.imgLoading = false;
+      console.log('!!!!!!!!!!!!#EEE');
     },
-
-    methods: {
-        onImgLoad() {
-            this.imgLoading = false;
-            console.log('!!!!!!!!!!!!');
-        },
-
-        onImgError() {
-            this.imgLoading = false;
-            console.log('!!!!!!!!!!!!#EEE');
-        },
-    },
+  },
 };
 </script>
 

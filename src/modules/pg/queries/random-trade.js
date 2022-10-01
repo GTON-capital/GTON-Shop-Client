@@ -6,26 +6,26 @@ import { gqlQuery } from '@/utils/gql.js';
  * @return {Promise<number|string|*|undefined|null>}
  */
 export async function getRandomTrade(contract = '') {
-    const query = {
-        query: gql`
-            query GetRandomTrade($contract: Address!) {
-                randomTrade(contract: $contract) {
-                    name
-                    tradeStarts
-                    tradeEnds
-                    tokensAvailable
-                    totalTokens
-                    payTokens
-                }
-            }
-        `,
-        variables: {
-            contract,
-        },
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query GetRandomTrade($contract: Address!) {
+        randomTrade(contract: $contract) {
+          name
+          tradeStarts
+          tradeEnds
+          tokensAvailable
+          totalTokens
+          payTokens
+        }
+      }
+    `,
+    variables: {
+      contract,
+    },
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'randomTrade');
+  return gqlQuery(query, 'randomTrade');
 }
 
 /**
@@ -33,22 +33,22 @@ export async function getRandomTrade(contract = '') {
  * @return {Promise<number|string|*|undefined|null>}
  */
 export async function getRandomTradeTokensAmount(contract = '') {
-    const query = {
-        query: gql`
-            query GetRandomTradeTokensAmount($contract: Address!) {
-                randomTrade(contract: $contract) {
-                    tokensAvailable
-                    totalTokens
-                }
-            }
-        `,
-        variables: {
-            contract,
-        },
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query GetRandomTradeTokensAmount($contract: Address!) {
+        randomTrade(contract: $contract) {
+          tokensAvailable
+          totalTokens
+        }
+      }
+    `,
+    variables: {
+      contract,
+    },
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'randomTrade');
+  return gqlQuery(query, 'randomTrade');
 }
 
 /**
@@ -57,20 +57,20 @@ export async function getRandomTradeTokensAmount(contract = '') {
  * @return {Promise<number|string|*|undefined|null>}
  */
 export async function getRandomTradePayTokenPrice(contract = '', token = '') {
-    const query = {
-        query: gql`
-            query GetRandomTradePayTokenPrice($contract: Address!, $token: Address!) {
-                randomTrade(contract: $contract) {
-                    price(token: $token)
-                }
-            }
-        `,
-        variables: {
-            contract,
-            token,
-        },
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query GetRandomTradePayTokenPrice($contract: Address!, $token: Address!) {
+        randomTrade(contract: $contract) {
+          price(token: $token)
+        }
+      }
+    `,
+    variables: {
+      contract,
+      token,
+    },
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'randomTrade.price');
+  return gqlQuery(query, 'randomTrade.price');
 }

@@ -1,11 +1,13 @@
 <template>
-    <div class="pg-account-settings">
-        <h2 class="h2 pg-account-settings__header">{{ $t('pgAccountSettings.accountSettings') }}</h2>
+  <div class="pg-account-settings">
+    <h2 class="h2 pg-account-settings__header">
+      {{ $t('pgAccountSettings.accountSettings') }}
+    </h2>
 
-        <div class="pg-account-settings__form">
-            <account-profile-form />
-        </div>
+    <div class="pg-account-settings__form">
+      <account-profile-form />
     </div>
+  </div>
 </template>
 
 <script>
@@ -13,11 +15,11 @@ import AccountProfileForm from '@/modules/account/components/AccountProfileForm/
 import { authPageMixin } from '@/common/mixins/auth-page.js';
 
 export default {
-    name: 'PGAccountSettings',
+  name: 'PGAccountSettings',
 
-    mixins: [authPageMixin],
+  mixins: [authPageMixin],
 
-    components: { AccountProfileForm },
+  components: { AccountProfileForm },
 };
 </script>
 

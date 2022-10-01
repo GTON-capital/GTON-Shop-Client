@@ -8,53 +8,53 @@ import { toHex } from '@/utils/big-number.js';
  * @return {Promise<number|string|*|undefined|null>}
  */
 export async function getAuction(contract = '', tokenId = '') {
-    const query = {
-        query: gql`
-            query GetAuction($contract: Address!, $tokenId: BigInt!) {
-                token(contract: $contract, tokenId: $tokenId) {
-                    auction {
-                        contract
-                        tokenId
-                        owner
-                        auctionHall
-                        quantity
-                        payToken
-                        reservePrice
-                        reservePriceExceeded
-                        minBidAmount
-                        created
-                        startTime
-                        endTime
-                        closed
-                        lastBid
-                        lastBidPlaced
-                        lastBidder
-                        lastBidderUser {
-                            address
-                            username
-                            avatarThumb
-                        }
-                        resolved
-                        isActive
-                        withdrawSince
-                        props {
-                            winnerCanResult
-                            sellerCanResultUnderpriced
-                            canCancelSuccessful
-                            hasResultFailed
-                        }
-                    }
-                }
+  const query = {
+    query: gql`
+      query GetAuction($contract: Address!, $tokenId: BigInt!) {
+        token(contract: $contract, tokenId: $tokenId) {
+          auction {
+            contract
+            tokenId
+            owner
+            auctionHall
+            quantity
+            payToken
+            reservePrice
+            reservePriceExceeded
+            minBidAmount
+            created
+            startTime
+            endTime
+            closed
+            lastBid
+            lastBidPlaced
+            lastBidder
+            lastBidderUser {
+              address
+              username
+              avatarThumb
             }
-        `,
-        variables: {
-            contract,
-            tokenId: toHex(tokenId),
-        },
-        fetchPolicy: 'network-only',
-    };
+            resolved
+            isActive
+            withdrawSince
+            props {
+              winnerCanResult
+              sellerCanResultUnderpriced
+              canCancelSuccessful
+              hasResultFailed
+            }
+          }
+        }
+      }
+    `,
+    variables: {
+      contract,
+      tokenId: toHex(tokenId),
+    },
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'token.auction');
+  return gqlQuery(query, 'token.auction');
 }
 
 /**

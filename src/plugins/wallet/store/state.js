@@ -10,13 +10,13 @@
 
 /** @type {WalletState} */
 export const state = {
-    chainId: 0,
-    account: '',
-    wallet: '',
-    userName: '',
-    userAvatar: '',
-    userIsModerator: false,
-    bt: {},
+  chainId: 0,
+  account: '',
+  wallet: '',
+  userName: '',
+  userAvatar: '',
+  userIsModerator: false,
+  bt: {},
 };
 
 export const storeInLocalStorage = ['chainId', 'account', 'wallet', 'bt'];

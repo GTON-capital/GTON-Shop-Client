@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System/FontSizes',
+  title: 'Design System/FontSizes',
 };
 
 export const FontSizes = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <code>--f-font-size-1 (.fos-1)</code>
             <p class="fos-1">
@@ -63,7 +63,7 @@ export const FontSizes = () => ({
             </p>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

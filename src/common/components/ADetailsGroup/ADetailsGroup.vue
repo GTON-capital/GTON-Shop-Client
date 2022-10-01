@@ -1,19 +1,19 @@
 <template>
-    <div class="adetailsgroup" :class="{ 'adetailsgroup-rounded': rounded }">
-        <slot></slot>
-    </div>
+  <div class="adetailsgroup" :class="{ 'adetailsgroup-rounded': rounded }">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'ADetailsGroup',
+  name: 'ADetailsGroup',
 
-    props: {
-        rounded: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    rounded: {
+      type: Boolean,
+      default: false,
     },
+  },
 };
 </script>
 

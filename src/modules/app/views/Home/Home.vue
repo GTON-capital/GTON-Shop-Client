@@ -1,14 +1,14 @@
 <template>
-    <div class="home">
-        <app-section-nft :nft="nft" />
+  <div class="home">
+    <app-section-nft :nft="nft" />
 
-        <div class="home_shadow">
-            <app-section-about />
-            <app-section-category />
-        </div>
-
-        <app-footer />
+    <div class="home_shadow">
+      <app-section-about />
+      <app-section-category />
     </div>
+
+    <app-footer />
+  </div>
 </template>
 
 <script>
@@ -22,37 +22,41 @@ import { getIPFSUrl } from '@/utils/url.js';
 import { i18n } from '@/plugins/vue-i18n.js';
 
 export default {
-    name: 'Home',
+  name: 'Home',
 
-    components: { AppFooter, AppSectionCategory, AppSectionAbout, AppSectionNft },
+  components: { AppFooter, AppSectionCategory, AppSectionAbout, AppSectionNft },
 
-    data() {
-        return {
-            nft: {},
+  data() {
+    return {
+      nft: {},
+    };
+  },
+
+  mounted() {
+    this.setAdvertisedNFT();
+  },
+
+  methods: {
+    async setAdvertisedNFT() {
+      if (appConfig.flags.advertisedCollection) {
+        const collection = await advertisedCollection();
+
+        this.nft = {
+          title: collection.name,
+          collection: i18n.t('nftdetail.collection'),
+          img: getIPFSUrl(collection.image),
+          collectionContract: collection.contract,
         };
+      } else {
+        // TMP
+        this.nft = {
+          title: 'World of Umans',
+          collection: 'Ancestral Uman',
+          img: 'img/tmp/umans.png',
+        };
+      }
     },
-
-    mounted() {
-        this.setAdvertisedNFT();
-    },
-
-    methods: {
-        async setAdvertisedNFT() {
-            if (appConfig.flags.advertisedCollection) {
-                const collection = await advertisedCollection();
-
-                this.nft = {
-                    title: collection.name,
-                    collection: i18n.t('nftdetail.collection'),
-                    img: getIPFSUrl(collection.image),
-                    collectionContract: collection.contract,
-                };
-            } else {
-                // TMP
-                this.nft = { title: 'World of Umans', collection: 'Ancestral Uman', img: 'img/tmp/umans.png' };
-            }
-        },
-    },
+  },
 };
 </script>
 

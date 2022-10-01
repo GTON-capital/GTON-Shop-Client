@@ -1,41 +1,60 @@
 <template>
-    <div v-show="token.hasListing || showMakeOfferButton" class="nftdetailprice grid">
-        <template v-if="token.hasListing && listing.unitPrice">
-            <div class="nftdetailprice_label">{{ $t('nftdetailprice.currentPrice') }}</div>
-            <div class="nftdetailprice_price">
-                <a-token-value :value="listing.unitPrice" :token="payToken" :fraction-digits="1" no-symbol with-price />
-            </div>
-        </template>
-        <div class="nftdetailprice_buttons">
-            <a-button
-                v-if="token.hasListing && !userOwnsToken"
-                :loading="txStatus === 'pending'"
-                @click.native="onBuyNowClick"
-            >
-                {{ $t('nftdetailprice.buyNow') }}
-            </a-button>
-            <f-button v-if="showMakeOfferButton" @click.native="onMakeOfferClick">
-                {{ $t('nftdetailprice.makeOffer') }}
-            </f-button>
-        </div>
-
-        <a-tx-window ref="makeOfferWindow" :title="$t('nftdetailprice.offer')" v-slot="{ onTxStatus }">
-            <nft-make-offer-form
-                :token="token"
-                :listing="listing"
-                @transaction-status="
-                    onTxStatus($event);
-                    onMakeOfferTransactionStatus($event);
-                "
-            />
-        </a-tx-window>
-
-        <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
+  <div
+    v-show="token.hasListing || showMakeOfferButton"
+    class="nftdetailprice grid"
+  >
+    <template v-if="token.hasListing && listing.unitPrice">
+      <div class="nftdetailprice_label">
+        {{ $t('nftdetailprice.currentPrice') }}
+      </div>
+      <div class="nftdetailprice_price">
+        <a-token-value
+          :value="listing.unitPrice"
+          :token="payToken"
+          :fraction-digits="1"
+          no-symbol
+          with-price
+        />
+      </div>
+    </template>
+    <div class="nftdetailprice_buttons">
+      <a-button
+        v-if="token.hasListing && !userOwnsToken"
+        :loading="txStatus === 'pending'"
+        @click.native="onBuyNowClick"
+      >
+        {{ $t('nftdetailprice.buyNow') }}
+      </a-button>
+      <f-button v-if="showMakeOfferButton" @click.native="onMakeOfferClick">
+        {{ $t('nftdetailprice.makeOffer') }}
+      </f-button>
     </div>
+
+    <a-tx-window
+      ref="makeOfferWindow"
+      :title="$t('nftdetailprice.offer')"
+      v-slot="{ onTxStatus }"
+    >
+      <nft-make-offer-form
+        :token="token"
+        :listing="listing"
+        @transaction-status="
+          onTxStatus($event);
+          onMakeOfferTransactionStatus($event);
+        "
+      />
+    </a-tx-window>
+
+    <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
+  </div>
 </template>
 
 <script>
-import { checkUserBalance, checkWallet, getUserAllowanceTx } from '@/plugins/wallet/utils.js';
+import {
+  checkUserBalance,
+  checkWallet,
+  getUserAllowanceTx,
+} from '@/plugins/wallet/utils.js';
 import ATokenValue from '@/common/components/ATokenValue/ATokenValue.vue';
 import { getTokenOffers } from '@/modules/nfts/queries/token-offers.js';
 import { compareAddresses } from '@/utils/address.js';
@@ -49,50 +68,58 @@ import ATxWindow from '@/common/components/ATxWindow/ATxWindow.vue';
 import NftMakeOfferForm from '@/modules/nfts/components/NftMakeOfferForm/NftMakeOfferForm.vue';
 
 export default {
-    name: 'NftDetailPrice',
+  name: 'NftDetailPrice',
 
-    components: { NftMakeOfferForm, ATxWindow, ASignTransaction, AButton, ATokenValue },
+  components: {
+    NftMakeOfferForm,
+    ATxWindow,
+    ASignTransaction,
+    AButton,
+    ATokenValue,
+  },
 
-    props: {
-        token: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        listing: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        userOwnsToken: {
-            type: Boolean,
-            default: false,
-        },
-        tokenHasAuction: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    token: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
-
-    data() {
-        return {
-            payToken: {},
-            userMadeOffer: true,
-            tx: {},
-            txStatus: '',
-        };
+    listing: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
-
-    computed: {
-        showMakeOfferButton() {
-            return !this.userOwnsToken && !this.userMadeOffer && !this.tokenHasAuction;
-        },
+    userOwnsToken: {
+      type: Boolean,
+      default: false,
     },
+    tokenHasAuction: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-    watch: {
-        /*token: {
+  data() {
+    return {
+      payToken: {},
+      userMadeOffer: true,
+      tx: {},
+      txStatus: '',
+    };
+  },
+
+  computed: {
+    showMakeOfferButton() {
+      return (
+        !this.userOwnsToken && !this.userMadeOffer && !this.tokenHasAuction
+      );
+    },
+  },
+
+  watch: {
+    /*token: {
             handler(value) {
                 if (value.hasListing) {
                     this.setPayToken();
@@ -101,147 +128,159 @@ export default {
             immediate: true,
         },
 */
-        listing: {
-            handler(value) {
-                if (value.unitPrice) {
-                    this.setPayToken();
-                }
-            },
-            immediate: true,
-        },
+    listing: {
+      handler(value) {
+        if (value.unitPrice) {
+          this.setPayToken();
+        }
+      },
+      immediate: true,
+    },
+  },
+
+  methods: {
+    update() {
+      this.$nextTick(async () => {
+        if (!this.userOwnsToken) {
+          this.userMadeOffer = await this.checkUserMadeOffer(this.token);
+        }
+      });
     },
 
-    methods: {
-        update() {
-            this.$nextTick(async () => {
-                if (!this.userOwnsToken) {
-                    this.userMadeOffer = await this.checkUserMadeOffer(this.token);
-                }
-            });
-        },
+    async buyItem(approve = false) {
+      const { listing } = this;
 
-        async buyItem(approve = false) {
-            const { listing } = this;
+      if (
+        (await checkUserBalance(
+          listing.unitPrice,
+          this.payToken.address,
+          this.payToken.label
+        )) !== null
+      ) {
+        const allowanceTx = await getUserAllowanceTx({
+          value: listing.unitPrice,
+          tokenAddress: this.payToken.address,
+          contract: listing.marketplace,
+          approve,
+        });
 
-            if ((await checkUserBalance(listing.unitPrice, this.payToken.address, this.payToken.label)) !== null) {
-                const allowanceTx = await getUserAllowanceTx({
-                    value: listing.unitPrice,
-                    tokenAddress: this.payToken.address,
-                    contract: listing.marketplace,
-                    approve,
-                });
+        console.log('allowanceTx', allowanceTx);
 
-                console.log('allowanceTx', allowanceTx);
+        if (allowanceTx) {
+          allowanceTx._code = 'buy_allowance';
+          allowanceTx._silent = true;
 
-                if (allowanceTx) {
-                    allowanceTx._code = 'buy_allowance';
-                    allowanceTx._silent = true;
+          this.tx = allowanceTx;
+        } else {
+          this.setBuyTx();
+        }
 
-                    this.tx = allowanceTx;
-                } else {
-                    this.setBuyTx();
-                }
+        // console.log(token.contract, parseInt(token.tokenId, 16), listing.owner);
+      }
+    },
 
-                // console.log(token.contract, parseInt(token.tokenId, 16), listing.owner);
-            }
-        },
+    setBuyTx() {
+      console.log('setting buyTx...');
+      const { token } = this;
+      const { listing } = this;
+      const web3 = new Web3();
+      const tx = contracts.buyListedItemWithPayToken(
+        token.contract,
+        token.tokenId,
+        listing.owner,
+        listing.payToken,
+        web3,
+        listing.marketplace
+      );
 
-        setBuyTx() {
-            console.log('setting buyTx...');
-            const { token } = this;
-            const { listing } = this;
-            const web3 = new Web3();
-            const tx = contracts.buyListedItemWithPayToken(
-                token.contract,
-                token.tokenId,
-                listing.owner,
-                listing.payToken,
-                web3,
-                listing.marketplace
+      console.log(tx);
+      tx._code = 'buy';
+
+      this.tx = tx;
+    },
+
+    async setPayToken() {
+      const payTokens = await PAY_TOKENS_WITH_PRICES();
+      const payTokenAddress = this.listing.payToken;
+
+      this.payToken =
+        payTokens.find(token => token.address === payTokenAddress) || {};
+    },
+
+    /**
+     * Checks, if user made an offer
+     *
+     * @param {Object} token
+     * @return {Promise<boolean>}
+     */
+    async checkUserMadeOffer(token) {
+      let madeOffer = false;
+      const walletAddress = this.$wallet.account;
+
+      if (this.$wallet.connected && walletAddress) {
+        const offers = await getTokenOffers(token.contract, token.tokenId, {
+          first: 200,
+        });
+
+        madeOffer =
+          offers.edges.findIndex(edge => {
+            const offer = edge.node;
+
+            return (
+              !offer.closed &&
+              compareAddresses(offer.proposedBy, walletAddress) &&
+              !isExpired(offer.deadline)
             );
+          }) > -1;
+      }
 
-            console.log(tx);
-            tx._code = 'buy';
-
-            this.tx = tx;
-        },
-
-        async setPayToken() {
-            const payTokens = await PAY_TOKENS_WITH_PRICES();
-            const payTokenAddress = this.listing.payToken;
-
-            this.payToken = payTokens.find(token => token.address === payTokenAddress) || {};
-        },
-
-        /**
-         * Checks, if user made an offer
-         *
-         * @param {Object} token
-         * @return {Promise<boolean>}
-         */
-        async checkUserMadeOffer(token) {
-            let madeOffer = false;
-            const walletAddress = this.$wallet.account;
-
-            if (this.$wallet.connected && walletAddress) {
-                const offers = await getTokenOffers(token.contract, token.tokenId, { first: 200 });
-
-                madeOffer =
-                    offers.edges.findIndex(edge => {
-                        const offer = edge.node;
-
-                        return (
-                            !offer.closed &&
-                            compareAddresses(offer.proposedBy, walletAddress) &&
-                            !isExpired(offer.deadline)
-                        );
-                    }) > -1;
-            }
-
-            return madeOffer;
-        },
-
-        onBuyNowClick() {
-            this.buyItem();
-        },
-
-        async onMakeOfferClick() {
-            const walletOk = await checkWallet();
-
-            if (walletOk) {
-                this.$refs.makeOfferWindow.show();
-            }
-        },
-
-        onMakeOfferTransactionStatus(payload) {
-            if (payload.status === 'success') {
-                this.$emit('tx-success', 'make_offer');
-            }
-        },
-
-        onTransactionStatus(payload) {
-            console.log('transaction status', payload);
-            const txCode = payload.code;
-            this.txStatus = payload.status;
-
-            if (this.txStatus === 'success') {
-                if (txCode === 'buy_allowance') {
-                    this.setBuyTx();
-                } else if (txCode === 'buy') {
-                    this.$notifications.add({
-                        text: this.$t('nftdetailprice.buySuccessful'),
-                        type: 'success',
-                    });
-
-                    this.$emit('tx-success', 'buy');
-                }
-            } else if (this.txStatus === 'error') {
-                if (txCode === 'buy_allowance' && payload.error.indexOf('execution reverted') > -1) {
-                    this.buyItem(true);
-                }
-            }
-        },
+      return madeOffer;
     },
+
+    onBuyNowClick() {
+      this.buyItem();
+    },
+
+    async onMakeOfferClick() {
+      const walletOk = await checkWallet();
+
+      if (walletOk) {
+        this.$refs.makeOfferWindow.show();
+      }
+    },
+
+    onMakeOfferTransactionStatus(payload) {
+      if (payload.status === 'success') {
+        this.$emit('tx-success', 'make_offer');
+      }
+    },
+
+    onTransactionStatus(payload) {
+      console.log('transaction status', payload);
+      const txCode = payload.code;
+      this.txStatus = payload.status;
+
+      if (this.txStatus === 'success') {
+        if (txCode === 'buy_allowance') {
+          this.setBuyTx();
+        } else if (txCode === 'buy') {
+          this.$notifications.add({
+            text: this.$t('nftdetailprice.buySuccessful'),
+            type: 'success',
+          });
+
+          this.$emit('tx-success', 'buy');
+        }
+      } else if (this.txStatus === 'error') {
+        if (
+          txCode === 'buy_allowance' &&
+          payload.error.indexOf('execution reverted') > -1
+        ) {
+          this.buyItem(true);
+        }
+      }
+    },
+  },
 };
 </script>
 

@@ -1,14 +1,19 @@
 <template>
-    <f-window ref="window" :check-components-change="false" v-bind="$attrs" v-on="$listeners">
-        <!-- copy slots -->
-        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-            <slot :name="name" v-bind="data"></slot>
-        </template>
+  <f-window
+    ref="window"
+    :check-components-change="false"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
+    <!-- copy slots -->
+    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
 
-        <template #close-button-content>
-            <app-iconset icon="close" size="16px" />
-        </template>
-    </f-window>
+    <template #close-button-content>
+      <app-iconset icon="close" size="16px" />
+    </template>
+  </f-window>
 </template>
 
 <script>
@@ -20,15 +25,15 @@ import { copyMethods } from 'fantom-vue-components/src/utils/vue-helpers.js';
  * FWindow wrapper
  */
 export default {
-    name: 'AWindow',
+  name: 'AWindow',
 
-    components: { FWindow, AppIconset },
+  components: { FWindow, AppIconset },
 
-    inheritAttrs: false,
+  inheritAttrs: false,
 
-    methods: {
-        ...copyMethods(FWindow, ['show', 'hide', 'toggle'], 'window'),
-    },
+  methods: {
+    ...copyMethods(FWindow, ['show', 'hide', 'toggle'], 'window'),
+  },
 };
 </script>
 

@@ -5,12 +5,12 @@ import { mutations } from './mutations.js';
 const namespace = 'app';
 
 export const appStore = {
-    module: {
-        namespaced: !!namespace,
-        state: { ...state },
-        getters: { ...getters },
-        mutations: { ...mutations },
-    },
-    storeInLocalStorage,
-    namespace,
+  module: {
+    namespaced: !!namespace,
+    state: { ...state },
+    getters: { ...getters },
+    mutations: { ...mutations },
+  },
+  storeInLocalStorage,
+  namespace,
 };

@@ -1,98 +1,101 @@
 <template>
-    <div class="nftmainList">
-        <nft-list
-            :tokens="items"
-            :loading="loading"
-            :total-items="totalItems"
-            :per-page="perPage"
-            :density="density"
-            root-margin="400px 0px"
-            @page-change="_onPageChange"
-        />
-    </div>
+  <div class="nftmainList">
+    <nft-list
+      :tokens="items"
+      :loading="loading"
+      :total-items="totalItems"
+      :per-page="perPage"
+      :density="density"
+      root-margin="400px 0px"
+      @page-change="_onPageChange"
+    />
+  </div>
 </template>
 
 <script>
 import NftList from '@/modules/nfts/components/NftList/NftList.vue';
 import { dataPageMixin } from '@/common/mixins/data-page.js';
-import { filtersToQueryFilters, getDefaultFilters } from '@/modules/nfts/filters.js';
+import {
+  filtersToQueryFilters,
+  getDefaultFilters,
+} from '@/modules/nfts/filters.js';
 import { getUserOwnershipTokens } from '@/modules/account/queries/user-ownership-tokens.js';
 import { mapState } from 'vuex';
 
 export default {
-    name: 'UserCollectedList',
+  name: 'UserCollectedList',
 
-    components: { NftList },
+  components: { NftList },
 
-    mixins: [dataPageMixin],
+  mixins: [dataPageMixin],
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
-        },
-        filters: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
+    },
+    filters: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+
+  data() {
+    return {
+      perPage: 20,
+    };
+  },
+
+  computed: {
+    ...mapState('app', {
+      density: 'nftsDensity',
+    }),
+  },
+
+  watch: {
+    userAddress: {
+      handler(value) {
+        if (value) {
+          this.loadTokens();
+        } else {
+          this.loading = true;
+        }
+      },
+      immediate: true,
     },
 
-    data() {
-        return {
-            perPage: 20,
-        };
+    filters() {
+      this.loadTokens();
     },
 
-    computed: {
-        ...mapState('app', {
-            density: 'nftsDensity',
-        }),
+    loading(value) {
+      this.$emit('loading', value);
+    },
+  },
+
+  methods: {
+    async loadPage(
+      pagination = { first: this.perPage }
+      // filterSort = filtersToQueryFilters(this.filters, getDefaultFilters())
+    ) {
+      const tokens = await getUserOwnershipTokens(this.userAddress, pagination);
+      if (tokens.edges.length) {
+        tokens.edges = tokens.edges.map(item => {
+          item.node = { ...item.node.token };
+          return item;
+        });
+        return tokens;
+      }
     },
 
-    watch: {
-        userAddress: {
-            handler(value) {
-                if (value) {
-                    this.loadTokens();
-                } else {
-                    this.loading = true;
-                }
-            },
-            immediate: true,
-        },
-
-        filters() {
-            this.loadTokens();
-        },
-
-        loading(value) {
-            this.$emit('loading', value);
-        },
+    async loadTokens() {
+      await this._loadPage({
+        filterSort: filtersToQueryFilters(this.filters, getDefaultFilters()),
+      });
     },
-
-    methods: {
-        async loadPage(
-            pagination = { first: this.perPage }
-            // filterSort = filtersToQueryFilters(this.filters, getDefaultFilters())
-        ) {
-            const tokens = await getUserOwnershipTokens(this.userAddress, pagination);
-            if (tokens.edges.length) {
-                tokens.edges = tokens.edges.map(item => {
-                    item.node = { ...item.node.token };
-                    return item;
-                });
-                return tokens;
-            }
-        },
-
-        async loadTokens() {
-            await this._loadPage({
-                filterSort: filtersToQueryFilters(this.filters, getDefaultFilters()),
-            });
-        },
-    },
+  },
 };
 </script>

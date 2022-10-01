@@ -1,13 +1,17 @@
 <template>
-    <div class="nftresultauctionbutton">
-        <a-button
-            :label="userIsLastBidder ? $t('nftresultauction.resultAuction') : $t('nftresultauction.acceptBid')"
-            :loading="txStatus === 'pending'"
-            @click.native="onButtonClick"
-        />
+  <div class="nftresultauctionbutton">
+    <a-button
+      :label="
+        userIsLastBidder
+          ? $t('nftresultauction.resultAuction')
+          : $t('nftresultauction.acceptBid')
+      "
+      :loading="txStatus === 'pending'"
+      @click.native="onButtonClick"
+    />
 
-        <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
-    </div>
+    <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
+  </div>
 </template>
 
 <script>
@@ -17,69 +21,74 @@ import Web3 from 'web3';
 import contracts from '@/utils/gton-shop-contracts-utils.js';
 
 export default {
-    name: 'NftResultAuctionButton',
+  name: 'NftResultAuctionButton',
 
-    components: { ASignTransaction, AButton },
+  components: { ASignTransaction, AButton },
 
-    props: {
-        token: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        /** @type {Auction} */
-        auction: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        userIsLastBidder: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    token: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    /** @type {Auction} */
+    auction: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    userIsLastBidder: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      tx: {},
+      txStatus: '',
+    };
+  },
+
+  methods: {
+    resultAuction() {
+      const web3 = new Web3();
+      const { token } = this;
+
+      if (!token || !token.contract) {
+        return;
+      }
+
+      this.tx = contracts.resultAuction(
+        token.contract,
+        token.tokenId,
+        web3,
+        this.auction.auctionHall
+      );
     },
 
-    data() {
-        return {
-            tx: {},
-            txStatus: '',
-        };
+    onButtonClick() {
+      this.resultAuction();
     },
 
-    methods: {
-        resultAuction() {
-            const web3 = new Web3();
-            const { token } = this;
+    onTransactionStatus(payload) {
+      console.log('transaction status', payload);
 
-            if (!token || !token.contract) {
-                return;
-            }
+      this.txStatus = payload.status;
 
-            this.tx = contracts.resultAuction(token.contract, token.tokenId, web3, this.auction.auctionHall);
-        },
+      if (this.txStatus === 'success') {
+        this.$notifications.add({
+          text: this.userIsLastBidder
+            ? this.$t('nftresultauction.resultSuccessful')
+            : this.$t('nftresultauction.acceptBidSuccessful'),
+          type: 'success',
+        });
 
-        onButtonClick() {
-            this.resultAuction();
-        },
-
-        onTransactionStatus(payload) {
-            console.log('transaction status', payload);
-
-            this.txStatus = payload.status;
-
-            if (this.txStatus === 'success') {
-                this.$notifications.add({
-                    text: this.userIsLastBidder
-                        ? this.$t('nftresultauction.resultSuccessful')
-                        : this.$t('nftresultauction.acceptBidSuccessful'),
-                    type: 'success',
-                });
-
-                this.$emit('tx-success');
-            }
-        },
+        this.$emit('tx-success');
+      }
     },
+  },
 };
 </script>

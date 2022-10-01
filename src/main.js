@@ -14,9 +14,18 @@ import { faTranslations } from 'fantom-vue-components/src/locales/fa.js';
 import { psTranslations } from 'fantom-vue-components/src/locales/ps.js';
 import PortalVue from 'portal-vue';
 // import { isAnyComponentChanged } from 'fantom-vue-components/src/utils/vue-helpers.js';
-import { getRoutes, getMaintenanceRoutes, getPGModuleRoutes } from '@/router/routes.js';
+import {
+  getRoutes,
+  getMaintenanceRoutes,
+  getPGModuleRoutes,
+} from '@/router/routes.js';
 import appConfig from '@/app.config.js';
-import { authRoute, setBackButton, setRouteMetaInfo, setRouteTheme } from '@/router/middlewares.js';
+import {
+  authRoute,
+  setBackButton,
+  setRouteMetaInfo,
+  setRouteTheme,
+} from '@/router/middlewares.js';
 import { Wallet } from '@/plugins/wallet/Wallet.js';
 import { WALLETS } from '@/common/constants/wallets.js';
 import './plugins/dayjs.js';
@@ -36,25 +45,25 @@ export let vueApp = null;
 let routes = [];
 
 if (appConfig.underMaintenance) {
-    routes = getMaintenanceRoutes();
+  routes = getMaintenanceRoutes();
 } else if (appConfig.module === 'gton-shop') {
-    routes = getRoutes();
+  routes = getRoutes();
 } else if (appConfig.module === 'pg') {
-    routes = getPGModuleRoutes();
+  routes = getPGModuleRoutes();
 }
 
 export const router = setupRouter({
-    // routes: appConfig.underMaintenance ? getMaintenanceRoutes() : getRoutes(),
-    routes,
-    middlewares: [authRoute, setRouteMetaInfo, setRouteTheme, setBackButton],
+  // routes: appConfig.underMaintenance ? getMaintenanceRoutes() : getRoutes(),
+  routes,
+  middlewares: [authRoute, setRouteMetaInfo, setRouteTheme, setBackButton],
 });
 
 vueApp = new Vue({
-    i18n,
-    router,
-    store,
-    apolloProvider,
-    render: h => h(App),
+  i18n,
+  router,
+  store,
+  apolloProvider,
+  render: h => h(App),
 }).$mount('#app');
 
 // check if any form was changed before window unload

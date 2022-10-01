@@ -10,21 +10,21 @@
  * @type {Wallet[]}
  */
 export function WALLETS() {
-    return [
-        {
-            id: 'metamask',
-            label: 'Metamask',
-            icon: 'metamask',
-        },
-        {
-            id: 'coinbase',
-            label: 'Coinbase Wallet',
-            icon: 'coinbase',
-        },
-        {
-            id: 'walletconnect',
-            label: 'WalletConnect',
-            icon: 'walletconnect',
-        },
-    ];
+  return [
+    {
+      id: 'metamask',
+      label: 'Metamask',
+      icon: 'metamask',
+    },
+    {
+      id: 'coinbase',
+      label: 'Coinbase Wallet',
+      icon: 'coinbase',
+    },
+    {
+      id: 'walletconnect',
+      label: 'WalletConnect',
+      icon: 'walletconnect',
+    },
+  ];
 }

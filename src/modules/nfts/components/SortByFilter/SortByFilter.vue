@@ -1,18 +1,18 @@
 <template>
-    <f-combo-box
-        :data="data"
-        v-model="group"
-        select-mode
-        readonly
-        :inline-autocomplete="false"
-        :aria-label="$t('nftlistfilters.sortbyFilters')"
-        field-size="large"
-        attach-position="bottom"
-        hide-on-document-resize
-        hide-on-document-scroll
-        fit-height-to-viewport
-        class="sortbyfilter fcombobox-maxheight100"
-    />
+  <f-combo-box
+    :data="data"
+    v-model="group"
+    select-mode
+    readonly
+    :inline-autocomplete="false"
+    :aria-label="$t('nftlistfilters.sortbyFilters')"
+    field-size="large"
+    attach-position="bottom"
+    hide-on-document-resize
+    hide-on-document-scroll
+    fit-height-to-viewport
+    class="sortbyfilter fcombobox-maxheight100"
+  />
 </template>
 
 <script>
@@ -21,45 +21,49 @@ import { SORT_BY_FILTERS } from '@/common/constants/sort-by-filters.js';
 import { isArray } from 'fantom-vue-components/src/utils/array.js';
 
 export default {
-    name: 'SortByFilter',
+  name: 'SortByFilter',
 
-    components: { FComboBox },
+  components: { FComboBox },
 
-    model: {
-        prop: 'selected',
-        event: 'change',
+  model: {
+    prop: 'selected',
+    event: 'change',
+  },
+
+  props: {
+    selected: {
+      type: [String, Array],
+      default: '',
     },
+  },
 
-    props: {
-        selected: {
-            type: [String, Array],
-            default: '',
-        },
-    },
-
-    data() {
+  data() {
+    return {
+      data: SORT_BY_FILTERS().map(sortby => {
         return {
-            data: SORT_BY_FILTERS().map(sortby => {
-                return { label: this.$t(sortby.label), value: sortby.value, disabled: sortby.disabled };
-            }),
-            group: this.selected,
+          label: this.$t(sortby.label),
+          value: sortby.value,
+          disabled: sortby.disabled,
         };
+      }),
+      group: this.selected,
+    };
+  },
+
+  watch: {
+    group(value) {
+      if (value) {
+        this.$emit('change', value);
+      }
     },
 
-    watch: {
-        group(value) {
-            if (value) {
-                this.$emit('change', value);
-            }
-        },
-
-        selected(value) {
-            if (isArray(value)) {
-                this.group = value[0];
-            } else {
-                this.group = value;
-            }
-        },
+    selected(value) {
+      if (isArray(value)) {
+        this.group = value[0];
+      } else {
+        this.group = value;
+      }
     },
+  },
 };
 </script>

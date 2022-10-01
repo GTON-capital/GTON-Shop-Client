@@ -20,44 +20,44 @@ const TESTNET_CHAIN_ID = '0xfa2';
  * @return {{data: string, chainId: string, to: string, value: string}}
  */
 function erc20IncreaseAllowanceTx(erc20Address, delegatedToAddress, addAmount) {
-    // create web3.js instance
-    const web3 = new Web3();
+  // create web3.js instance
+  const web3 = new Web3();
 
-    // make the transaction
-    return {
-        to: erc20Address,
-        value: ZERO_AMOUNT,
-        data: web3.eth.abi.encodeFunctionCall(
-            {
-                constant: false,
-                inputs: [
-                    {
-                        internalType: 'address',
-                        name: 'spender',
-                        type: 'address',
-                    },
-                    {
-                        internalType: 'uint256',
-                        name: 'addedValue',
-                        type: 'uint256',
-                    },
-                ],
-                name: 'increaseAllowance',
-                outputs: [
-                    {
-                        internalType: 'bool',
-                        name: '',
-                        type: 'bool',
-                    },
-                ],
-                payable: false,
-                stateMutability: 'nonpayable',
-                type: 'function',
-            },
-            [delegatedToAddress, addAmount]
-        ),
-        chainId: OPERA_CHAIN_ID,
-    };
+  // make the transaction
+  return {
+    to: erc20Address,
+    value: ZERO_AMOUNT,
+    data: web3.eth.abi.encodeFunctionCall(
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: 'address',
+            name: 'spender',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'addedValue',
+            type: 'uint256',
+          },
+        ],
+        name: 'increaseAllowance',
+        outputs: [
+          {
+            internalType: 'bool',
+            name: '',
+            type: 'bool',
+          },
+        ],
+        payable: false,
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+      [delegatedToAddress, addAmount]
+    ),
+    chainId: OPERA_CHAIN_ID,
+  };
 }
 
 /**
@@ -67,49 +67,49 @@ function erc20IncreaseAllowanceTx(erc20Address, delegatedToAddress, addAmount) {
  * @return {{data: string, chainId: string, to, value: string}}
  */
 function erc20ApproveTx(tokenAddress, delegatedToAddress, addAmount) {
-    // create web3.js instance
-    const web3 = new Web3();
+  // create web3.js instance
+  const web3 = new Web3();
 
-    // make the transaction
-    return {
-        to: tokenAddress,
-        value: ZERO_AMOUNT,
-        data: web3.eth.abi.encodeFunctionCall(
-            {
-                inputs: [
-                    {
-                        internalType: 'address',
-                        name: 'spender',
-                        type: 'address',
-                    },
-                    {
-                        internalType: 'uint256',
-                        name: 'value',
-                        type: 'uint256',
-                    },
-                ],
-                name: 'approve',
-                outputs: [
-                    {
-                        internalType: 'bool',
-                        name: '',
-                        type: 'bool',
-                    },
-                ],
-                stateMutability: 'nonpayable',
-                payable: false,
-                type: 'function',
-            },
-            [delegatedToAddress, addAmount]
-        ),
-        chainId: OPERA_CHAIN_ID,
-    };
+  // make the transaction
+  return {
+    to: tokenAddress,
+    value: ZERO_AMOUNT,
+    data: web3.eth.abi.encodeFunctionCall(
+      {
+        inputs: [
+          {
+            internalType: 'address',
+            name: 'spender',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'value',
+            type: 'uint256',
+          },
+        ],
+        name: 'approve',
+        outputs: [
+          {
+            internalType: 'bool',
+            name: '',
+            type: 'bool',
+          },
+        ],
+        stateMutability: 'nonpayable',
+        payable: false,
+        type: 'function',
+      },
+      [delegatedToAddress, addAmount]
+    ),
+    chainId: OPERA_CHAIN_ID,
+  };
 }
 
 // what we export here
 export default {
-    erc20IncreaseAllowanceTx,
-    erc20ApproveTx,
-    OPERA_CHAIN_ID,
-    TESTNET_CHAIN_ID,
+  erc20IncreaseAllowanceTx,
+  erc20ApproveTx,
+  OPERA_CHAIN_ID,
+  TESTNET_CHAIN_ID,
 };

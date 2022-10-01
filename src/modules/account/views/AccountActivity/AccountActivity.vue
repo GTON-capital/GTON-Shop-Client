@@ -1,12 +1,14 @@
 <template>
-    <div class="accountactivity">
-        <h2 class="not-visible" data-focus>{{ $t('page.accountActivity.title') }}</h2>
+  <div class="accountactivity">
+    <h2 class="not-visible" data-focus>
+      {{ $t('page.accountActivity.title') }}
+    </h2>
 
-        <NftItemActivityFilter v-model="filters" />
-        <NftItemActivityFilterChips v-show="filters.length > 0" v-model="filters" />
+    <NftItemActivityFilter v-model="filters" />
+    <NftItemActivityFilterChips v-show="filters.length > 0" v-model="filters" />
 
-        <account-activity-grid :filters="filters" :user-address="userAddress" />
-    </div>
+    <account-activity-grid :filters="filters" :user-address="userAddress" />
+  </div>
 </template>
 
 <script>
@@ -16,39 +18,43 @@ import NftItemActivityFilter from '@/modules/nfts/components/NftItemActivityFilt
 import NftItemActivityFilterChips from '@/modules/nfts/components/NftItemActivityFilterChips/NftItemActivityFilterChips';
 
 export default {
-    name: 'AccountActivity',
+  name: 'AccountActivity',
 
-    components: { AccountActivityGrid, NftItemActivityFilter, NftItemActivityFilterChips },
+  components: {
+    AccountActivityGrid,
+    NftItemActivityFilter,
+    NftItemActivityFilterChips,
+  },
 
-    props: {
-        userAddress: {
-            type: String,
-            default: '',
-            required: true,
-        },
+  props: {
+    userAddress: {
+      type: String,
+      default: '',
+      required: true,
     },
+  },
 
-    data() {
-        return {
-            /** Values from ITEM_ACTIVITY_FILTER_OPTIONS */
-            filters: [],
-        };
-    },
+  data() {
+    return {
+      /** Values from ITEM_ACTIVITY_FILTER_OPTIONS */
+      filters: [],
+    };
+  },
 
-    mounted() {
-        focusElem(this.$el);
-    },
+  mounted() {
+    focusElem(this.$el);
+  },
 };
 </script>
 
 <style lang="scss">
 .accountactivity {
-    display: flex;
-    flex-direction: column;
-    gap: var(--f-spacer-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--f-spacer-3);
 
-    .accountactivityfilter {
-        max-width: 320px;
-    }
+  .accountactivityfilter {
+    max-width: 320px;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 export default {
-    title: 'Design System/Colors',
-    /*decorators: [
+  title: 'Design System/Colors',
+  /*decorators: [
         Story => ({
             components: [Story],
             template: `
@@ -11,8 +11,8 @@ export default {
 };
 
 export const Text = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <div v-for="(color, i) in colors" :key="'clr_' + i" class="pab-5">
                 <div class="gridauto gridauto-miw-128 fos-4">
@@ -24,52 +24,52 @@ export const Text = () => ({
             </div>
         </div>
     `,
-    data() {
-        return {
-            colors: [
-                {
-                    label: 'Primary',
-                    classPrefix: 'co-primary-',
-                    customPropertyPrefix: '--f-color-primary-',
-                },
-                {
-                    label: 'Grey',
-                    classPrefix: 'co-grey-',
-                    customPropertyPrefix: '--f-color-grey-',
-                },
-                {
-                    label: 'Blue',
-                    classPrefix: 'co-blue-',
-                    customPropertyPrefix: '--f-color-blue-',
-                },
-                {
-                    label: 'Red',
-                    classPrefix: 'co-red-',
-                    customPropertyPrefix: '--f-color-red-',
-                },
-                {
-                    label: 'Green',
-                    classPrefix: 'co-green-',
-                    customPropertyPrefix: '--f-color-green-',
-                },
-                {
-                    label: 'Orange',
-                    classPrefix: 'co-orange-',
-                    customPropertyPrefix: '--f-color-orange-',
-                },
-                {
-                    label: 'Yellow',
-                    classPrefix: 'co-yellow-',
-                    customPropertyPrefix: '--f-color-yellow-',
-                },
-            ],
-        };
-    },
+  data() {
+    return {
+      colors: [
+        {
+          label: 'Primary',
+          classPrefix: 'co-primary-',
+          customPropertyPrefix: '--f-color-primary-',
+        },
+        {
+          label: 'Grey',
+          classPrefix: 'co-grey-',
+          customPropertyPrefix: '--f-color-grey-',
+        },
+        {
+          label: 'Blue',
+          classPrefix: 'co-blue-',
+          customPropertyPrefix: '--f-color-blue-',
+        },
+        {
+          label: 'Red',
+          classPrefix: 'co-red-',
+          customPropertyPrefix: '--f-color-red-',
+        },
+        {
+          label: 'Green',
+          classPrefix: 'co-green-',
+          customPropertyPrefix: '--f-color-green-',
+        },
+        {
+          label: 'Orange',
+          classPrefix: 'co-orange-',
+          customPropertyPrefix: '--f-color-orange-',
+        },
+        {
+          label: 'Yellow',
+          classPrefix: 'co-yellow-',
+          customPropertyPrefix: '--f-color-yellow-',
+        },
+      ],
+    };
+  },
 });
 
 export const Background = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <div v-for="(color, i) in colors" :key="'clr_' + i" class="pab-5">
                 <div class="gridauto gridauto-miw-128">
@@ -81,38 +81,38 @@ export const Background = () => ({
             </div>
         </div>
     `,
-    data() {
-        return {
-            colors: [
-                {
-                    label: 'Primary',
-                    classPrefix: 'bac-primary-',
-                },
-                {
-                    label: 'Grey',
-                    classPrefix: 'bac-grey-',
-                },
-                {
-                    label: 'Blue',
-                    classPrefix: 'bac-blue-',
-                },
-                {
-                    label: 'Red',
-                    classPrefix: 'bac-red-',
-                },
-                {
-                    label: 'Green',
-                    classPrefix: 'bac-green-',
-                },
-                {
-                    label: 'Orange',
-                    classPrefix: 'bac-orange-',
-                },
-                {
-                    label: 'Yellow',
-                    classPrefix: 'bac-yellow-',
-                },
-            ],
-        };
-    },
+  data() {
+    return {
+      colors: [
+        {
+          label: 'Primary',
+          classPrefix: 'bac-primary-',
+        },
+        {
+          label: 'Grey',
+          classPrefix: 'bac-grey-',
+        },
+        {
+          label: 'Blue',
+          classPrefix: 'bac-blue-',
+        },
+        {
+          label: 'Red',
+          classPrefix: 'bac-red-',
+        },
+        {
+          label: 'Green',
+          classPrefix: 'bac-green-',
+        },
+        {
+          label: 'Orange',
+          classPrefix: 'bac-orange-',
+        },
+        {
+          label: 'Yellow',
+          classPrefix: 'bac-yellow-',
+        },
+      ],
+    };
+  },
 });

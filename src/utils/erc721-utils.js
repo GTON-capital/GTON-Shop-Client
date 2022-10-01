@@ -16,35 +16,35 @@ const TESTNET_CHAIN_ID = '0xfa2';
  * @return {{data: string, chainId: string, to: string, value: string}}
  */
 function erc721Approve(erc721Address, approveTo, tokenId) {
-    // create web3.js instance
-    const web3 = new Web3();
-    // make the transaction
-    return {
-        to: erc721Address,
-        value: ZERO_AMOUNT,
-        data: web3.eth.abi.encodeFunctionCall(
-            {
-                constant: false,
-                inputs: [
-                    {
-                        name: '_to',
-                        type: 'address',
-                    },
-                    {
-                        name: '_tokenId',
-                        type: 'uint256',
-                    },
-                ],
-                name: 'approve',
-                outputs: [],
-                payable: true,
-                stateMutability: 'payable',
-                type: 'function',
-            },
-            [approveTo, tokenId]
-        ),
-        chainId: OPERA_CHAIN_ID,
-    };
+  // create web3.js instance
+  const web3 = new Web3();
+  // make the transaction
+  return {
+    to: erc721Address,
+    value: ZERO_AMOUNT,
+    data: web3.eth.abi.encodeFunctionCall(
+      {
+        constant: false,
+        inputs: [
+          {
+            name: '_to',
+            type: 'address',
+          },
+          {
+            name: '_tokenId',
+            type: 'uint256',
+          },
+        ],
+        name: 'approve',
+        outputs: [],
+        payable: true,
+        stateMutability: 'payable',
+        type: 'function',
+      },
+      [approveTo, tokenId]
+    ),
+    chainId: OPERA_CHAIN_ID,
+  };
 }
 
 /**
@@ -57,45 +57,45 @@ function erc721Approve(erc721Address, approveTo, tokenId) {
  * @return {{data: string, chainId: string, to: string, value: string}}
  */
 function erc721TransferFrom(erc721Address, transferFrom, transferTo, tokenId) {
-    // create web3.js instance
-    const web3 = new Web3();
-    // make the transaction
-    return {
-        to: erc721Address,
-        value: ZERO_AMOUNT,
-        data: web3.eth.abi.encodeFunctionCall(
-            {
-                constant: false,
-                inputs: [
-                    {
-                        name: '_from',
-                        type: 'address',
-                    },
-                    {
-                        name: '_to',
-                        type: 'address',
-                    },
-                    {
-                        name: '_tokenId',
-                        type: 'uint256',
-                    },
-                ],
-                name: 'transferFrom',
-                outputs: [],
-                payable: true,
-                stateMutability: 'payable',
-                type: 'function',
-            },
-            [transferFrom, transferTo, tokenId]
-        ),
-        chainId: OPERA_CHAIN_ID,
-    };
+  // create web3.js instance
+  const web3 = new Web3();
+  // make the transaction
+  return {
+    to: erc721Address,
+    value: ZERO_AMOUNT,
+    data: web3.eth.abi.encodeFunctionCall(
+      {
+        constant: false,
+        inputs: [
+          {
+            name: '_from',
+            type: 'address',
+          },
+          {
+            name: '_to',
+            type: 'address',
+          },
+          {
+            name: '_tokenId',
+            type: 'uint256',
+          },
+        ],
+        name: 'transferFrom',
+        outputs: [],
+        payable: true,
+        stateMutability: 'payable',
+        type: 'function',
+      },
+      [transferFrom, transferTo, tokenId]
+    ),
+    chainId: OPERA_CHAIN_ID,
+  };
 }
 
 // what we export here
 export default {
-    erc721Approve,
-    erc721TransferFrom,
-    OPERA_CHAIN_ID,
-    TESTNET_CHAIN_ID,
+  erc721Approve,
+  erc721TransferFrom,
+  OPERA_CHAIN_ID,
+  TESTNET_CHAIN_ID,
 };

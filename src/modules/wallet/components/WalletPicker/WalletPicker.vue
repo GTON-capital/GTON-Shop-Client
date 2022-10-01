@@ -1,12 +1,12 @@
 <template>
-    <wallet-picker-window
-        :wallets="wallets"
-        :title="$t('walletpicker.connectToWallet')"
-        @wallet-pick="onWalletPick"
-        @window-hide="onWindowHide"
-        ref="window"
-        class="walletpicker"
-    />
+  <wallet-picker-window
+    :wallets="wallets"
+    :title="$t('walletpicker.connectToWallet')"
+    @wallet-pick="onWalletPick"
+    @window-hide="onWindowHide"
+    ref="window"
+    class="walletpicker"
+  />
 </template>
 
 <script>
@@ -18,82 +18,86 @@ import { eventBusMixin } from 'fantom-vue-components/src/mixins/event-bus.js';
 import { isObject } from 'fantom-vue-components/src/utils/index.js';
 
 export default {
-    name: 'WalletPicker',
+  name: 'WalletPicker',
 
-    mixins: [eventBusMixin],
+  mixins: [eventBusMixin],
 
-    components: { WalletPickerWindow },
+  components: { WalletPickerWindow },
 
-    data() {
-        return {
-            wallets: WALLETS(),
-        };
-    },
+  data() {
+    return {
+      wallets: WALLETS(),
+    };
+  },
 
-    computed: {
-        ...mapState('wallet', {
-            address: 'account',
-        }),
-    },
+  computed: {
+    ...mapState('wallet', {
+      address: 'account',
+    }),
+  },
 
-    created() {
-        this._eventBus.on('show-wallet-picker', this.onShow);
+  created() {
+    this._eventBus.on('show-wallet-picker', this.onShow);
+    this._resolve = null;
+    this._walletPicked = false;
+  },
+
+  methods: {
+    ...copyMethods(WalletPickerWindow, ['show'], 'window'),
+
+    callResolve(walletInfo = null) {
+      if (typeof this._resolve === 'function') {
+        this._resolve(walletInfo);
         this._resolve = null;
-        this._walletPicked = false;
+      }
     },
 
-    methods: {
-        ...copyMethods(WalletPickerWindow, ['show'], 'window'),
+    async onWalletPick(wallet) {
+      this._walletPicked = true;
 
-        callResolve(walletInfo = null) {
-            if (typeof this._resolve === 'function') {
-                this._resolve(walletInfo);
-                this._resolve = null;
-            }
-        },
+      if (wallet.id === 'metamask' && !this.isMetamaskInstalled()) {
+        this.callResolve();
 
-        async onWalletPick(wallet) {
-            this._walletPicked = true;
+        const url = new URL(window.location.href);
 
-            if (wallet.id === 'metamask' && !this.isMetamaskInstalled()) {
-                this.callResolve();
+        if (url.host.indexOf('sandbox.pbro') > -1) {
+          window.location.href =
+            'https://metamask.app.link/dapp/sandbox.pbro.zenithies.dev/artion/';
+        } else {
+          window.location.href = `https://metamask.app.link/dapp/${url.host}/`;
+        }
+      } else {
+        const walletSet = await this.$wallet.setWallet(wallet.id, true);
 
-                const url = new URL(window.location.href);
+        this.callResolve({ wallet, walletSet });
+      }
 
-                if (url.host.indexOf('sandbox.pbro') > -1) {
-                    window.location.href = 'https://metamask.app.link/dapp/sandbox.pbro.zenithies.dev/artion/';
-                } else {
-                    window.location.href = `https://metamask.app.link/dapp/${url.host}/`;
-                }
-            } else {
-                const walletSet = await this.$wallet.setWallet(wallet.id, true);
-
-                this.callResolve({ wallet, walletSet });
-            }
-
-            this._walletPicked = false;
-        },
-
-        isMetamaskInstalled() {
-            return typeof window.web3 !== 'undefined' && window.web3.currentProvider.isMetaMask;
-        },
-
-        onWindowHide() {
-            if (!this._walletPicked) {
-                this.callResolve();
-            }
-        },
-
-        onShow(obj) {
-            this.show();
-
-            if (isObject(obj)) {
-                obj.promise = new Promise(resolve => {
-                    this._resolve = resolve;
-                });
-            }
-        },
+      this._walletPicked = false;
     },
+
+    isMetamaskInstalled() {
+      return (
+        typeof window.web3 !== 'undefined' &&
+        window.web3.currentProvider.isMetaMask
+      );
+    },
+
+    onWindowHide() {
+      if (!this._walletPicked) {
+        this.callResolve();
+      }
+    },
+
+    onShow(obj) {
+      this.show();
+
+      if (isObject(obj)) {
+        obj.promise = new Promise(resolve => {
+          this._resolve = resolve;
+        });
+      }
+    },
+  },
 };
 </script>
 

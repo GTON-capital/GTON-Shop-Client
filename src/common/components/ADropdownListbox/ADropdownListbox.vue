@@ -1,16 +1,16 @@
 <template>
-    <f-dropdown-listbox
-        ref="dlistbox"
-        v-bind="$attrs"
-        button-class="inp inp-lg"
-        class="adropdownlistbox"
-        v-on="$listeners"
-    >
-        <!-- copy slots -->
-        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-            <slot :name="name" v-bind="data"></slot>
-        </template>
-    </f-dropdown-listbox>
+  <f-dropdown-listbox
+    ref="dlistbox"
+    v-bind="$attrs"
+    button-class="inp inp-lg"
+    class="adropdownlistbox"
+    v-on="$listeners"
+  >
+    <!-- copy slots -->
+    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+  </f-dropdown-listbox>
 </template>
 
 <script>
@@ -20,26 +20,26 @@ import FDropdownListbox from 'fantom-vue-components/src/components/FDropdownList
  * FDropdownListbox wrapper
  */
 export default {
-    name: 'ADropdownListbox',
+  name: 'ADropdownListbox',
 
-    components: { FDropdownListbox },
+  components: { FDropdownListbox },
 
-    model: {
-        prop: 'value',
-        event: 'change',
+  model: {
+    prop: 'value',
+    event: 'change',
+  },
+
+  inheritAttrs: false,
+
+  methods: {
+    /**
+     * @param {function} [validator]
+     * @return {Promise<null|*>}
+     */
+    async validate(validator) {
+      return this.$refs.dlistbox.validate(validator);
     },
-
-    inheritAttrs: false,
-
-    methods: {
-        /**
-         * @param {function} [validator]
-         * @return {Promise<null|*>}
-         */
-        async validate(validator) {
-            return this.$refs.dlistbox.validate(validator);
-        },
-    },
+  },
 };
 </script>
 

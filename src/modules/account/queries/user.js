@@ -4,27 +4,27 @@ import { gqlQuery } from '@/utils/gql.js';
 // import { compareAddresses } from '@/utils/address.js';
 
 export async function getUser(address = '') {
-    const query = {
-        query: gql`
-            query GetUser($address: Address!) {
-                user(address: $address) {
-                    address
-                    username
-                    bio
-                    email
-                    avatar
-                    avatarThumb
-                    banner
-                }
-            }
-        `,
-        variables: {
-            address,
-        },
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query GetUser($address: Address!) {
+        user(address: $address) {
+          address
+          username
+          bio
+          email
+          avatar
+          avatarThumb
+          banner
+        }
+      }
+    `,
+    variables: {
+      address,
+    },
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'user');
+  return gqlQuery(query, 'user');
 }
 
 // TMP
@@ -35,14 +35,14 @@ export async function isLoggedUserModerator() {
 */
 
 export async function isLoggedUserModerator() {
-    const query = {
-        query: gql`
-            query IsLoggedUserModerator {
-                isLoggedModerator
-            }
-        `,
-        fetchPolicy: 'network-only',
-    };
+  const query = {
+    query: gql`
+      query IsLoggedUserModerator {
+        isLoggedModerator
+      }
+    `,
+    fetchPolicy: 'network-only',
+  };
 
-    return gqlQuery(query, 'isLoggedModerator');
+  return gqlQuery(query, 'isLoggedModerator');
 }

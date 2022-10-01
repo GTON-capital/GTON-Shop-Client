@@ -8,215 +8,215 @@ import { notifications } from 'fantom-vue-components/src/plugins/notifications.j
 const OPERA_CHAIN_ID = parseInt(appConfig.mainnet.chainId, 16);
 
 export class WalletConnect {
-    /**
-     * @param {Wallet} wallet
-     */
-    constructor(wallet) {
-        this.selectedAddress = '';
-        this.chainId = 0;
+  /**
+   * @param {Wallet} wallet
+   */
+  constructor(wallet) {
+    this.selectedAddress = '';
+    this.chainId = 0;
 
-        this._walletConnect = null;
-        this._initialized = false;
-        this._web3 = null;
+    this._walletConnect = null;
+    this._initialized = false;
+    this._web3 = null;
 
-        this._wallet = wallet;
-    }
+    this._wallet = wallet;
+  }
 
-    async init() {
-        if (!this._initialized) {
-            this._walletConnect = new WC({
-                bridge: 'https://bridge.walletconnect.org',
-                qrcodeModal: WalletConnectQRCodeModal,
-            });
+  async init() {
+    if (!this._initialized) {
+      this._walletConnect = new WC({
+        bridge: 'https://bridge.walletconnect.org',
+        qrcodeModal: WalletConnectQRCodeModal,
+      });
 
-            const provider = new WalletConnectProvider({
-                // infuraId: '27e484dcd9e3efcfd25a83a78777cdf1',
-                rpc: {
-                    [OPERA_CHAIN_ID]: appConfig.mainnet.rpc,
-                },
-                chainId: OPERA_CHAIN_ID,
-            });
+      const provider = new WalletConnectProvider({
+        // infuraId: '27e484dcd9e3efcfd25a83a78777cdf1',
+        rpc: {
+          [OPERA_CHAIN_ID]: appConfig.mainnet.rpc,
+        },
+        chainId: OPERA_CHAIN_ID,
+      });
 
-            this._web3 = new Web3(provider);
+      this._web3 = new Web3(provider);
 
-            this._walletConnect.on('session_update', (error, payload) => {
-                if (error) {
-                    throw error;
-                }
-
-                const { accounts, chainId } = payload.params[0];
-
-                if (this._wallet) {
-                    this._wallet.onChainChange(chainId);
-                }
-
-                this.onSessionUpdate(accounts, chainId);
-            });
-
-            this._walletConnect.on('disconnect', error => {
-                if (error) {
-                    throw error;
-                }
-
-                this._setChainId(0);
-                this._setAccount('');
-
-                this._wallet.logout(true);
-            });
-
-            if (this._walletConnect.connected) {
-                const { chainId, accounts } = this._walletConnect;
-                this.onSessionUpdate(accounts, chainId);
-            }
+      this._walletConnect.on('session_update', (error, payload) => {
+        if (error) {
+          throw error;
         }
 
-        this._initialized = true;
-    }
+        const { accounts, chainId } = payload.params[0];
 
-    /**
-     * @param {Object} tx
-     * @param {string} [address]
-     * @return {Promise<*|string>} Tx hash
-     */
-    async signTransaction(tx, address) {
-        let hash = '';
-
-        if (this._walletConnect) {
-            if (address) {
-                tx.from = address;
-            }
-
-            const msgId = this.showNotification();
-
-            try {
-                hash = await this._walletConnect.sendTransaction(tx);
-
-                this.hideNotification(msgId);
-            } catch (error) {
-                this.hideNotification(msgId);
-                throw new Error(error);
-            }
+        if (this._wallet) {
+          this._wallet.onChainChange(chainId);
         }
 
-        return hash;
-    }
+        this.onSessionUpdate(accounts, chainId);
+      });
 
-    /**
-     * @param {string} message
-     * @param {string} account
-     * @return {Promise<string>}
-     */
-    async personalSign(message, account) {
-        let msg = '';
-
-        if (this._walletConnect) {
-            const msgId = this.showNotification();
-
-            try {
-                msg = await this._walletConnect.signPersonalMessage([message, account]);
-
-                this.hideNotification(msgId);
-            } catch (error) {
-                this.hideNotification(msgId);
-                throw new Error(error);
-            }
+      this._walletConnect.on('disconnect', error => {
+        if (error) {
+          throw error;
         }
 
-        return msg;
+        this._setChainId(0);
+        this._setAccount('');
+
+        this._wallet.logout(true);
+      });
+
+      if (this._walletConnect.connected) {
+        const { chainId, accounts } = this._walletConnect;
+        this.onSessionUpdate(accounts, chainId);
+      }
     }
 
-    /**
-     * @return {Promise<string>}
-     */
-    async getAccount() {
-        if (!this.selectedAddress) {
-            const accounts = await this.connect();
+    this._initialized = true;
+  }
 
-            if (accounts) {
-                this._setAccount(accounts[0]);
-            }
-        }
+  /**
+   * @param {Object} tx
+   * @param {string} [address]
+   * @return {Promise<*|string>} Tx hash
+   */
+  async signTransaction(tx, address) {
+    let hash = '';
 
-        return this.selectedAddress || '';
+    if (this._walletConnect) {
+      if (address) {
+        tx.from = address;
+      }
+
+      const msgId = this.showNotification();
+
+      try {
+        hash = await this._walletConnect.sendTransaction(tx);
+
+        this.hideNotification(msgId);
+      } catch (error) {
+        this.hideNotification(msgId);
+        throw new Error(error);
+      }
     }
 
-    /**
-     * @return {number}
-     */
-    getChainId() {
-        return this.chainId;
+    return hash;
+  }
+
+  /**
+   * @param {string} message
+   * @param {string} account
+   * @return {Promise<string>}
+   */
+  async personalSign(message, account) {
+    let msg = '';
+
+    if (this._walletConnect) {
+      const msgId = this.showNotification();
+
+      try {
+        msg = await this._walletConnect.signPersonalMessage([message, account]);
+
+        this.hideNotification(msgId);
+      } catch (error) {
+        this.hideNotification(msgId);
+        throw new Error(error);
+      }
     }
 
-    /**
-     * @return {string}
-     */
-    name() {
-        return 'walletconnect';
-    }
+    return msg;
+  }
 
-    /**
-     * @return {boolean}
-     */
-    isInstalled() {
-        return true;
-    }
+  /**
+   * @return {Promise<string>}
+   */
+  async getAccount() {
+    if (!this.selectedAddress) {
+      const accounts = await this.connect();
 
-    async disconnect() {
-        if (this._walletConnect) {
-            await this._walletConnect.killSession();
-        }
-    }
-
-    web3() {
-        return this._web3;
-    }
-
-    async connect() {
-        const { accounts, chainId } = await this._walletConnect.connect({
-            chainId: OPERA_CHAIN_ID,
-            rpcUrl: appConfig.mainnet.rpc,
-        });
-
+      if (accounts) {
         this._setAccount(accounts[0]);
-        this._setChainId(chainId);
-
-        return accounts;
+      }
     }
 
-    /**
-     * @param {number} chainId
-     * @private
-     */
-    _setChainId(chainId = 0) {
-        this.chainId = chainId;
-    }
+    return this.selectedAddress || '';
+  }
 
-    /**
-     * @param {string} account
-     * @private
-     */
-    _setAccount(account = '') {
-        this.selectedAddress = account;
-    }
+  /**
+   * @return {number}
+   */
+  getChainId() {
+    return this.chainId;
+  }
 
-    showNotification() {
-        return notifications.add({
-            type: 'info',
-            text: 'Confirm on phone',
-            hideAfter: 10000000,
-        });
-    }
+  /**
+   * @return {string}
+   */
+  name() {
+    return 'walletconnect';
+  }
 
-    hideNotification(msgId = '') {
-        notifications.hide(msgId);
-    }
+  /**
+   * @return {boolean}
+   */
+  isInstalled() {
+    return true;
+  }
 
-    /**
-     * @param {string[]} accounts
-     * @param {number} chainId
-     */
-    onSessionUpdate(accounts, chainId) {
-        this._setAccount(accounts[0]);
-        this._setChainId(chainId);
+  async disconnect() {
+    if (this._walletConnect) {
+      await this._walletConnect.killSession();
     }
+  }
+
+  web3() {
+    return this._web3;
+  }
+
+  async connect() {
+    const { accounts, chainId } = await this._walletConnect.connect({
+      chainId: OPERA_CHAIN_ID,
+      rpcUrl: appConfig.mainnet.rpc,
+    });
+
+    this._setAccount(accounts[0]);
+    this._setChainId(chainId);
+
+    return accounts;
+  }
+
+  /**
+   * @param {number} chainId
+   * @private
+   */
+  _setChainId(chainId = 0) {
+    this.chainId = chainId;
+  }
+
+  /**
+   * @param {string} account
+   * @private
+   */
+  _setAccount(account = '') {
+    this.selectedAddress = account;
+  }
+
+  showNotification() {
+    return notifications.add({
+      type: 'info',
+      text: 'Confirm on phone',
+      hideAfter: 10000000,
+    });
+  }
+
+  hideNotification(msgId = '') {
+    notifications.hide(msgId);
+  }
+
+  /**
+   * @param {string[]} accounts
+   * @param {number} chainId
+   */
+  onSessionUpdate(accounts, chainId) {
+    this._setAccount(accounts[0]);
+    this._setChainId(chainId);
+  }
 }

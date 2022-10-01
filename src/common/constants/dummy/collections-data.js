@@ -1,11 +1,12 @@
 export function collectionsData() {
-    return [
-        {
-            img: 'https://cloudflare-ipfs.com/ipfs/QmP8idjiQxFZ1Wpe61fSmi6jPTT48apPEx4QVKDhhWNWya',
-            label: 'Default GTON Shop Collection',
-            value: 'default-gton-shop-collection',
-        },
-        /*{
+  return [
+    {
+      img:
+        'https://cloudflare-ipfs.com/ipfs/QmP8idjiQxFZ1Wpe61fSmi6jPTT48apPEx4QVKDhhWNWya',
+      label: 'Default GTON Shop Collection',
+      value: 'default-gton-shop-collection',
+    },
+    /*{
             img: 'https://cloudflare-ipfs.com/ipfs/QmTTvJNrWky6AikiPx6LsFBazRaX47z7XKiiyZVS7x4hHE',
             label: 'Rarity Crafting',
             value: 'rarity-crafting',
@@ -30,5 +31,5 @@ export function collectionsData() {
             label: 'Lunarland',
             value: 'lunarland',
         },*/
-    ];
+  ];
 }

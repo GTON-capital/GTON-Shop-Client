@@ -1,40 +1,40 @@
 <template>
-    <div class="density">
-        <f-button
-            :aria-label="$t('densityswitch.largeDisplay')"
-            :data-tooltip="$t('densityswitch.largeDisplay')"
-            data-density="large"
-            @click.native="onDensitySwitchClick"
-        >
-            <app-iconset icon="solid2" size="24px" />
-        </f-button>
-        <f-button
-            :aria-label="$t('densityswitch.smallDisplay')"
-            :data-tooltip="$t('densityswitch.smallDisplay')"
-            data-density="small"
-            @click.native="onDensitySwitchClick"
-        >
-            <app-iconset icon="solid1" size="24px" />
-        </f-button>
-    </div>
+  <div class="density">
+    <f-button
+      :aria-label="$t('densityswitch.largeDisplay')"
+      :data-tooltip="$t('densityswitch.largeDisplay')"
+      data-density="large"
+      @click.native="onDensitySwitchClick"
+    >
+      <app-iconset icon="solid2" size="24px" />
+    </f-button>
+    <f-button
+      :aria-label="$t('densityswitch.smallDisplay')"
+      :data-tooltip="$t('densityswitch.smallDisplay')"
+      data-density="small"
+      @click.native="onDensitySwitchClick"
+    >
+      <app-iconset icon="solid1" size="24px" />
+    </f-button>
+  </div>
 </template>
 <script>
 import AppIconset from '@/modules/app/components/AppIconset/AppIconset.vue';
 import { SET_NFTS_DENSITY } from '@/modules/app/store/mutations.js';
 
 export default {
-    name: 'DensitySwitch',
+  name: 'DensitySwitch',
 
-    components: { AppIconset },
+  components: { AppIconset },
 
-    methods: {
-        onDensitySwitchClick(e) {
-            const density = e.currentTarget.getAttribute('data-density');
+  methods: {
+    onDensitySwitchClick(e) {
+      const density = e.currentTarget.getAttribute('data-density');
 
-            this.$store.commit(`app/${SET_NFTS_DENSITY}`, density);
-            this.$emit('density-switch', density);
-        },
+      this.$store.commit(`app/${SET_NFTS_DENSITY}`, density);
+      this.$emit('density-switch', density);
     },
+  },
 };
 </script>
 <style lang="scss">

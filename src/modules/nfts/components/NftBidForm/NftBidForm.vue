@@ -1,43 +1,51 @@
 <template>
-    <f-form class="nftbidform grid gapr-9" v-model="values" @submit="onSubmit" :aria-label="$t('nftbid.placeBid')">
-        <f-form-input
-            ref="priceField"
-            type="a-price-field"
-            :currencies="payTokens"
-            :selected="auction.payToken"
-            :select-immediately="true"
-            currency-dropdown-disabled
-            name="price"
-            :label="$t('nftbidform.price')"
-            :validator="priceValidator"
-            validate-on-input
-            @token-selected="onTokenSelected"
-        >
-            <template #bottom="{ validationState, errorMsgId, infoTextId }">
-                <div class="fform_errwithinfo">
-                    <f-error-messages :errors="validationState.errors" :errors-cont-id="errorMsgId" />
-                    <f-info-text :info-text-id="infoTextId">
-                        <span>{{ $t('balance') }}:</span>
-                        <a-token-value
-                            :token="{ ...payToken, img: '' }"
-                            :value="toHex(userBalanceB)"
-                            :fraction-digits="2"
-                            :is-pay-token="false"
-                            :use-placeholder="false"
-                        />
-                    </f-info-text>
-                </div>
-            </template>
-        </f-form-input>
-
-        <div class="fform_buttons">
-            <a-button type="submit" size="large" :loading="txStatus === 'pending'">
-                {{ $t('nftbidform.place') }}
-            </a-button>
+  <f-form
+    class="nftbidform grid gapr-9"
+    v-model="values"
+    @submit="onSubmit"
+    :aria-label="$t('nftbid.placeBid')"
+  >
+    <f-form-input
+      ref="priceField"
+      type="a-price-field"
+      :currencies="payTokens"
+      :selected="auction.payToken"
+      :select-immediately="true"
+      currency-dropdown-disabled
+      name="price"
+      :label="$t('nftbidform.price')"
+      :validator="priceValidator"
+      validate-on-input
+      @token-selected="onTokenSelected"
+    >
+      <template #bottom="{ validationState, errorMsgId, infoTextId }">
+        <div class="fform_errwithinfo">
+          <f-error-messages
+            :errors="validationState.errors"
+            :errors-cont-id="errorMsgId"
+          />
+          <f-info-text :info-text-id="infoTextId">
+            <span>{{ $t('balance') }}:</span>
+            <a-token-value
+              :token="{ ...payToken, img: '' }"
+              :value="toHex(userBalanceB)"
+              :fraction-digits="2"
+              :is-pay-token="false"
+              :use-placeholder="false"
+            />
+          </f-info-text>
         </div>
+      </template>
+    </f-form-input>
 
-        <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
-    </f-form>
+    <div class="fform_buttons">
+      <a-button type="submit" size="large" :loading="txStatus === 'pending'">
+        {{ $t('nftbidform.place') }}
+      </a-button>
+    </div>
+
+    <a-sign-transaction :tx="tx" @transaction-status="onTransactionStatus" />
+  </f-form>
 </template>
 <script>
 import Web3 from 'web3';
@@ -53,205 +61,221 @@ import FInfoText from 'fantom-vue-components/src/components/FInfoText/FInfoText.
 import ATokenValue from '@/common/components/ATokenValue/ATokenValue.vue';
 
 export default {
-    name: 'NftBidForm',
+  name: 'NftBidForm',
 
-    components: { ATokenValue, AButton, ASignTransaction, FErrorMessages, FInfoText },
+  components: {
+    ATokenValue,
+    AButton,
+    ASignTransaction,
+    FErrorMessages,
+    FInfoText,
+  },
 
-    props: {
-        token: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        auction: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
+  props: {
+    token: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    auction: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+
+  data() {
+    return {
+      values: {
+        price: '',
+      },
+      payTokens: [],
+      payToken: {},
+      tx: {},
+      txStatus: '',
+      userBalanceB: null,
+      minBidAmountB: null,
+      currentBidB: null,
+      priceB: null,
+    };
+  },
+
+  computed: {
+    ...mapState('wallet', {
+      walletAddress: 'account',
+    }),
+  },
+
+  watch: {
+    auction: {
+      handler(value) {
+        if (value.contract) {
+          this.setData(value);
+        }
+      },
+      immediate: true,
     },
 
-    data() {
-        return {
-            values: {
-                price: '',
-            },
-            payTokens: [],
-            payToken: {},
-            tx: {},
-            txStatus: '',
-            userBalanceB: null,
-            minBidAmountB: null,
-            currentBidB: null,
-            priceB: null,
-        };
+    walletAddress() {
+      this.setUserBalance();
+    },
+  },
+
+  created() {
+    this.init();
+  },
+
+  methods: {
+    async init() {
+      this.payTokens = await PAY_TOKENS_WITH_PRICES();
     },
 
-    computed: {
-        ...mapState('wallet', {
-            walletAddress: 'account',
-        }),
+    /**
+     * @param {Object} values
+     * @param {boolean} [approve] If true, use erc20ApproveTx function
+     * @return {Promise<void>}
+     */
+    async placeBid(values, approve = false) {
+      let priceB = !approve
+        ? bToTokenValue(values.price, this.payToken.decimals)
+        : this.priceB;
+
+      if (priceB.isLessThan(this.minBidAmountB)) {
+        priceB = this.minBidAmountB;
+      }
+
+      const allowanceTx = await getUserAllowanceTx({
+        value: toHex(priceB),
+        tokenAddress: this.auction.payToken,
+        contract: this.auction.auctionHall,
+        approve,
+      });
+
+      if (allowanceTx) {
+        allowanceTx._code = 'place_bid_allowance';
+        allowanceTx._silent = true;
+
+        this.tx = allowanceTx;
+
+        this.priceB = priceB;
+      } else {
+        this.setPlaceBidTx(priceB);
+      }
     },
 
-    watch: {
-        auction: {
-            handler(value) {
-                if (value.contract) {
-                    this.setData(value);
-                }
-            },
-            immediate: true,
-        },
+    /**
+     * @param {BigNumber} priceB
+     */
+    setPlaceBidTx(priceB) {
+      const web3 = new Web3();
+      const { token } = this;
 
-        walletAddress() {
-            this.setUserBalance();
-        },
+      const tx = contracts.placeAuctionBid(
+        token.contract,
+        token.tokenId,
+        toHex(priceB),
+        web3,
+        this.auction.auctionHall
+      );
+
+      tx._code = 'place_bid';
+
+      this.tx = tx;
     },
 
-    created() {
-        this.init();
+    /**
+     * @param {Auction} auction
+     */
+    setData(auction) {
+      this.minBidAmountB = toBigNumber(auction.minBidAmount);
+      this.currentBidB = toBigNumber(auction.lastBid || '0x0');
+      this.setUserBalance();
     },
 
-    methods: {
-        async init() {
-            this.payTokens = await PAY_TOKENS_WITH_PRICES();
-        },
-
-        /**
-         * @param {Object} values
-         * @param {boolean} [approve] If true, use erc20ApproveTx function
-         * @return {Promise<void>}
-         */
-        async placeBid(values, approve = false) {
-            let priceB = !approve ? bToTokenValue(values.price, this.payToken.decimals) : this.priceB;
-
-            if (priceB.isLessThan(this.minBidAmountB)) {
-                priceB = this.minBidAmountB;
-            }
-
-            const allowanceTx = await getUserAllowanceTx({
-                value: toHex(priceB),
-                tokenAddress: this.auction.payToken,
-                contract: this.auction.auctionHall,
-                approve,
-            });
-
-            if (allowanceTx) {
-                allowanceTx._code = 'place_bid_allowance';
-                allowanceTx._silent = true;
-
-                this.tx = allowanceTx;
-
-                this.priceB = priceB;
-            } else {
-                this.setPlaceBidTx(priceB);
-            }
-        },
-
-        /**
-         * @param {BigNumber} priceB
-         */
-        setPlaceBidTx(priceB) {
-            const web3 = new Web3();
-            const { token } = this;
-
-            const tx = contracts.placeAuctionBid(
-                token.contract,
-                token.tokenId,
-                toHex(priceB),
-                web3,
-                this.auction.auctionHall
-            );
-
-            tx._code = 'place_bid';
-
-            this.tx = tx;
-        },
-
-        /**
-         * @param {Auction} auction
-         */
-        setData(auction) {
-            this.minBidAmountB = toBigNumber(auction.minBidAmount);
-            this.currentBidB = toBigNumber(auction.lastBid || '0x0');
-            this.setUserBalance();
-        },
-
-        async setUserBalance() {
-            this.userBalanceB = await getUserBalance(this.auction.payToken, this.walletAddress);
-        },
-
-        /**
-         * @param {string} value
-         * @return {VueI18n.TranslateResult|string}
-         */
-        priceValidator(value) {
-            const val = parseFloat(value);
-            const valB = bToTokenValue(val, this.payToken.decimals);
-            let msg = '';
-
-            if (isNaN(val) || val <= 0) {
-                msg = this.$t('nftbidform.nonZeroPrice');
-            } else if (valB.isGreaterThan(this.userBalanceB)) {
-                msg = this.$t('nftbidform.insufficientTokenBalance', { token: this.payToken.label });
-            } else if (valB.isLessThan(this.minBidAmountB)) {
-                if (this.currentBidB.isEqualTo(0)) {
-                    msg = this.$t('nftbidform.newBidIsBelowMin');
-                } else {
-                    msg = this.$t('nftbidform.newBidIsBelowCurrent');
-                }
-            }
-
-            return msg;
-        },
-
-        /**
-         * @param {PayToken} token
-         */
-        onTokenSelected(token) {
-            this.payToken = token;
-        },
-
-        /**
-         * @param {Object} data
-         */
-        onSubmit(data) {
-            this.placeBid(data.values);
-        },
-
-        onTxSuccess() {
-            this.priceB = null;
-            this.$notifications.add({
-                type: 'success',
-                text: this.$t('nftbidform.placeBidSuccessful'),
-            });
-            this.$emit('tx-success');
-        },
-
-        /**
-         * @param {TransactionStatus} payload
-         */
-        onTransactionStatus(payload) {
-            const txCode = payload.code;
-            this.txStatus = payload.status;
-
-            if (this.txStatus === 'success') {
-                if (txCode === 'place_bid_allowance') {
-                    this.setPlaceBidTx(this.priceB);
-                } else if (txCode === 'place_bid') {
-                    this.onTxSuccess();
-                }
-            } else if (this.txStatus === 'error') {
-                if (txCode === 'place_bid_allowance' && payload.error.indexOf('execution reverted') > -1) {
-                    this.placeBid({}, true);
-                }
-            }
-
-            this.$emit('transaction-status', payload);
-        },
-
-        toHex,
+    async setUserBalance() {
+      this.userBalanceB = await getUserBalance(
+        this.auction.payToken,
+        this.walletAddress
+      );
     },
+
+    /**
+     * @param {string} value
+     * @return {VueI18n.TranslateResult|string}
+     */
+    priceValidator(value) {
+      const val = parseFloat(value);
+      const valB = bToTokenValue(val, this.payToken.decimals);
+      let msg = '';
+
+      if (isNaN(val) || val <= 0) {
+        msg = this.$t('nftbidform.nonZeroPrice');
+      } else if (valB.isGreaterThan(this.userBalanceB)) {
+        msg = this.$t('nftbidform.insufficientTokenBalance', {
+          token: this.payToken.label,
+        });
+      } else if (valB.isLessThan(this.minBidAmountB)) {
+        if (this.currentBidB.isEqualTo(0)) {
+          msg = this.$t('nftbidform.newBidIsBelowMin');
+        } else {
+          msg = this.$t('nftbidform.newBidIsBelowCurrent');
+        }
+      }
+
+      return msg;
+    },
+
+    /**
+     * @param {PayToken} token
+     */
+    onTokenSelected(token) {
+      this.payToken = token;
+    },
+
+    /**
+     * @param {Object} data
+     */
+    onSubmit(data) {
+      this.placeBid(data.values);
+    },
+
+    onTxSuccess() {
+      this.priceB = null;
+      this.$notifications.add({
+        type: 'success',
+        text: this.$t('nftbidform.placeBidSuccessful'),
+      });
+      this.$emit('tx-success');
+    },
+
+    /**
+     * @param {TransactionStatus} payload
+     */
+    onTransactionStatus(payload) {
+      const txCode = payload.code;
+      this.txStatus = payload.status;
+
+      if (this.txStatus === 'success') {
+        if (txCode === 'place_bid_allowance') {
+          this.setPlaceBidTx(this.priceB);
+        } else if (txCode === 'place_bid') {
+          this.onTxSuccess();
+        }
+      } else if (this.txStatus === 'error') {
+        if (
+          txCode === 'place_bid_allowance' &&
+          payload.error.indexOf('execution reverted') > -1
+        ) {
+          this.placeBid({}, true);
+        }
+      }
+
+      this.$emit('transaction-status', payload);
+    },
+
+    toHex,
+  },
 };
 </script>

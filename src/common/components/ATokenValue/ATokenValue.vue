@@ -1,31 +1,52 @@
 <template>
-    <span class="atokenvalue">
-        <a-placeholder
-            v-if="usePlaceholder"
-            :content-loaded="!!dToken.label || contentLoaded"
-            :replacement-text="replacementText"
-        >
-            <img v-if="dToken.img" :src="dToken.img" :alt="tokenSymbol" :width="imageSize" :height="imageSize" />
-            <span class="atokenvalue_value" :data-tooltip="tokenValue">
-                {{ tokenValue }}
-            </span>
-            <span v-if="!noSymbol" class="atokenvalue_symbol">{{ tokenSymbol }}</span>
-            <span v-if="withPrice" class="atokenvalue_price" :data-tooltip="tokenPrice$">
-                (
-                <span>{{ tokenPrice$ }}</span>
-                )
-            </span>
-        </a-placeholder>
+  <span class="atokenvalue">
+    <a-placeholder
+      v-if="usePlaceholder"
+      :content-loaded="!!dToken.label || contentLoaded"
+      :replacement-text="replacementText"
+    >
+      <img
+        v-if="dToken.img"
+        :src="dToken.img"
+        :alt="tokenSymbol"
+        :width="imageSize"
+        :height="imageSize"
+      />
+      <span class="atokenvalue_value" :data-tooltip="tokenValue">
+        {{ tokenValue }}
+      </span>
+      <span v-if="!noSymbol" class="atokenvalue_symbol">{{ tokenSymbol }}</span>
+      <span
+        v-if="withPrice"
+        class="atokenvalue_price"
+        :data-tooltip="tokenPrice$"
+      >
+        (
+        <span>{{ tokenPrice$ }}</span>
+        )
+      </span>
+    </a-placeholder>
 
-        <template v-else>
-            <img v-if="dToken.img" :src="dToken.img" :alt="tokenSymbol" :width="imageSize" :height="imageSize" />
-            <span class="atokenvalue_value" :data-tooltip="tokenValue">
-                {{ tokenValue }}
-            </span>
-            <span v-if="!noSymbol" class="currency">{{ tokenSymbol }}</span>
-            <span v-if="withPrice" class="atokenvalue_price" :data-tooltip="tokenPrice$">({{ tokenPrice$ }})</span>
-        </template>
-    </span>
+    <template v-else>
+      <img
+        v-if="dToken.img"
+        :src="dToken.img"
+        :alt="tokenSymbol"
+        :width="imageSize"
+        :height="imageSize"
+      />
+      <span class="atokenvalue_value" :data-tooltip="tokenValue">
+        {{ tokenValue }}
+      </span>
+      <span v-if="!noSymbol" class="currency">{{ tokenSymbol }}</span>
+      <span
+        v-if="withPrice"
+        class="atokenvalue_price"
+        :data-tooltip="tokenPrice$"
+        >({{ tokenPrice$ }})</span
+      >
+    </template>
+  </span>
 </template>
 
 <script>
@@ -34,133 +55,141 @@ import { toBigNumber } from '@/utils/big-number.js';
 import { getPayToken } from '@/utils/pay-tokens.js';
 
 export default {
-    name: 'ATokenValue',
+  name: 'ATokenValue',
 
-    props: {
-        /** Pay token address or token itself */
-        token: {
-            type: [String, Object],
-            default: '',
-            // required: true,
-        },
-        /** Token's value. */
-        value: {
-            type: [Number, String],
-            default: 0,
-        },
-        /** Hide symbol */
-        isPayToken: {
-            type: Boolean,
-            default: true,
-        },
-        /** Hide symbol */
-        noSymbol: {
-            type: Boolean,
-            default: false,
-        },
-        /** Show price in $ */
-        withPrice: {
-            type: Boolean,
-            default: false,
-        },
-        /** Use APlaceholder. */
-        usePlaceholder: {
-            type: Boolean,
-            default: true,
-        },
-        /** Determines whether the content is loaded or not. */
-        contentLoaded: {
-            type: Boolean,
-            default: false,
-        },
-        /** Replacement text for FPlaceholder. */
-        replacementText: {
-            type: String,
-            default: '10,000.00 wFTM',
-        },
-        /** Currency symbol used in `formatNumberByLocale` function */
-        numberCurrency: {
-            type: String,
-            default: '',
-        },
-        /** Number of fraction digits */
-        fractionDigits: {
-            type: Number,
-            default: -1,
-        },
-        /** Size of token image */
-        imageSize: {
-            type: String,
-            default: '24px',
-        },
+  props: {
+    /** Pay token address or token itself */
+    token: {
+      type: [String, Object],
+      default: '',
+      // required: true,
+    },
+    /** Token's value. */
+    value: {
+      type: [Number, String],
+      default: 0,
+    },
+    /** Hide symbol */
+    isPayToken: {
+      type: Boolean,
+      default: true,
+    },
+    /** Hide symbol */
+    noSymbol: {
+      type: Boolean,
+      default: false,
+    },
+    /** Show price in $ */
+    withPrice: {
+      type: Boolean,
+      default: false,
+    },
+    /** Use APlaceholder. */
+    usePlaceholder: {
+      type: Boolean,
+      default: true,
+    },
+    /** Determines whether the content is loaded or not. */
+    contentLoaded: {
+      type: Boolean,
+      default: false,
+    },
+    /** Replacement text for FPlaceholder. */
+    replacementText: {
+      type: String,
+      default: '10,000.00 wFTM',
+    },
+    /** Currency symbol used in `formatNumberByLocale` function */
+    numberCurrency: {
+      type: String,
+      default: '',
+    },
+    /** Number of fraction digits */
+    fractionDigits: {
+      type: Number,
+      default: -1,
+    },
+    /** Size of token image */
+    imageSize: {
+      type: String,
+      default: '24px',
+    },
+  },
+
+  data() {
+    return {
+      dToken: {
+        label: '',
+        decimals: 18,
+        fractionDigits: 0,
+      },
+    };
+  },
+
+  computed: {
+    tokenValue() {
+      const { value } = this;
+
+      if (typeof value === 'string' && value.indexOf('0x') === 0) {
+        let fractionDigits = 0;
+
+        if (this.fractionDigits > -1) {
+          fractionDigits = this.fractionDigits;
+        } else if (this.dToken.fractionDigits > 0) {
+          fractionDigits = this.dToken.fractionDigits;
+        }
+
+        return formatTokenValue(
+          value,
+          this.dToken.decimals,
+          fractionDigits,
+          '',
+          true
+        );
+      }
+
+      return value;
     },
 
-    data() {
-        return {
-            dToken: {
-                label: '',
-                decimals: 18,
-                fractionDigits: 0,
-            },
-        };
+    tokenSymbol() {
+      return this.dToken.label;
     },
 
-    computed: {
-        tokenValue() {
-            const { value } = this;
+    tokenPrice$() {
+      const { value } = this;
+      const { dToken } = this;
+      const value$ = value
+        ? toBigNumber(value).multipliedBy(dToken.price)
+        : null;
 
-            if (typeof value === 'string' && value.indexOf('0x') === 0) {
-                let fractionDigits = 0;
-
-                if (this.fractionDigits > -1) {
-                    fractionDigits = this.fractionDigits;
-                } else if (this.dToken.fractionDigits > 0) {
-                    fractionDigits = this.dToken.fractionDigits;
-                }
-
-                return formatTokenValue(value, this.dToken.decimals, fractionDigits, '', true);
-            }
-
-            return value;
-        },
-
-        tokenSymbol() {
-            return this.dToken.label;
-        },
-
-        tokenPrice$() {
-            const { value } = this;
-            const { dToken } = this;
-            const value$ = value ? toBigNumber(value).multipliedBy(dToken.price) : null;
-
-            return value$ ? formatTokenValue(value$, dToken.decimals, 2, true) : '';
-        },
+      return value$ ? formatTokenValue(value$, dToken.decimals, 2, true) : '';
     },
+  },
 
-    watch: {
-        token: {
-            async handler(value) {
-                if (value) {
-                    if (typeof value === 'string') {
-                        this.dToken = (await this.getPayTokenByAddress(value)) || {};
-                    } else {
-                        this.dToken = value;
-                    }
-                }
-            },
-            immediate: true,
-        },
+  watch: {
+    token: {
+      async handler(value) {
+        if (value) {
+          if (typeof value === 'string') {
+            this.dToken = (await this.getPayTokenByAddress(value)) || {};
+          } else {
+            this.dToken = value;
+          }
+        }
+      },
+      immediate: true,
     },
+  },
 
-    methods: {
-        async getPayTokenByAddress(address) {
-            let payToken = await getPayToken(address);
-            if (!payToken) {
-                console.error('unable to display unknown payToken', address);
-            }
-            return payToken;
-        },
+  methods: {
+    async getPayTokenByAddress(address) {
+      let payToken = await getPayToken(address);
+      if (!payToken) {
+        console.error('unable to display unknown payToken', address);
+      }
+      return payToken;
     },
+  },
 };
 </script>
 

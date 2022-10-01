@@ -3,37 +3,38 @@
 $not-btn-variations: ':not(.btn-red):not(.btn-green):not(.btn-orange):not(.btn-grey):not(.btn-light)';
 
 :root {
-    .fbutton {
-        box-sizing: border-box;
+  .fbutton {
+    box-sizing: border-box;
 
-        &_label:last-child {
-            padding-inline-start: var(--f-spacer-2);
-        }
+    &_label:last-child {
+      padding-inline-start: var(--f-spacer-2);
+    }
+  }
+
+  @include btnTools.button() {
+    --f-btn-hover-color-hsl: var(--f-color-primary-h), var(--f-color-primary-s),
+      40%;
+    --f-btn-font-weight: 600;
+
+    --f-btn-border-radius: var(--f-border-radius-2);
+    --f-btn-lg-border-radius: var(--f-border-radius-2);
+    --f-btn-sm-border-radius: var(--f-border-radius-2);
+    --f-btn-xs-border-radius: var(--f-border-radius-2);
+    --f-btn-hover-border-color: var(--f-btn-main-color-hover);
+
+    //--f-btn-hover-background: var(--f-color-primary-4);
+
+    &-lg {
+      height: 48px;
+      min-width: 168px;
     }
 
-    @include btnTools.button() {
-        --f-btn-hover-color-hsl: var(--f-color-primary-h), var(--f-color-primary-s), 40%;
-        --f-btn-font-weight: 600;
+    &-secondary#{$not-btn-variations} {
+      --f-btn-hover-color: var(--f-btn-main-color-hover);
+      --f-btn-hover-background: transparent;
+    }
 
-        --f-btn-border-radius: var(--f-border-radius-2);
-        --f-btn-lg-border-radius: var(--f-border-radius-2);
-        --f-btn-sm-border-radius: var(--f-border-radius-2);
-        --f-btn-xs-border-radius: var(--f-border-radius-2);
-        --f-btn-hover-border-color: var(--f-btn-main-color-hover);
-
-        //--f-btn-hover-background: var(--f-color-primary-4);
-
-        &-lg {
-            height: 48px;
-            min-width: 168px;
-        }
-
-        &-secondary#{$not-btn-variations} {
-            --f-btn-hover-color: var(--f-btn-main-color-hover);
-            --f-btn-hover-background: transparent;
-        }
-
-        /*&-secondary#{$not-btn-variations} {
+    /*&-secondary#{$not-btn-variations} {
             --f-btn-main-color: var(--f-color-grey-5);
             --f-btn-color: var(--f-doc-color);
             --f-btn-hover-color: var(--f-doc-color);
@@ -42,50 +43,54 @@ $not-btn-variations: ':not(.btn-red):not(.btn-green):not(.btn-orange):not(.btn-g
             --f-btn-hover-background: transparent;
         }*/
 
-        &-tertiary#{$not-btn-variations} {
-            --f-btn-main-color: var(--f-color-grey-5);
-            --f-btn-color: var(--f-doc-color);
-            --f-btn-hover-background: none;
-            --f-btn-hover-border-color: transparent;
-            //--f-btn-hover-background: var(--f-color-primary-3);
+    &-tertiary#{$not-btn-variations} {
+      --f-btn-main-color: var(--f-color-grey-5);
+      --f-btn-color: var(--f-doc-color);
+      --f-btn-hover-background: none;
+      --f-btn-hover-border-color: transparent;
+      //--f-btn-hover-background: var(--f-color-primary-3);
 
-            &:hover, &:focus, &:active {
-                box-shadow: none;
-            }
-        }
-
-        &-grey {
-            --f-btn-main-color: var(--f-color-grey-5);
-            --f-btn-color: var(--f-doc-color);
-            --f-btn-hover-color: var(--f-doc-color);
-            --f-btn-hover-border-color: var(--f-doc-color);
-            --f-btn-hover-background: transparent;
-        }
+      &:hover,
+      &:focus,
+      &:active {
+        box-shadow: none;
+      }
     }
 
-    @include btnTools.button('hover') {
-        box-shadow: var(--hover-shadow);
+    &-grey {
+      --f-btn-main-color: var(--f-color-grey-5);
+      --f-btn-color: var(--f-doc-color);
+      --f-btn-hover-color: var(--f-doc-color);
+      --f-btn-hover-border-color: var(--f-doc-color);
+      --f-btn-hover-background: transparent;
     }
+  }
 
-    @include btnTools.button('focus') {
-        box-shadow: var(--hover-shadow);
-    }
+  @include btnTools.button('hover') {
+    box-shadow: var(--hover-shadow);
+  }
 
-    @include btnTools.button('active') {
-        box-shadow: var(--hover-shadow);
-    }
+  @include btnTools.button('focus') {
+    box-shadow: var(--hover-shadow);
+  }
 
-    .btn-norightradius {
-        &, .btn {
-            border-start-end-radius: 0;
-            border-end-end-radius: 0;
-        }
-    }
+  @include btnTools.button('active') {
+    box-shadow: var(--hover-shadow);
+  }
 
-    .btn-noleftradius {
-        &, .btn {
-            border-start-start-radius: 0;
-            border-end-start-radius: 0;
-        }
+  .btn-norightradius {
+    &,
+    .btn {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
     }
+  }
+
+  .btn-noleftradius {
+    &,
+    .btn {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
 }

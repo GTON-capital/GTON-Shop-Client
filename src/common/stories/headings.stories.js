@@ -1,10 +1,10 @@
 export default {
-    title: 'Design System/Headings',
+  title: 'Design System/Headings',
 };
 
 export const Headings = () => ({
-    //language=HTML
-    template: `
+  //language=HTML
+  template: `
         <div>
             <h1>
                 H1 (.h1) - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis illo impedit nemo qui
@@ -34,7 +34,7 @@ export const Headings = () => ({
             <h4>تفاده قرار</h4>
         </div>
     `,
-    data() {
-        return {};
-    },
+  data() {
+    return {};
+  },
 });

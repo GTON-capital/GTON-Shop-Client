@@ -1,8 +1,8 @@
 import { BigNumber } from 'bignumber.js';
 
 export const BigNumber0 = BigNumber.clone({
-    DECIMAL_PLACES: 0,
-    ROUNDING_MODE: BigNumber.ROUND_DOWN,
+  DECIMAL_PLACES: 0,
+  ROUNDING_MODE: BigNumber.ROUND_DOWN,
 });
 
 /**
@@ -10,7 +10,7 @@ export const BigNumber0 = BigNumber.clone({
  * @return {BigNumber}
  */
 export function toBigNumber(_value) {
-    return new BigNumber0(_value);
+  return new BigNumber0(_value);
 }
 
 /**
@@ -21,7 +21,7 @@ export function toBigNumber(_value) {
  * @return {BigNumber}
  */
 export function bShiftDP(_value, _dp = 18) {
-    return toBigNumber(_value).shiftedBy(_dp);
+  return toBigNumber(_value).shiftedBy(_dp);
 }
 
 /**
@@ -30,7 +30,7 @@ export function bShiftDP(_value, _dp = 18) {
  * @return {BigNumber}
  */
 export function bFromTokenValue(value, decimals = 18) {
-    return bShiftDP(value, -decimals);
+  return bShiftDP(value, -decimals);
 }
 
 /**
@@ -39,7 +39,7 @@ export function bFromTokenValue(value, decimals = 18) {
  * @return {BigNumber}
  */
 export function bToTokenValue(value, decimals = 18) {
-    return bShiftDP(value, decimals);
+  return bShiftDP(value, decimals);
 }
 
 /**
@@ -49,7 +49,7 @@ export function bToTokenValue(value, decimals = 18) {
  * @return {BigNumber}
  */
 export function bFromWei(value) {
-    return bFromTokenValue(value);
+  return bFromTokenValue(value);
 }
 
 /**
@@ -59,7 +59,7 @@ export function bFromWei(value) {
  * @return {BigNumber}
  */
 export function bToWei(value) {
-    return bToTokenValue(value);
+  return bToTokenValue(value);
 }
 
 /**
@@ -67,8 +67,8 @@ export function bToWei(value) {
  * @return {string}
  */
 export function toHex(_value) {
-    // return web3utils.toHex(_value);
-    return `0x${toBigNumber(_value).toString(16)}`;
+  // return web3utils.toHex(_value);
+  return `0x${toBigNumber(_value).toString(16)}`;
 }
 
 /**
@@ -76,5 +76,5 @@ export function toHex(_value) {
  * @return {number}
  */
 export function toInt(_value) {
-    return parseInt(toBigNumber(_value).toString(10));
+  return parseInt(toBigNumber(_value).toString(10));
 }

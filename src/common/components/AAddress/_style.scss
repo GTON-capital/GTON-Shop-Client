@@ -1,21 +1,21 @@
 .aaddress {
-    //display: inline-block;
-    display: flex;
-    gap: var(--f-spacer-1);
+  //display: inline-block;
+  display: flex;
+  gap: var(--f-spacer-1);
 
-    .fimage {
-        border-radius: 50%;
-        overflow: hidden;
-        min-width: 24px;
-    }
+  .fimage {
+    border-radius: 50%;
+    overflow: hidden;
+    min-width: 24px;
+  }
 
-    &_jazzicon > div:first-child {
-        border-radius: 50%;
-        display: block !important;
-    }
+  &_jazzicon > div:first-child {
+    border-radius: 50%;
+    display: block !important;
+  }
 
-    .f-ellipsis {
-        width: 100%;
-        overflow: hidden;
-    }
+  .f-ellipsis {
+    width: 100%;
+    overflow: hidden;
+  }
 }
