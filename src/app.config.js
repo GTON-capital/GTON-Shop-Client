@@ -113,7 +113,7 @@ let appConfig = {
   // GTON mainnnet rpc
   rpc: 'https://rpc.gton.network/',
   // used in links pointing to fantom explorer
-  explorerUrl: 'https://ftmscan.com/',
+  explorerUrl: 'https://explorer.gton.network/',
   // used in links pointing to validators
   explorerUrl2: 'https://explorer.gton.network/',
   // default options for production build
