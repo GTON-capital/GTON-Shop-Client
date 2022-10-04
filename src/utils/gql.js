@@ -1,12 +1,12 @@
 import { clone } from 'fantom-vue-components/src/utils';
-import { artionApolloClient } from '@/plugins/apollo/apollo-provider.js';
+import { gtonShopApolloClient } from '@/plugins/apollo/apollo-provider.js';
 import { notifications } from 'fantom-vue-components/src/plugins/notifications.js';
 import { getNestedProp } from 'fantom-vue-components/src/utils/index.js';
 
 export async function gqlQuery(
   query,
   fieldName = '',
-  client = artionApolloClient,
+  client = gtonShopApolloClient,
   silent = false
 ) {
   try {
@@ -37,7 +37,7 @@ export async function gqlQuery(
 export async function gqlMutation(
   mutation,
   fieldName = '',
-  client = artionApolloClient,
+  client = gtonShopApolloClient,
   silent = false
 ) {
   try {

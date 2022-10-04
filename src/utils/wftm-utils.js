@@ -9,11 +9,11 @@ const DEFAULT_GAS_LIMIT = '0x2dc6c0';
 // ZERO_AMOUNT represents zero amount transferred on some calls.
 const ZERO_AMOUNT = '0x0';
 
-// OPERA_CHAIN_ID is the chain id used by Fantom Opera blockchain.
-const OPERA_CHAIN_ID = '0xfa';
+// MAINNET_CHAIN_ID is the chain id used by GTON Network blockchain.
+const MAINNET_CHAIN_ID = '0x3e8';
 
-// TESTNET_CHAIN_ID is the chain id used by Fantom Opera test net.
-const TESTNET_CHAIN_ID = '0xfa2';
+// TESTNET_CHAIN_ID is the chain id used by GTON test net.
+const TESTNET_CHAIN_ID = '0xc365';
 
 /**
  * defiWrapFtm creates a contract call transaction to wrap given amount
@@ -52,7 +52,7 @@ function defiWrapFtm(erc20Address, amount) {
       },
       []
     ),
-    chainId: OPERA_CHAIN_ID,
+    chainId: MAINNET_CHAIN_ID,
   };
 }
 
@@ -99,7 +99,7 @@ function defiUnwrapFtm(erc20Address, amount) {
       },
       [amount]
     ),
-    chainId: OPERA_CHAIN_ID,
+    chainId: MAINNET_CHAIN_ID,
   };
 }
 
@@ -107,6 +107,6 @@ function defiUnwrapFtm(erc20Address, amount) {
 export default {
   defiWrapFtm,
   defiUnwrapFtm,
-  OPERA_CHAIN_ID,
+  MAINNET_CHAIN_ID,
   TESTNET_CHAIN_ID,
 };

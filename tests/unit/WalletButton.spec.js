@@ -64,14 +64,14 @@ describe('WalletButton', () => {
       propsData: {
         wallet: {
           address: WALLET_ADDRESS,
-          chain: 'Fantom',
+          chain: 'GTON',
           avatar: '',
         },
       },
     });
 
     // expect(wrapper.text()).toContain(WALLET_ADDRESS);
-    expect(wrapper.text()).toContain('Fantom');
+    expect(wrapper.text()).toContain('GTON');
   });
 
   it('should emit `click` event if button is clicked and the component is not in the loading state', async () => {

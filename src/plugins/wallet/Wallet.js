@@ -18,7 +18,7 @@ import { Coinbase } from '@/plugins/wallet/coinbase/Coinbase.js';
 import { WalletConnect } from '@/plugins/wallet/walletconnect/WalletConnect.js';
 import { clone, defer } from 'fantom-vue-components/src/utils';
 import { notifications } from 'fantom-vue-components/src/plugins/notifications.js';
-import { fantomApolloClient } from '@/plugins/apollo/apollo-provider.js';
+import { gtonApolloClient } from '@/plugins/apollo/apollo-provider.js';
 import { delay } from 'fantom-vue-components/src/utils/function.js';
 import { toBigNumber, toHex } from '@/utils/big-number.js';
 import { compareAddresses } from '@/utils/address.js';
@@ -275,7 +275,7 @@ export class Wallet {
         fetchPolicy: 'network-only',
       },
       'account.txCount',
-      fantomApolloClient
+      gtonApolloClient
     );
 
     return inHexFormat ? nonce : parseInt(nonce, 16);
@@ -297,7 +297,7 @@ export class Wallet {
         fetchPolicy: 'network-only',
       },
       'gasPrice',
-      fantomApolloClient
+      gtonApolloClient
     );
 
     // gasPrice * 1.2
@@ -333,7 +333,7 @@ export class Wallet {
         fetchPolicy: 'network-only',
       },
       'estimateGas',
-      fantomApolloClient,
+      gtonApolloClient,
       silent
     );
 
@@ -401,7 +401,7 @@ export class Wallet {
         fetchPolicy: 'network-only',
       },
       'transaction.status',
-      fantomApolloClient
+      gtonApolloClient
     );
   }
 

@@ -2,10 +2,12 @@
 import Web3 from 'web3';
 // ZERO_AMOUNT represents zero amount transferred on some calls.
 const ZERO_AMOUNT = '0x0';
-// OPERA_CHAIN_ID is the chain id used by Fantom Opera blockchain.
-const OPERA_CHAIN_ID = '0xfa';
-// TESTNET_CHAIN_ID is the chain id used by Fantom Opera test net.
-const TESTNET_CHAIN_ID = '0xfa2';
+
+// MAINNET_CHAIN_ID is the chain id used by GTON Network blockchain.
+const MAINNET_CHAIN_ID = '0x3e8';
+
+// TESTNET_CHAIN_ID is the chain id used by GTON test net.
+const TESTNET_CHAIN_ID = '0xc365';
 /**
  * erc721Approve creates a transaction for setting ERC-721 token approval, which allows
  * approved party to transfer the specified NFT token of the approving owner.
@@ -43,7 +45,7 @@ function erc721Approve(erc721Address, approveTo, tokenId) {
       },
       [approveTo, tokenId]
     ),
-    chainId: OPERA_CHAIN_ID,
+    chainId: MAINNET_CHAIN_ID,
   };
 }
 
@@ -88,7 +90,7 @@ function erc721TransferFrom(erc721Address, transferFrom, transferTo, tokenId) {
       },
       [transferFrom, transferTo, tokenId]
     ),
-    chainId: OPERA_CHAIN_ID,
+    chainId: MAINNET_CHAIN_ID,
   };
 }
 
@@ -96,6 +98,6 @@ function erc721TransferFrom(erc721Address, transferFrom, transferTo, tokenId) {
 export default {
   erc721Approve,
   erc721TransferFrom,
-  OPERA_CHAIN_ID,
+  MAINNET_CHAIN_ID,
   TESTNET_CHAIN_ID,
 };

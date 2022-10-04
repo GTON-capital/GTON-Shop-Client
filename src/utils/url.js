@@ -1,4 +1,4 @@
-import { artionFApolloClient } from '@/plugins/apollo/apollo-provider.js';
+import { gtonSApolloClient } from '@/plugins/apollo/apollo-provider.js';
 
 /**
  * @param {string} imageThumbUrl
@@ -9,7 +9,7 @@ export function getImageThumbUrl(imageThumbUrl) {
     return '';
   }
 
-  return `${artionFApolloClient.getCurrentHttpProviderOrigin()}${imageThumbUrl}`;
+  return `${gtonSApolloClient.getCurrentHttpProviderOrigin()}${imageThumbUrl}`;
 }
 
 /**
@@ -21,7 +21,7 @@ export function getCollectionImageUrl(contract) {
     return '';
   }
 
-  return `${artionFApolloClient.getCurrentHttpProviderOrigin()}/images/collection/${contract}/`;
+  return `${gtonSApolloClient.getCurrentHttpProviderOrigin()}/images/collection/${contract}/`;
 }
 
 /**
@@ -46,5 +46,5 @@ export function getTokenJsonMetadataUrl(contract, tokenId) {
     return '';
   }
 
-  return `${artionFApolloClient.getCurrentHttpProviderOrigin()}/metadata/token/${contract}/${tokenId}`;
+  return `${gtonSApolloClient.getCurrentHttpProviderOrigin()}/metadata/token/${contract}/${tokenId}`;
 }

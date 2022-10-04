@@ -7,7 +7,7 @@ import { getBearerToken } from '@/modules/account/auth.js';
 import { onError } from 'apollo-link-error';
 import { RetryLink } from 'apollo-link-retry';
 
-export class FApolloClient {
+export class GApolloClient {
   constructor({
     apolloProviders = [],
     defaultProviderIndex = 'random',

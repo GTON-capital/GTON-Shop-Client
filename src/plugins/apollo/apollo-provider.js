@@ -4,36 +4,36 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import VueApollo from 'vue-apollo';
 import appConfig from '@/app.config.js';
-import { FApolloClient } from './FApolloClient.js';
+import { GApolloClient } from './GApolloClient.js';
 
-export const artionFApolloClient = new FApolloClient({
+export const gtonSApolloClient = new GApolloClient({
   apolloProviders: appConfig.apollo.gtonShop.providers,
   defaultProviderIndex: appConfig.apollo.gtonShop.defaultProviderIndex,
 });
 
-export const fantomFApolloClient = new FApolloClient({
-  apolloProviders: appConfig.apollo.gton.providers,
-  defaultProviderIndex: appConfig.apollo.gton.defaultProviderIndex,
+export const gtonNetworkApolloClient = new GApolloClient({
+  apolloProviders: appConfig.apollo.gtonNetwork.providers,
+  defaultProviderIndex: appConfig.apollo.gtonNetwork.defaultProviderIndex,
 });
 
-export const artionApolloClient = new ApolloClient({
+export const gtonShopApolloClient = new ApolloClient({
   link: ApolloLink.from([
-    artionFApolloClient.getNetErrorLink(),
-    artionFApolloClient.getRetryLink(),
-    artionFApolloClient.getErrorLink(),
-    artionFApolloClient.getHttpAuthLink(),
-    artionFApolloClient.getHttpLink(),
+    gtonSApolloClient.getNetErrorLink(),
+    gtonSApolloClient.getRetryLink(),
+    gtonSApolloClient.getErrorLink(),
+    gtonSApolloClient.getHttpAuthLink(),
+    gtonSApolloClient.getHttpLink(),
   ]),
   cache: new InMemoryCache(),
   connectToDevTools: true,
 });
 
-export const fantomApolloClient = new ApolloClient({
+export const gtonApolloClient = new ApolloClient({
   link: ApolloLink.from([
-    fantomFApolloClient.getNetErrorLink(),
-    fantomFApolloClient.getRetryLink(),
-    fantomFApolloClient.getErrorLink(),
-    fantomFApolloClient.getHttpLink(),
+    gtonNetworkApolloClient.getNetErrorLink(),
+    gtonNetworkApolloClient.getRetryLink(),
+    gtonNetworkApolloClient.getErrorLink(),
+    gtonNetworkApolloClient.getHttpLink(),
   ]),
   cache: new InMemoryCache(),
   connectToDevTools: true,
@@ -43,10 +43,10 @@ Vue.use(VueApollo);
 
 export const apolloProvider = new VueApollo({
   clients: {
-    artion: artionApolloClient,
-    fantom: fantomApolloClient,
+    gtonShop: gtonShopApolloClient,
+    gtonNetwork: gtonApolloClient,
   },
-  defaultClient: artionApolloClient,
+  defaultClient: gtonShopApolloClient,
   defaultOptions: {
     $query: {
       fetchPolicy: 'network-only', // 'cache-and-network', 'network-only', 'cache-first'

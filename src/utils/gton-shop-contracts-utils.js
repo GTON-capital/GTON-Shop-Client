@@ -992,7 +992,7 @@ function resultAuction(
  * Auction can only be fail-resulted if the auction has expired and the auction.reservePrice has not been met.
  * If there have been no bids, the auction needs to be cancelled instead using `cancelAuction()`
  *
- * @since Artion-Contracts v2.0.0-rc.1
+ * @since GTON-Shop-Contracts v2.0.0-rc.1
  *
  * @param {string} nftAddress Address of the NFT token, ERC721 address
  * @param {int} tokenID NFT Token ID of the item being auctioned

@@ -43,7 +43,7 @@ let appConfig = {
       defaultProviderIndex: 'random',
     },
     // GTON api
-    gton: {
+    gtonNetwork: {
       // list of providers. if one of them is unavailable, another is randomly picked
       providers: [
         {

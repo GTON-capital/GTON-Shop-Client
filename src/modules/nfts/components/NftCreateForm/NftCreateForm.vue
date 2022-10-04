@@ -204,6 +204,7 @@ export default {
   },
 
   async created() {
+    console.log(this.$wallet.account);
     let mintableBy =
       this.$wallet.account || '0x0000000000000000000000000000000000000000';
     console.log('loading collections mintable by', mintableBy);

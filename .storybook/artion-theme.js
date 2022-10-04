@@ -34,6 +34,6 @@ export default create({
 */
 
   brandTitle: 'GTON Shop',
-  brandUrl: 'https://fantom.foundation/',
+  brandUrl: 'https://gton.capital/',
   // brandImage: 'https://placehold.it/350x150',
 });

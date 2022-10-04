@@ -173,7 +173,7 @@
 
   "appsectionnft": {
     "title": "Trade without platform fees on GTON Shop",
-    "text": "GTON Shop is an NFT marketplace built on Fantom. Create and trade NFTs instantly with low network costs."
+    "text": "GTON Shop is an NFT marketplace built on GTON Network. Create and trade NFTs instantly with low network costs."
   },
 
   "appsectionabout": {
@@ -184,7 +184,7 @@
     },
     "card2": {
       "title": "Super Fast",
-      "text": "Since GTON Shop runs on the Fantom Opera Network, transactions are usually confirmed within 1-2 seconds."
+      "text": "Since GTON Shop runs on the GTON Network, transactions are usually confirmed within 1-2 seconds."
     },
     "card3": {
       "title": "Low Transaction Fees",
@@ -349,12 +349,12 @@
     "ipRights": "IP Rights",
     "notAvailable": "Not available",
     "collection": "Collection",
-    "nftCollection": "Fantom Powered NFT Collection",
+    "nftCollection": "GTON Powered NFT Collection",
     "tokenId": "Token ID",
     "about": "About",
     "chainInfo": "Chain Info",
     "network": "Network",
-    "gtonShop": "GTON Shop",
+    "gtonNetwork": "GTON Network",
     "chainId": "Chain ID",
     "fromCollection": "More from this collection",
     "itemActivity": "Item Activity",
@@ -466,7 +466,7 @@
 
   "collectionregisterform": {
     "registerCollection": "@:registerCollection",
-    "useOwnerAddressOfCollection": "Please submit using the owner address of the collection. If you cannot use the owner address, please email us on contact@fantom.foundation with the information below (and proof of collection ownership, such as from the collection's official email address).",
+    "useOwnerAddressOfCollection": "Please submit using the owner address of the collection. If you cannot use the owner address, please email us on contact@gton.capital with the information below (and proof of collection ownership, such as from the collection's official email address).",
     "logoImage": "Logo Image",
     "alsoBeUsedForNavigation": "This image will also be used for navigation. 300x300 recommended.",
     "name": "@:name",
@@ -477,7 +477,7 @@
     "royaltyErr": "Value should be between 1 and 100",
     "royaltyTooltip": "Each NFT under this collection exchanged through GTON Shop will have a percentage of sale given to nominated wallet address.",
     "feeRecipient": "Fee Recipient",
-    "feesTooltip": "The nominated Fantom Opera Network wallet address to receive roylties from each sale in this collection.",
+    "feesTooltip": "The nominated GTON Network wallet address to receive roylties from each sale in this collection.",
     "contactEmail": "Contact Email",
     "emailAddress": "Email Address",
     "emailTooltip": "We will use this email to notify you about your collection aplication. This will not be shared with others.",

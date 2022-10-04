@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { gqlQuery } from '@/utils/gql.js';
-import { fantomApolloClient } from '@/plugins/apollo/apollo-provider.js';
+import { gtonApolloClient } from '@/plugins/apollo/apollo-provider.js';
 
 export async function getErc20TokenAllowance(
   ownerAddress = '',
@@ -25,7 +25,7 @@ export async function getErc20TokenAllowance(
     fetchPolicy: 'network-only',
   };
 
-  return gqlQuery(query, 'ercTokenAllowance', fantomApolloClient);
+  return gqlQuery(query, 'ercTokenAllowance', gtonApolloClient);
 }
 
 /*
@@ -50,6 +50,6 @@ export async function getErc20Token(ownerAddress = '', tokenAddress = '') {
         fetchPolicy: 'network-only',
     };
 
-    return gqlQuery(query, 'erc20Token', fantomApolloClient);
+    return gqlQuery(query, 'erc20Token', gtonApolloClient);
 }
 */

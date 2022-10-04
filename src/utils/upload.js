@@ -1,5 +1,5 @@
 import { notifications } from 'fantom-vue-components/src/plugins/notifications.js';
-import { artionFApolloClient } from '@/plugins/apollo/apollo-provider.js';
+import { gtonSApolloClient } from '@/plugins/apollo/apollo-provider.js';
 import { getBearerToken } from '@/modules/account/auth.js';
 
 /**
@@ -24,7 +24,7 @@ export async function uploadUserFile(_files, _type = 'avatar') {
   options.body = data;
 
   let url =
-    artionFApolloClient.httpProviderOrigin + '/upload-image/user-' + _type;
+    gtonSApolloClient.httpProviderOrigin + '/upload-image/user-' + _type;
 
   try {
     let response = await fetch(url, options);
@@ -61,7 +61,7 @@ export async function uploadTokenData(_metadata, _imageFile) {
     body: data,
   };
 
-  let url = artionFApolloClient.httpProviderOrigin + '/upload-image/token';
+  let url = gtonSApolloClient.httpProviderOrigin + '/upload-image/token';
 
   let response = await fetch(url, options);
   console.log('uploadTokenData', response);
@@ -84,7 +84,7 @@ export async function uploadCollection(_data, _imageFile) {
     body: data,
   };
 
-  let url = artionFApolloClient.httpProviderOrigin + '/upload-image/collection';
+  let url = gtonSApolloClient.httpProviderOrigin + '/upload-image/collection';
 
   let response = await fetch(url, options);
   console.log(response);

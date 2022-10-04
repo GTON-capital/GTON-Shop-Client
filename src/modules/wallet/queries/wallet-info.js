@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { gqlQuery } from '@/utils/gql.js';
-import { fantomApolloClient } from '@/plugins/apollo/apollo-provider.js';
+import { gtonApolloClient } from '@/plugins/apollo/apollo-provider.js';
 
 export async function getWalletInfo(address = '') {
   const query = {
@@ -23,5 +23,5 @@ export async function getWalletInfo(address = '') {
     fetchPolicy: 'network-only',
   };
 
-  return gqlQuery(query, 'erc20Assets', fantomApolloClient);
+  return gqlQuery(query, 'erc20Assets', gtonApolloClient);
 }

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { gqlQuery } from '@/utils/gql.js';
-import { fantomApolloClient } from '@/plugins/apollo/apollo-provider.js';
+import { gtonApolloClient } from '@/plugins/apollo/apollo-provider.js';
 
 export async function getFTMBalance(ownerAddress = '') {
   const query = {
@@ -17,5 +17,5 @@ export async function getFTMBalance(ownerAddress = '') {
     fetchPolicy: 'network-only',
   };
 
-  return gqlQuery(query, 'account.balance', fantomApolloClient);
+  return gqlQuery(query, 'account.balance', gtonApolloClient);
 }

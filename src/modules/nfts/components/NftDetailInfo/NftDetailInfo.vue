@@ -97,7 +97,7 @@
         </div>
         <div class="nftdetailinfo_row">
           <span>{{ $t('nftdetail.network') }}</span>
-          <span>{{ $t('nftdetail.gtonShop') }}</span>
+          <span>{{ $t('nftdetail.gtonNetwork') }}</span>
         </div>
         <div class="nftdetailinfo_row">
           <span>{{ $t('nftdetail.chainId') }}</span>
