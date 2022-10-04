@@ -3,7 +3,7 @@ const appConfig = require('./src/app.config.js');
 // const svgFilePath = path.join(__dirname, './src/assets/svg');
 
 console.log('--- app config ---');
-console.log(appConfig);
+console.log(JSON.stringify(appConfig, undefined, 2));
 
 module.exports = {
   publicPath: appConfig.routerHashMode ? '' : '/',
