@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils';
 import AccountAvatar from '@/modules/account/components/AccountAvatar/AccountAvatar.vue';
 import FPlaceholder from 'fantom-vue-components/src/components/FPlaceholder/FPlaceholder.vue';
 
-// jest.mock('../../public/artion.svg');
+// jest.mock('../../public/gton-shop.svg');
 // console.log();
 
 let wrapper = null;

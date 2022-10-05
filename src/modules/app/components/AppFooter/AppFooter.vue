@@ -3,12 +3,23 @@
     <div class="appfooter_item">
       <router-link to="/">
         <img
+          src="gton-shop_logo_full_black-bg.svg"
+          width="138px"
+          height="35px"
+          alt="GTON Shop logo"
+        />
+      </router-link>
+    </div>
+    <div class="appfooter_item">
+      Fork of
+      <a target="_blank" rel="noopener" href="https://artion.io/">
+        <img
           src="artion-logo-white.svg"
           width="138px"
           height="35px"
           alt="artion logo"
         />
-      </router-link>
+      </a>
     </div>
     <div class="appfooter_item">
       <a
@@ -38,16 +49,12 @@
       </a>
     </div>
     <div class="appfooter_item">
-      <a
-        target="_blank"
-        href="https://fantom.foundation/?__cf_chl_jschl_tk__=pmd_E1oHTDXhwdz0vcFL0YFXwPOHh90x0.2yXjcuNnnha8E-1632371438-0-gqNtZGzNAdCjcnBszQyl"
-        rel="noopener"
-      >
+      <a target="_blank" href="https://gton.capital" rel="noopener">
         <img
-          src="fantom_logo.svg"
+          src="GTON-NETWORK_black-bg.svg"
           width="135px"
           height="35px"
-          alt="fantom logo"
+          alt="GTON Network logo"
         />
       </a>
     </div>

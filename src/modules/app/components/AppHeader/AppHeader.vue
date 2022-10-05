@@ -3,10 +3,10 @@
     <div class="appheader_logo">
       <router-link to="/" class="appheader_logo">
         <img
-          src="/artion.svg"
+          src="/gton-shop.svg"
           width="56px"
           height="35px"
-          alt="gton shop logo"
+          alt="GTON Shop logo"
         />
         <div class="appheader_title">GTON Shop</div>
       </router-link>

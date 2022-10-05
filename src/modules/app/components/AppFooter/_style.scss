@@ -11,6 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: var(--f-spacer-5);
     a {
       //text-decoration: none;
       color: #fff !important;

@@ -8,7 +8,7 @@ let appConfig = {
   // app keywords
   keywords: 'GTON Shop, GTON, NFT, NFTs',
   // app's favicon
-  favicon: 'public/favicon.png',
+  favicon: 'public/favicon.svg',
   // app code
   code: process.env.VUE_APP_GTON_MODULE || 'gton-shop',
   // app routes
@@ -143,7 +143,7 @@ if (appConfig.module === 'pg') {
     // meta image
     imageUrl: '/img/PierreGaslyNFTdrop.png',
     // app's favicon
-    favicon: 'public/favicon-pg.png',
+    favicon: 'public/favicon.svg',
     // progressive web application
     usePWA: false,
     // specifies if auction is on or off

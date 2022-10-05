@@ -8,9 +8,6 @@
           $t('view_not_found.link_title')
         }}</router-link>
       </div>
-      <div class="page404_col">
-        <f-image src="img/404_man.png" alt="man" />
-      </div>
     </div>
   </div>
 </template>
