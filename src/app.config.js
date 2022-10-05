@@ -99,7 +99,7 @@ let appConfig = {
     // name used in pwa manifest
     name: 'GTON Shop',
     categories: ['finance'],
-    mainColor: '#ffffff',
+    mainColor: '#020205',
     assetsVersion: '1',
   },
   // if `true`, every route will be redirected to 'under maintenance' page

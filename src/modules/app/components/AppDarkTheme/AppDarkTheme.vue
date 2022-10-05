@@ -13,7 +13,7 @@ export default {
 
   data() {
     return {
-      prevTheme: 'theme-default',
+      prevTheme: THEME_DARK,
       prefersColorScheme: null,
     };
   },

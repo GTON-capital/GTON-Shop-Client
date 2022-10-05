@@ -16,20 +16,20 @@
       :navigation="navigation"
       @node-selected="onNavigationNodeSelected"
     />
-    <div class="walletmenupopover_darkthemeswitch">
+    <!-- <div class="walletmenupopover_darkthemeswitch">
       <f-dark-theme-switch
         :model-value="darkTheme"
         :label="$t('appearancesettings.darkMode')"
         @change="onDarkThemeSwitchChange"
       />
-    </div>
+    </div> -->
   </f-popover>
 </template>
 
 <script>
 import FAccordionNavigation from 'fantom-vue-components/src/components/FAccordionNavigation/FAccordionNavigation.vue';
 import FPopover from 'fantom-vue-components/src/components/FPopover/FPopover.vue';
-import FDarkThemeSwitch from 'fantom-vue-components/src/components/FDarkThemeSwitch/FDarkThemeSwitch.vue';
+// import FDarkThemeSwitch from 'fantom-vue-components/src/components/FDarkThemeSwitch/FDarkThemeSwitch.vue';
 import { popoverAnimationMixin } from 'fantom-vue-components/src/mixins/popover-animation.js';
 import { clone, defer } from 'fantom-vue-components/src/utils';
 import { SET_THEME } from '@/modules/app/store/mutations.js';
@@ -45,7 +45,11 @@ export default {
 
   mixins: [popoverAnimationMixin],
 
-  components: { FAccordionNavigation, FPopover, FDarkThemeSwitch },
+  components: {
+    FAccordionNavigation,
+    FPopover,
+    // FDarkThemeSwitch
+  },
 
   props: {
     navigation: {
