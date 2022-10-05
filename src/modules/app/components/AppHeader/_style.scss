@@ -9,6 +9,7 @@
   --appheader-background: #fff;
   --appheader-border-bottom: 1px solid var(--f-color-grey-3);
 
+  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   width: 100%;
@@ -22,7 +23,7 @@
 
   padding: var(--f-spacer-3) var(--main-lr-padding);
   border-bottom: var(--appheader-border-bottom);
-  background: var(--appheader-background);
+  //   background: var(--appheader-background);
 
   z-index: var(--f-zindex-fixed);
 
