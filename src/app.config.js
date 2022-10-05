@@ -47,35 +47,35 @@ let appConfig = {
       // list of providers. if one of them is unavailable, another is randomly picked
       providers: [
         {
-          http: 'https://xapi-nodea.fantom.network/',
+          http: 'http://164.90.205.116:7373/graphql',
           // for subscriptions
           ws: '',
         },
-        {
-          http: 'https://xapi-nodeb.fantom.network/',
-          // for subscriptions
-          ws: '',
-        },
-        {
-          http: 'https://xapi-nodec.fantom.network/',
-          // for subscriptions
-          ws: '',
-        },
-        {
-          http: 'https://xapi-noded.fantom.network/',
-          // for subscriptions
-          ws: '',
-        },
-        {
-          http: 'https://xapi-nodee.fantom.network/',
-          // for subscriptions
-          ws: '',
-        },
-        {
-          http: 'https://xapi-nodef.fantom.network/',
-          // for subscriptions
-          ws: '',
-        },
+        // {
+        //   http: 'https://xapi-nodeb.fantom.network/',
+        //   // for subscriptions
+        //   ws: '',
+        // },
+        // {
+        //   http: 'https://xapi-nodec.fantom.network/',
+        //   // for subscriptions
+        //   ws: '',
+        // },
+        // {
+        //   http: 'https://xapi-noded.fantom.network/',
+        //   // for subscriptions
+        //   ws: '',
+        // },
+        // {
+        //   http: 'https://xapi-nodee.fantom.network/',
+        //   // for subscriptions
+        //   ws: '',
+        // },
+        // {
+        //   http: 'https://xapi-nodef.fantom.network/',
+        //   // for subscriptions
+        //   ws: '',
+        // },
       ],
       // index into providers array of default provider or 'random' - takes index randomly
       defaultProviderIndex: 'random',
