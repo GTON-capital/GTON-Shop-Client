@@ -7,7 +7,18 @@
   --homepage-gradient: none;
   --fimage-noimage-background-color: var(--theme-dark-color-5);
 
-  --theme-dark-color-9: #222431;
+  --theme-accent-color-1: #c29f33;
+  --theme-accent-color-2: #ffe7ab;
+  --theme-accent-color-3: #c9aa4a;
+
+  --f-accent-font-background: inear-gradient(
+    180deg,
+    var(--theme-accent-color-1),
+    var(--theme-accent-color-2),
+    var(--theme-accent-color-3)
+  );
+
+  --theme-dark-color-9: #020205;
   --theme-dark-color-8: #252736;
   --theme-dark-color-7: #2c2e3f;
   --theme-dark-color-6: #33364a;
