@@ -28,8 +28,6 @@
             :label="$t('nftcreate.collection')"
             class="collection_list"
             :data="collections"
-            :validator="collectionValidator"
-            :error-message="$t('nftcreate.collectionErr')"
             required
           >
             <template #button-label="{ item }">
