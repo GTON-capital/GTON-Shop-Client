@@ -7,7 +7,7 @@
 
 <script>
 import { eventBusMixin } from 'fantom-vue-components/src/mixins/event-bus.js';
-import { toBigNumber, toHex } from '@/utils/big-number.js';
+// import { toBigNumber, toHex } from '@/utils/big-number.js';
 import { SET_TX_STATUS } from '@/modules/app/store/mutations.js';
 import MetamaskWalletNoticeWindow from '@/modules/wallet/components/MetamaskWalletNoticeWindow/MetamaskWalletNoticeWindow.vue';
 import CoinbaseWalletNoticeWindow from '@/modules/wallet/components/CoinbaseWalletNoticeWindow/CoinbaseWalletNoticeWindow.vue';
@@ -96,12 +96,12 @@ export default {
           console.log('TX: ', tx);
 
           tx.chainId = $wallet.chainId;
-          tx.nonce = await $wallet.getNonce($wallet.account, true);
+          //   tx.nonce = await $wallet.getNonce($wallet.account, true);
           // tx.from = $wallet.account;
-          tx.gasPrice = await $wallet.getGasPrice(true);
-          tx.gasLimit = await $wallet.estimateGas(tx, this.silent);
+          //   tx.gasPrice = await $wallet.getGasPrice(true);
+          //   tx.gasLimit = await $wallet.estimateGas(tx, this.silent);
 
-          tx.gasLimit = toHex(toBigNumber(tx.gasLimit).plus(2000));
+          //   tx.gasLimit = toHex(toBigNumber(tx.gasLimit).plus(2000));
 
           if (!tx.from) {
             tx.from = $wallet.account;
