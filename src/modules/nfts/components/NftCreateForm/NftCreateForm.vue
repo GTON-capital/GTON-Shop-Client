@@ -304,22 +304,22 @@ export default {
       }
 
       this.progressMessage = this.$t('nftcreate.estimatingFeeGas');
-      const royalty = this.getRoyalty();
-      const estimation = await this.getEstimation(val.collectionId, royalty);
-      console.log('estimation', estimation);
-      if (estimation.error != null) {
-        console.error(
-          'estimateMintFeeGas (server estimation) fail',
-          estimation
-        );
-        notifications.add({
-          type: 'error',
-          text: this.$t('nftcreate.collectionErr') + ' ' + estimation.error,
-        });
-        this.progressMessage = '';
-        this.isLoading = false;
-        return;
-      }
+      //   const royalty = this.getRoyalty();
+      //   const estimation = await this.getEstimation(val.collectionId, royalty);
+      //   console.log('estimation', estimation);
+      //   if (estimation.error != null) {
+      //     console.error(
+      //       'estimateMintFeeGas (server estimation) fail',
+      //       estimation
+      //     );
+      //     notifications.add({
+      //       type: 'error',
+      //       text: this.$t('nftcreate.collectionErr') + ' ' + estimation.error,
+      //     });
+      //     this.progressMessage = '';
+      //     this.isLoading = false;
+      //     return;
+      //   }
 
       this.progressMessage = this.$t('nftcreate.uploading');
       let tokenUri;
@@ -345,10 +345,10 @@ export default {
       this.tx = contracts.createNFTWithRoyalty(
         this.$wallet.account, // owner of the created token
         tokenUri,
-        estimation.platformFee,
+        20,
         val.collectionId,
         this.$wallet.account, // royalty recipient
-        royalty,
+        0,
         web3
       );
     },
