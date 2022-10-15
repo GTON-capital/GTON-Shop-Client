@@ -19,7 +19,7 @@
 
 <script>
 import PGNft from '../PGNft/PGNft';
-import { getWFTMToken } from '@/modules/pg/utils.js';
+import { getWGCDToken } from '@/modules/pg/utils.js';
 import { getRandomTradePayTokenPrice } from '@/modules/pg/queries/random-trade.js';
 import appConfig from '@/app.config.js';
 
@@ -92,34 +92,14 @@ const TOKENS = [
 
 const PAY_TOKENS = [
   {
-    address: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
-    label: 'wFTM',
+    address: '0xeFF66B4A84C8a6b69b99EB1C5e39aF8fc35d13db',
+    label: 'wGCD',
     img: 'img/WFTM.png',
     tokenPrice: '0x56bc75e2d63100000',
     // price: 2.308624,
     // priceDecimals: 18,
     decimals: 18,
-    value: 'wftm',
-  },
-  {
-    address: '0x09e145a1d53c0045f41aeef25d8ff982ae74dd56',
-    label: 'ZOO',
-    img: 'img/ZOO.png',
-    tokenPrice: '0xb3a6fd21acec880000',
-    // price: 1,
-    // priceDecimals: 18,
-    decimals: 0,
-    value: 'zoo',
-  },
-  {
-    address: '0x6c021ae822bea943b2e66552bde1d2696a53fbb7',
-    label: 'TOMB',
-    img: 'img/TOMB.png',
-    tokenPrice: '0x56bc75e2d63100000',
-    // price: 1,
-    // priceDecimals: 18,
-    decimals: 18,
-    value: 'tomb',
+    value: 'wgcd',
   },
 ];
 
@@ -146,7 +126,7 @@ export default {
     async init() {
       const data = await Promise.all([
         this.loadMPayTokens(CONTRACT),
-        getWFTMToken(),
+        getWGCDToken(),
       ]);
 
       this.mPayTokens = data[0];

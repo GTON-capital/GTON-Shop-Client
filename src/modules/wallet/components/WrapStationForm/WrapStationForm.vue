@@ -50,13 +50,13 @@
 
 <script>
 import ABPriceField from '@/common/components/ABPriceField/ABPriceField.vue';
-import { WFTMContract } from '@/common/constants/pay-tokens.js';
+import { WGCDContract } from '@/common/constants/pay-tokens.js';
 import { getPayTokenWithPrice } from '@/utils/pay-tokens.js';
 import { getFTMBalance } from '@/modules/wallet/queries/ftm-balance.js';
 import { getErc20TokenBalance } from '@/modules/wallet/queries/erc20-token-balance.js';
 import { bToTokenValue, toBigNumber, toHex } from '@/utils/big-number.js';
 import AButton from '@/common/components/AButton/AButton.vue';
-import contracts from '@/utils/wftm-utils.js';
+import contracts from '@/utils/wgcd-utils.js';
 import ASignTransaction from '@/common/components/ASignTransaction/ASignTransaction.vue';
 
 export default {
@@ -115,7 +115,7 @@ export default {
 
   methods: {
     async setTokens() {
-      const wftmToken = await getPayTokenWithPrice(WFTMContract);
+      const wftmToken = await getPayTokenWithPrice(WGCDContract);
 
       this.wftmToken = {
         decimals: wftmToken.decimals,
@@ -138,7 +138,7 @@ export default {
     async setBalances() {
       const data = await Promise.all([
         getFTMBalance(this.walletAddress),
-        getErc20TokenBalance(this.walletAddress, WFTMContract),
+        getErc20TokenBalance(this.walletAddress, WGCDContract),
       ]);
 
       this.ftmToken.balance = data[0];
@@ -161,10 +161,10 @@ export default {
       let tx = null;
 
       if (type === 'wrap') {
-        tx = contracts.defiWrapFtm(WFTMContract, amount);
+        tx = contracts.defiWrapGcd(WGCDContract, amount);
         tx._code = 'wrap';
       } else {
-        tx = contracts.defiUnwrapFtm(WFTMContract, amount);
+        tx = contracts.defiUnwrapGcd(WGCDContract, amount);
         tx._code = 'unwrap';
       }
 

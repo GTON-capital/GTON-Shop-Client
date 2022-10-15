@@ -19,7 +19,7 @@
   "from": "From",
   "unnamed": "Unnamed",
   "balance": "Balance",
-  "wrapStation": "FTM / WFTM Station",
+  "wrapStation": "GCD / WGCD Station",
   "notice": "Notice",
   "aproveSuccess": "Successfully approved",
   "me": "Me",
@@ -440,8 +440,8 @@
     "swapTokens": "Swap tokens",
     "wrap": "Wrap",
     "unwrap": "Unwrap",
-    "wrapSuccess": "You have successfully wrap FTM",
-    "unwrapSuccess": "You have successfully unwrap wFTM"
+    "wrapSuccess": "You have successfully wrap GCD",
+    "unwrapSuccess": "You have successfully unwrap wGCD"
   },
 
   "nftlistfilters": {
@@ -526,7 +526,7 @@
     "royaltyError": "Registering royalty transaction failed. The token was minted, but royalty was not set.",
     "scanWaiting": "The token was successfully minted. Waiting for server-side token processing - this can take a while...",
     "success": "The token was successfully created.",
-    "messageFtm": "{fee} FTM are charged to create a new NFT.",
+    "messageFtm": "{fee} GCD are charged to create a new NFT.",
     "estimatingFeeGas": "Estimating necessary fee for minting and the transaction...",
     "uploading": "Uploading file and token data into IPFS...",
     "waitingForTokenId": "Waiting for the minting transaction receipt with the token ID..."
@@ -561,7 +561,7 @@
     "newBidIsBelowCurrent": "Bid is below current bid",
     "newBidIsBelowMin": "Bid is below min bid",
     "mustBeNumber": "Bid must be number",
-    "bidMustBeDivisibleByHundred": "Bid must be in {amount} FTM increments minimum",
+    "bidMustBeDivisibleByHundred": "Bid must be in {amount} GCD increments minimum",
     "insufficientBalance": "@:insufficientBalance"
   },
 

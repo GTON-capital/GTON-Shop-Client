@@ -16,14 +16,14 @@ const MAINNET_CHAIN_ID = '0x3e8';
 const TESTNET_CHAIN_ID = '0xc365';
 
 /**
- * defiWrapFtm creates a contract call transaction to wrap given amount
- * of native FTM tokens into the wFTM tokens used among DeFi protocols.
+ * defiWrapGcd creates a contract call transaction to wrap given amount
+ * of native GCD tokens into the wGCD tokens used among DeFi protocols.
  *
  * @param {string} erc20Address
  * @param {string|{BN}} amount
  * @returns {{gasLimit: string, data: string, chainId: string, to: *, nonce: undefined, value: string, gasPrice: undefined}}
  */
-function defiWrapFtm(erc20Address, amount) {
+function defiWrapGcd(erc20Address, amount) {
   // create web3.js instance
   const web3 = new Web3();
 
@@ -57,14 +57,14 @@ function defiWrapFtm(erc20Address, amount) {
 }
 
 /**
- * defiWrapFtm creates a contract call transaction to unwrap given amount
- * of wrapped wFTM tokens used among DeFi protocols back to the native FTM tokens.
+ * defiWrapGcd creates a contract call transaction to unwrap given amount
+ * of wrapped wGCD tokens used among DeFi protocols back to the native GCD tokens.
  *
  * @param {string} erc20Address
  * @param {string|{BN}} amount
  * @returns {{gasLimit: string, data: string, chainId: string, to: *, nonce: undefined, value: string, gasPrice: undefined}}
  */
-function defiUnwrapFtm(erc20Address, amount) {
+function defiUnwrapGcd(erc20Address, amount) {
   // create web3.js instance
   const web3 = new Web3();
 
@@ -105,8 +105,8 @@ function defiUnwrapFtm(erc20Address, amount) {
 
 // what we export here
 export default {
-  defiWrapFtm,
-  defiUnwrapFtm,
+  defiWrapGcd,
+  defiUnwrapGcd,
   MAINNET_CHAIN_ID,
   TESTNET_CHAIN_ID,
 };

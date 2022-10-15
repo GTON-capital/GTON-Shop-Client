@@ -23,7 +23,7 @@ const PAY_TOKEN_IMAGES = {
   dai: '/img/pay-tokens/DAI.png',
 };
 
-export const WFTMContract = '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83';
+export const WGCDContract = '0xeFF66B4A84C8a6b69b99EB1C5e39aF8fc35d13db';
 
 let PT = [];
 
@@ -58,7 +58,7 @@ async function fetchPayTokens() {
     const payToken = {
       address: t.contract,
       // name: t.name,
-      label: t.symbol === 'WFTM' ? 'wFTM' : t.symbol,
+      label: t.symbol === 'WGCD' ? 'wGCD' : t.symbol,
       img: PAY_TOKEN_IMAGES[symbolLC] || '',
       decimals: t.decimals,
       price: bFromTokenValue(t.price, 6).toNumber(),

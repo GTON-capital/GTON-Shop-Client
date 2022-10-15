@@ -5,11 +5,11 @@
       :class="{ 'pg-bid-form__current-bid--mb-0': true }"
     >
       {{ $t('pgBidForm.currentBid') }}:
-      {{ formatNumberByLocale(currentBid, decimals) }} wFTM
+      {{ formatNumberByLocale(currentBid, decimals) }} wGCD
     </div>
     <div class="pg-bid-form__min-next-bid">
       {{ $t('pgBidForm.minNextBid') }}:
-      {{ formatTokenValue(minNextBidB, payToken.decimals, decimals) }} wFTM
+      {{ formatTokenValue(minNextBidB, payToken.decimals, decimals) }} wGCD
     </div>
     <div class="pg-bid-form__my-bid">
       <a-currency-dropdown
@@ -34,7 +34,7 @@
         <span class="pg-bid-form__balance-text">
           {{ $t('pgBidForm.balance') }}:</span
         >
-        {{ formatTokenValue(userBalanceB, payToken.decimals, decimals) }} wFTM
+        {{ formatTokenValue(userBalanceB, payToken.decimals, decimals) }} wGCD
       </div>
       <div class="pg-bid-form__bid-value-fiat">~{{ to$(userBalanceB) }}</div>
     </div>
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { getWFTMToken } from '@/modules/pg/utils.js';
+import { getWGCDToken } from '@/modules/pg/utils.js';
 import ACurrencyDropdown from '../../../../common/components/ACurrencyDropdown/ACurrencyDropdown';
 import { getErc20TokenBalance } from '@/modules/wallet/queries/erc20-token-balance.js';
 import {
@@ -232,7 +232,7 @@ export default {
 
   methods: {
     async init() {
-      this.payToken = await getWFTMToken();
+      this.payToken = await getWGCDToken();
       this.currencies = [this.payToken];
 
       console.log('au', this.auction);
