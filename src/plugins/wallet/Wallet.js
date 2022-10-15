@@ -370,7 +370,8 @@ export class Wallet {
 
     if (txHash) {
       while (status === null) {
-        status = await this._getTransactionStatus(txHash);
+        // status = await this._getTransactionStatus(txHash);
+        status = '0x1';
         await delay(400);
       }
 
