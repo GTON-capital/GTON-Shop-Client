@@ -101,7 +101,7 @@
         </div>
         <div class="nftdetailinfo_row">
           <span>{{ $t('nftdetail.chainId') }}</span>
-          <span>250</span>
+          <span>1000</span>
         </div>
       </template>
     </a-details>
