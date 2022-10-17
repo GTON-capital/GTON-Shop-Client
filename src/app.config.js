@@ -20,7 +20,7 @@ let appConfig = {
       // list of providers. if one of them is unavailable, another is randomly picked
       providers: [
         {
-          http: 'http://164.90.205.116:7373/graphql',
+          http: 'http://135.181.99.50:7373/graphql',
           ws: '',
         },
         // {
@@ -47,7 +47,7 @@ let appConfig = {
       // list of providers. if one of them is unavailable, another is randomly picked
       providers: [
         {
-          http: 'http://164.90.205.116:7373/graphql',
+          http: 'http://135.181.99.50:7373/graphql',
           // for subscriptions
           ws: '',
         },
