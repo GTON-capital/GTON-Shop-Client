@@ -52,10 +52,10 @@ export default {
             label: this.$t('walletMenu.collection'),
             route: 'collection-register',
           },
-          {
-            label: this.$t('wrapStation'),
-            action: 'show-wrap-station',
-          },
+          //   {
+          //     label: this.$t('wrapStation'),
+          //     action: 'show-wrap-station',
+          //   },
           {
             label: this.$t('walletMenu.login'),
             action: 'login',

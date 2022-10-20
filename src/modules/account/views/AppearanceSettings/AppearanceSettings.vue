@@ -4,7 +4,7 @@
       {{ $t('appearancesettings.title') }}
     </h1>
 
-    <p>
+    <!-- <p>
       <f-dark-theme-switch
         :disabled="autoDarkThemeOn"
         :label="$t('appearancesettings.darkMode')"
@@ -17,7 +17,7 @@
         :data-tooltip="$t('appearancesettings.autoDarkModeInfo')"
         :aria-label="$t('appearancesettings.autoDarkModeInfo')"
       />
-    </p>
+    </p> -->
 
     <p>
       <a-text-direction-switch />
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import FDarkThemeSwitch from 'fantom-vue-components/src/components/FDarkThemeSwitch/FDarkThemeSwitch.vue';
+// import FDarkThemeSitch from 'fantom-vue-components/src/components/FDarkThemeSwitch/FDarkThemeSwitch.vue';
 import { mapState } from 'vuex';
 import {
   SET_AUTO_DARK_MODE,
@@ -41,7 +41,10 @@ const THEME_DARK = 'theme-dark';
 export default {
   name: 'AppearanceSettings',
 
-  components: { ATextDirectionSwitch, FDarkThemeSwitch },
+  components: {
+    ATextDirectionSwitch,
+    // FDarkThemeSwitch
+  },
 
   data() {
     return {
