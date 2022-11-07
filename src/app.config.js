@@ -20,7 +20,7 @@ let appConfig = {
       // list of providers. if one of them is unavailable, another is randomly picked
       providers: [
         {
-          http: 'http://172.105.40.237:7373/graphql',
+          http: 'https://gton.shop/graphql',
           ws: '',
         },
       ],
@@ -32,7 +32,7 @@ let appConfig = {
       // list of providers. if one of them is unavailable, another is randomly picked
       providers: [
         {
-          http: 'http://172.105.40.237:7373/graphql',
+          http: 'https://gton.shop/graphql',
           // for subscriptions
           ws: '',
         },
