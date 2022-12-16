@@ -8,7 +8,7 @@ const ZERO_AMOUNT = '0x0';
 const MAINNET_CHAIN_ID = '0x3e8';
 
 // TESTNET_CHAIN_ID is the chain id used by GTON test net.
-const TESTNET_CHAIN_ID = '0xc365';
+const TESTNET_CHAIN_ID = '0xc366';
 
 /**
  * erc20IncreaseAllowanceTx creates a transaction for increasing Allowance by the given
