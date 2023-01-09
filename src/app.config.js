@@ -67,15 +67,18 @@ let appConfig = {
   // use hash in address
   routerHashMode: false,
   // GTON mainnet chain id
-  chainId: '0x3E8',
+  chainId: process.env.CHAIN_ID || 50021,
   // JSON-RPC endpointAdd
   // rpc: 'https://rpcapi.fantom.network/',
   // GTON mainnnet rpc
-  rpc: 'https://rpc.gton.network/',
+  rpc: process.env.RPC_URL || 'http://170.187.138.20:8545/',
   // used in links pointing to fantom explorer
-  explorerUrl: 'https://explorer.gton.network/',
+  explorerUrl: process.env.EXPLORER_URL || 'https://explorer.gton.network/',
   // used in links pointing to validators
-  explorerUrl2: 'https://explorer.gton.network/',
+  explorerUrl2:
+    process.env.EXPLORER_URL2 ||
+    process.env.EXPLORER_URL ||
+    'https://explorer.gton.network/',
   // default options for production build
   build: {
     // output dir for production build
