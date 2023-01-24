@@ -71,7 +71,7 @@ let appConfig = {
   // JSON-RPC endpointAdd
   // rpc: 'https://rpcapi.fantom.network/',
   // GTON mainnnet rpc
-  rpc: process.env.RPC_URL || 'ws://testnet.gton.network/',
+  rpc: process.env.RPC_URL || 'https://testnet.gton.network/',
   // used in links pointing to fantom explorer
   explorerUrl:
     process.env.EXPLORER_URL || 'https://testnet.explorer.gton.network/',
