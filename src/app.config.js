@@ -71,14 +71,15 @@ let appConfig = {
   // JSON-RPC endpointAdd
   // rpc: 'https://rpcapi.fantom.network/',
   // GTON mainnnet rpc
-  rpc: process.env.RPC_URL || 'http://170.187.138.20:8545/',
+  rpc: process.env.RPC_URL || 'ws://testnet.gton.network/',
   // used in links pointing to fantom explorer
-  explorerUrl: process.env.EXPLORER_URL || 'https://explorer.gton.network/',
+  explorerUrl:
+    process.env.EXPLORER_URL || 'https://testnet.explorer.gton.network/',
   // used in links pointing to validators
   explorerUrl2:
     process.env.EXPLORER_URL2 ||
     process.env.EXPLORER_URL ||
-    'https://explorer.gton.network/',
+    'https://testnet.explorer.gton.network/',
   // default options for production build
   build: {
     // output dir for production build
