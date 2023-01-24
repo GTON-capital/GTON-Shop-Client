@@ -7,7 +7,7 @@ const ZERO_AMOUNT = '0x0';
 const MAINNET_CHAIN_ID = '0x3e8';
 
 // TESTNET_CHAIN_ID is the chain id used by GTON test net.
-const TESTNET_CHAIN_ID = '0xc366';
+const TESTNET_CHAIN_ID = '0xc365';
 /**
  * erc721Approve creates a transaction for setting ERC-721 token approval, which allows
  * approved party to transfer the specified NFT token of the approving owner.
