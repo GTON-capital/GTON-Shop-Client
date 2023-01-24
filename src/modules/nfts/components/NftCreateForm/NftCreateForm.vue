@@ -186,7 +186,7 @@ export default {
   data() {
     return {
       values: {
-        collectionId: '0xBF29277AdD1E4f142D37F46eFc02Fc1d8beB7897', // Default Artion Collection
+        collectionId: '0xee830a2241f632171e2ea2778c96583fa760aaae', // Default Artion Collection
       },
       collections: [],
       collection: {},
