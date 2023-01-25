@@ -23,7 +23,7 @@ const PAY_TOKEN_IMAGES = {
   dai: '/img/pay-tokens/DAI.png',
 };
 
-export const WGCDContract = '0xeFF66B4A84C8a6b69b99EB1C5e39aF8fc35d13db';
+export const WGCDContract = '0x4200000000000000000000000000000000000006';
 
 let PT = [];
 
