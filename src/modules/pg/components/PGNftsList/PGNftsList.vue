@@ -92,7 +92,7 @@ const TOKENS = [
 
 const PAY_TOKENS = [
   {
-    address: '0xeFF66B4A84C8a6b69b99EB1C5e39aF8fc35d13db',
+    address: '0x4200000000000000000000000000000000000006',
     label: 'wGCD',
     img: 'img/WFTM.png',
     tokenPrice: '0x56bc75e2d63100000',
