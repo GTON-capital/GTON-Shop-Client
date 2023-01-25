@@ -67,7 +67,7 @@ let appConfig = {
   // use hash in address
   routerHashMode: false,
   // GTON mainnet chain id
-  chainId: process.env.CHAIN_ID || 50021,
+  chainId: process.env.CHAIN_ID || '0xc365',
   // JSON-RPC endpointAdd
   // rpc: 'https://rpcapi.fantom.network/',
   // GTON mainnnet rpc
