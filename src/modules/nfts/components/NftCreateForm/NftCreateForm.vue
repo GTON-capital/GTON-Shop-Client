@@ -305,7 +305,7 @@ export default {
 
       this.progressMessage = this.$t('nftcreate.estimatingFeeGas');
       //   const royalty = this.getRoyalty();
-      //   const estimation = await this.getEstimation(val.collectionId, royalty);
+      const estimation = await this.getEstimation(val.collectionId);
       //   console.log('estimation', estimation);
       //   if (estimation.error != null) {
       //     console.error(
@@ -345,7 +345,7 @@ export default {
       this.tx = contracts.createNFTWithRoyalty(
         this.$wallet.account, // owner of the created token
         tokenUri,
-        20,
+        estimation.platformFee,
         val.collectionId,
         this.$wallet.account, // royalty recipient
         0,
@@ -353,6 +353,12 @@ export default {
       );
     },
 
+    /**
+     *
+     * 21000000000000000000
+     *
+     * 0.000000000000000020
+     */
     async onMintTransactionStatus(payload) {
       console.log('onMintTransactionStatus', payload);
       if (payload.status === 'error') {
